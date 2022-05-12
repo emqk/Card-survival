@@ -2,14 +2,14 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-Card survival/[Ll]ibrary/
-Card survival/[Tt]emp/
-Card survival/[Oo]bj/
-Card survival/[Bb]uild/
-Card survival/[Bb]uilds/
-Card survival/[Ll]ogs/
-Card survival/[Mm]emoryCaptures/
-Card survival/[Uu]serSettings/
+CardSurvival/[Ll]ibrary/
+CardSurvival/[Tt]emp/
+CardSurvival/[Oo]bj/
+CardSurvival/[Bb]uild/
+CardSurvival/[Bb]uilds/
+CardSurvival/[Ll]ogs/
+CardSurvival/[Mm]emoryCaptures/
+CardSurvival/[Uu]serSettings/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
