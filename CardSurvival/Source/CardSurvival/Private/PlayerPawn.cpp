@@ -26,8 +26,11 @@ void APlayerPawn::Tick(float DeltaTime)
 		FHitResult HitResult = InteractionComponent->GetResult();
 		if (HitResult.bBlockingHit)
 		{
-			DrawDebugSphere(GetWorld(), HitResult.Location, 111, 10, FColor::Red, false, -1.0f, 0, 5);	
+			HitActor = HitResult.GetActor();
+			DrawDebugSphere(GetWorld(), HitResult.Location, 50, 10, FColor::Red, false, -1.0f, 0, 5);	
 		}
+
+		InteractionComponent->TickInteraction();
 	}
 }
 
@@ -35,5 +38,24 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAction("Primary", IE_Pressed, this, &APlayerPawn::PrimaryInputPressed);
+	PlayerInputComponent->BindAction("Primary", IE_Released, this, &APlayerPawn::PrimaryInputReleased);
+}
+
+void APlayerPawn::PrimaryInputPressed()
+{
+	if (HitActor)
+	{
+		IInteractable* Interactable = Cast<IInteractable>(HitActor);
+		if (Interactable)
+		{
+			InteractionComponent->StartInteraction(Interactable);
+		}
+	}
+}
+
+void APlayerPawn::PrimaryInputReleased()
+{
+	InteractionComponent->EndInteraction();
 }
 

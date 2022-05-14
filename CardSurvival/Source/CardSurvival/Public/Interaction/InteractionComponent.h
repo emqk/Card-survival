@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Interaction/Interactable.h"
+
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "InteractionComponent.generated.h"
@@ -15,10 +17,18 @@ class CARDSURVIVAL_API UInteractionComponent : public UActorComponent
 public:	
 	UInteractionComponent();
 
+	void StartInteraction(IInteractable* Interactable);
+	void TickInteraction();
+	void EndInteraction();
+
+
 	FHitResult GetResult();
 
-public:	
+protected:	
 
 	UPROPERTY(EditDefaultsOnly)
 	float InteractionDistance = 10000.0f;
+
+	UPROPERTY(VisibleAnywhere)
+	TScriptInterface<IInteractable> InteractableTarget = nullptr;
 };

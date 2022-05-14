@@ -10,6 +10,37 @@ UInteractionComponent::UInteractionComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UInteractionComponent::StartInteraction(IInteractable* Interactable)
+{
+	// End interaction with cached interactable (if there is any)
+	if (InteractableTarget)
+		EndInteraction();
+
+	// Set new interactable
+	InteractableTarget.SetInterface(Interactable);
+	InteractableTarget.SetObject(Interactable->_getUObject());
+
+	// Start interaction
+	IInteractable::Execute_StartInteraction(InteractableTarget.GetObject(), GetOwner());
+}
+
+void UInteractionComponent::TickInteraction()
+{
+	if(InteractableTarget)
+	{
+		IInteractable::Execute_TickInteraction(InteractableTarget.GetObject(), GetOwner());
+	}
+}
+
+void UInteractionComponent::EndInteraction()
+{
+	if (InteractableTarget)
+	{
+		IInteractable::Execute_EndInteraction(InteractableTarget.GetObject(), GetOwner());
+		InteractableTarget = nullptr; // null because we no longer need a reference to (old) interactable
+	}
+}
+
 FHitResult UInteractionComponent::GetResult()
 {
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);

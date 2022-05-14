@@ -24,6 +24,12 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 
+private:
+	
+	void PrimaryInputPressed();
+	void PrimaryInputReleased();
+
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -31,4 +37,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UInteractionComponent* InteractionComponent;
+
+	// Cached interaction hit actor
+	UPROPERTY();
+	AActor* HitActor = nullptr;
 };
