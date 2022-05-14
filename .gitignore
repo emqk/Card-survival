@@ -50,7 +50,7 @@ CardSurvival/Binaries/*
 Plugins/*/Binaries/*
 
 # Builds
-Build/*
+CardSurvival/Build/*
 
 # Whitelist PakBlacklist-<BuildConfiguration>.txt files
 !Build/*/
