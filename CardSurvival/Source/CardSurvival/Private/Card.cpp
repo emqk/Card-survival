@@ -18,6 +18,8 @@ ACard::ACard()
 
 bool ACard::StartInteraction_Implementation(AActor* Interactor)
 {		
+	SetActorEnableCollision(false);
+
 	UFollowComponent* FollowComp = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerFollowComponent();
 	FollowComp->SetFollower(this);
 
@@ -31,5 +33,7 @@ bool ACard::TickInteraction_Implementation(AActor* Interactor)
 
 bool ACard::EndInteraction_Implementation(AActor* Interactor)
 {
+	SetActorEnableCollision(true);
+
 	return true;
 }
