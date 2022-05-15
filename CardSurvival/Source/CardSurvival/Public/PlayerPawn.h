@@ -11,6 +11,7 @@
 
 class UCameraComponent;
 class UInteractionComponent;
+class UFollowComponent;
 
 UCLASS()
 class CARDSURVIVAL_API APlayerPawn : public APawn
@@ -38,7 +39,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UInteractionComponent* InteractionComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UFollowComponent* FollowComponent;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Interaction")
+	FVector CardHoldHeightOffset = FVector(0, 0, 250);
+	
 	// Cached interaction hit actor
 	UPROPERTY();
 	AActor* HitActor = nullptr;
+	
 };

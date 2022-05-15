@@ -3,6 +3,7 @@
 // Player
 #include "PlayerPawn.h"
 #include "Interaction/InteractionComponent.h"
+#include "Utils/FollowComponent.h"
 
 // Engine
 #include "Camera/CameraComponent.h" 
@@ -15,6 +16,7 @@ APlayerPawn::APlayerPawn()
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
+	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
 
 void APlayerPawn::Tick(float DeltaTime)
@@ -31,6 +33,7 @@ void APlayerPawn::Tick(float DeltaTime)
 		}
 
 		InteractionComponent->TickInteraction();
+		FollowComponent->SetFollowLocation(HitResult.Location + CardHoldHeightOffset);
 	}
 }
 
