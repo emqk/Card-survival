@@ -35,5 +35,11 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 {
 	SetActorEnableCollision(true);
 
+	UFollowComponent* FollowComp = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerFollowComponent();
+	FollowComp->SetFollower(nullptr);
+
+	FVector CurrentLocation = GetActorLocation();
+	SetActorLocation(FVector(CurrentLocation.X, CurrentLocation.Y, 0));
+
 	return true;
 }
