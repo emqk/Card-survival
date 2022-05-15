@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 // Player
-#include "PlayerPawn.h"
+#include "Player/PlayerPawn.h"
 #include "Player/Cursor.h"
 #include "Interaction/InteractionComponent.h"
 #include "Utils/FollowComponent.h"

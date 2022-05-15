@@ -2,7 +2,7 @@
 
 
 #include "Player/PlayerSubsystem.h"
-#include "PlayerPawn.h"
+#include "Player/PlayerPawn.h"
 #include "Utils/FollowComponent.h"
 
 #include "Kismet/GameplayStatics.h"
