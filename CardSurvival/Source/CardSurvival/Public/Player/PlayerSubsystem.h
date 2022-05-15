@@ -8,6 +8,7 @@
 
 class APlayerPawn;
 class UFollowComponent;
+class ACursor;
 
 /**
  * Player utils
@@ -20,5 +21,6 @@ class CARDSURVIVAL_API UPlayerSubsystem : public UGameInstanceSubsystem
 public:
 
 	APlayerPawn* GetPlayerPawn() const;
-	UFollowComponent* GetPlayerFollowComponent() const;
+	ACursor* GetPlayerCursor3D() const;
+	ACursor* GetPlayerCursor3D(const APlayerPawn* PlayerPawn) const;
 };

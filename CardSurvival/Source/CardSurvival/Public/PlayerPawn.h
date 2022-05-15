@@ -12,6 +12,7 @@
 class UCameraComponent;
 class UInteractionComponent;
 class UFollowComponent;
+class ACursor;
 
 UCLASS()
 class CARDSURVIVAL_API APlayerPawn : public APawn
@@ -21,8 +22,12 @@ class CARDSURVIVAL_API APlayerPawn : public APawn
 public:
 	APlayerPawn();
 
+	void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	const FHitResult& GetHitResult() const { return HitResult; };
+	ACursor* GetCursor3D() const;
 
 
 private:
@@ -39,15 +44,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UInteractionComponent* InteractionComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UFollowComponent* FollowComponent;
-
-
-	UPROPERTY(EditDefaultsOnly, Category = "Interaction")
-	FVector CardHoldHeightOffset = FVector(0, 0, 250);
 	
 	// Cached interaction hit actor
 	UPROPERTY();
 	AActor* HitActor = nullptr;
-	
+	UPROPERTY();
+	FHitResult HitResult;
+
+	UPROPERTY(VisibleAnywhere)
+	ACursor* Cursor3D;
 };

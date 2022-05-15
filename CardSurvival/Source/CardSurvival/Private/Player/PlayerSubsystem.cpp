@@ -16,10 +16,12 @@ APlayerPawn* UPlayerSubsystem::GetPlayerPawn() const
 	return Player;
 }
 
-UFollowComponent* UPlayerSubsystem::GetPlayerFollowComponent() const
+ACursor* UPlayerSubsystem::GetPlayerCursor3D() const
 {
-	APlayerPawn* Player = GetPlayerPawn();
-	UFollowComponent* FollowComp = Cast<UFollowComponent>(Player->GetComponentByClass(UFollowComponent::StaticClass()));
+	return GetPlayerCursor3D(GetPlayerPawn());
+}
 
-	return FollowComp;
+ACursor* UPlayerSubsystem::GetPlayerCursor3D(const APlayerPawn* PlayerPawn) const
+{
+	return PlayerPawn->GetCursor3D();
 }

@@ -8,6 +8,7 @@
 #include "Card.generated.h"
 
 class UTextRenderComponent;
+class UFollowComponent;
 
 UCLASS()
 class CARDSURVIVAL_API ACard : public AActor, public IInteractable
@@ -17,6 +18,10 @@ class CARDSURVIVAL_API ACard : public AActor, public IInteractable
 public:	
 	ACard();
 
+	bool StartInteraction_Implementation(AActor* Interactor) override;
+	bool TickInteraction_Implementation(AActor* Interactor) override;
+	bool EndInteraction_Implementation(AActor* Interactor) override;
+
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -25,9 +30,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UTextRenderComponent* NameTextComponent;
 
-public:
-	bool StartInteraction_Implementation(AActor* Interactor) override;
-	bool TickInteraction_Implementation(AActor* Interactor) override;
-	bool EndInteraction_Implementation(AActor* Interactor) override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UFollowComponent* FollowComponent;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	FVector HoldHeightOffset = FVector(0, 0, 250);
 };

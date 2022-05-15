@@ -5,6 +5,7 @@
 #include "Components/TextRenderComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Player/PlayerSubsystem.h"
+#include "Player/Cursor.h"
 
 ACard::ACard()
 {
@@ -14,14 +15,16 @@ ACard::ACard()
 	BaseMeshComponent->SetupAttachment(RootComponent);
 	NameTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("NameText"));
 	NameTextComponent->SetupAttachment(BaseMeshComponent);
+
+	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
 
 bool ACard::StartInteraction_Implementation(AActor* Interactor)
 {		
 	SetActorEnableCollision(false);
 
-	UFollowComponent* FollowComp = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerFollowComponent();
-	FollowComp->SetFollower(this);
+	ACursor* Cursor3D = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
+	FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, false);
 
 	return true;
 }
@@ -35,11 +38,8 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 {
 	SetActorEnableCollision(true);
 
-	UFollowComponent* FollowComp = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerFollowComponent();
-	FollowComp->SetFollower(nullptr);
-
 	FVector CurrentLocation = GetActorLocation();
-	SetActorLocation(FVector(CurrentLocation.X, CurrentLocation.Y, 0));
+	FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0));
 
 	return true;
 }

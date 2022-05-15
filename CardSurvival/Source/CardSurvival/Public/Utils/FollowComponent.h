@@ -17,16 +17,24 @@ public:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetFollower(AActor* NewFollower);
-	void SetFollowLocation(const FVector& NewFollowLocation);
+	void SetFollow(AActor* NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick = true);
+
+protected:
+	void SetTryDisableTick(bool TryDisableTick) { bTryDisableTick = TryDisableTick; };
 
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	float FollowSpeed = 15;
+	// Snap to the target (and possibly disable tick) if the distance is equal/smaller than this value
+	UPROPERTY(VisibleAnywhere)
+	float SnapDistance = 0.1f;
 
 	UPROPERTY(VisibleAnywhere)
-	AActor* Follower;
+	AActor* FollowActor;
 	UPROPERTY(VisibleAnywhere)
 	FVector FollowLocation;
+
+private:
+	bool bTryDisableTick = false;
 };

@@ -2,6 +2,7 @@
 
 // Player
 #include "PlayerPawn.h"
+#include "Player/Cursor.h"
 #include "Interaction/InteractionComponent.h"
 #include "Utils/FollowComponent.h"
 
@@ -16,7 +17,15 @@ APlayerPawn::APlayerPawn()
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
-	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
+}
+
+void APlayerPawn::BeginPlay()
+{
+	Super::BeginPlay();
+
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Cursor3D = GetWorld()->SpawnActor<ACursor>(Params);
 }
 
 void APlayerPawn::Tick(float DeltaTime)
@@ -25,7 +34,7 @@ void APlayerPawn::Tick(float DeltaTime)
 
 	if (InteractionComponent)
 	{
-		FHitResult HitResult = InteractionComponent->GetResult();
+		HitResult = InteractionComponent->GetResult();
 		if (HitResult.bBlockingHit)
 		{
 			HitActor = HitResult.GetActor();
@@ -33,7 +42,7 @@ void APlayerPawn::Tick(float DeltaTime)
 		}
 
 		InteractionComponent->TickInteraction();
-		FollowComponent->SetFollowLocation(HitResult.Location + CardHoldHeightOffset);
+		Cursor3D->SetActorLocation(HitResult.Location);
 	}
 }
 
@@ -62,3 +71,7 @@ void APlayerPawn::PrimaryInputReleased()
 	InteractionComponent->EndInteraction();
 }
 
+ACursor* APlayerPawn::GetCursor3D() const
+{
+	return Cursor3D;
+}
