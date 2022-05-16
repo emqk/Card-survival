@@ -9,6 +9,7 @@
 
 class UTextRenderComponent;
 class UFollowComponent;
+class APlayZone;
 
 UCLASS()
 class CARDSURVIVAL_API ACard : public AActor, public IInteractable
@@ -22,6 +23,11 @@ public:
 	bool TickInteraction_Implementation(AActor* Interactor) override;
 	bool EndInteraction_Implementation(AActor* Interactor) override;
 
+	UFollowComponent* GetFollowComponent() const { return FollowComponent; };
+
+	APlayZone* GetPlayZone() const { return PlayZone; };
+	void SetPlayZone(APlayZone* NewPlayZone) { PlayZone = NewPlayZone; }
+
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -34,6 +40,9 @@ protected:
 	UFollowComponent* FollowComponent;
 
 
+	// PlayZone in which this card is currently in
+	UPROPERTY(VisibleAnywhere)
+	APlayZone* PlayZone;
 	UPROPERTY(EditDefaultsOnly)
 	FVector HoldHeightOffset = FVector(0, 0, 250);
 };

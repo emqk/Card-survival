@@ -25,3 +25,11 @@ ACursor* UPlayerSubsystem::GetPlayerCursor3D(const APlayerPawn* PlayerPawn) cons
 {
 	return PlayerPawn->GetCursor3D();
 }
+
+const FHitResult& UPlayerSubsystem::GetHitResultUnderCursor() const
+{
+	APlayerPawn* Player = GetPlayerPawn();
+	const FHitResult& HitResult = Player->GetHitResult();
+
+	return HitResult;
+}

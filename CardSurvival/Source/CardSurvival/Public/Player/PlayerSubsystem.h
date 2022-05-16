@@ -23,4 +23,5 @@ public:
 	APlayerPawn* GetPlayerPawn() const;
 	ACursor* GetPlayerCursor3D() const;
 	ACursor* GetPlayerCursor3D(const APlayerPawn* PlayerPawn) const;
+	const FHitResult& GetHitResultUnderCursor() const;
 };

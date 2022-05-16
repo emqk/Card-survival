@@ -4,8 +4,10 @@
 #include "Card.h"
 #include "Components/TextRenderComponent.h"
 #include "Utils/FollowComponent.h"
+#include "Board/PlayZone.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
+
 
 ACard::ACard()
 {
@@ -23,6 +25,11 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor)
 {		
 	SetActorEnableCollision(false);
 
+	if (PlayZone)
+	{
+		PlayZone->RemoveCard(this);
+	}
+
 	ACursor* Cursor3D = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
 	FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, false);
 
@@ -39,7 +46,20 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 	SetActorEnableCollision(true);
 
 	FVector CurrentLocation = GetActorLocation();
-	FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0));
+
+	// Add this Card to the PlayZone if available
+	const FHitResult& HitResult = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetHitResultUnderCursor();
+	AActor* HitActor = HitResult.GetActor();
+	APlayZone* HitPlayZone = Cast<APlayZone>(HitActor);
+
+	if (HitPlayZone)
+	{
+		HitPlayZone->AddCard(this);
+	}
+	else
+	{
+		FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0));
+	}
 
 	return true;
 }
