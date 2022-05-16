@@ -21,6 +21,7 @@ public:
 
 protected:
 	FVector GetCardLocationAtIndex(int Index);
+	void RefreshCardsLocation();
 
 protected:
 	UPROPERTY(EditDefaultsOnly)

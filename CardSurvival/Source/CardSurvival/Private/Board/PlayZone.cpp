@@ -38,6 +38,7 @@ bool APlayZone::RemoveCard(ACard* CardToRemove)
 	if (NumOfRemovedCards > 0)
 	{
 		CardToRemove->SetPlayZone(nullptr);
+		RefreshCardsLocation();
 		return true;
 	}
 	else
@@ -53,5 +54,16 @@ FVector APlayZone::GetCardLocationAtIndex(int Index)
 	FVector Result = FVector(ActorLocation.X, ActorLocation.Y + Index * Spacing + StartOffset, ActorLocation.Z);
 	
 	return Result;
+}
+
+void APlayZone::RefreshCardsLocation()
+{
+	for (int i = 0; i < Cards.Num(); i++)
+	{
+		ACard* Card = Cards[i];
+		UFollowComponent* FollowComponent = Card->GetFollowComponent();
+		FVector TargetLocation = GetCardLocationAtIndex(i);
+		FollowComponent->SetFollow(nullptr, TargetLocation);
+	}
 }
 
