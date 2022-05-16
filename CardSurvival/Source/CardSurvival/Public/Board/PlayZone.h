@@ -20,8 +20,14 @@ public:
 	bool RemoveCard(ACard* CardToRemove);
 
 protected:
+	FVector GetCardLocationAtIndex(int Index);
+
+protected:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* BaseMeshComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	float Spacing = 400;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<ACard*> Cards;

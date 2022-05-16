@@ -22,7 +22,8 @@ bool APlayZone::AddCard(ACard* CardToAdd)
 	}
 
 	UFollowComponent* FollowComponent = CardToAdd->GetFollowComponent();
-	FollowComponent->SetFollow(nullptr, GetActorLocation() + FVector(0, 0, 100));
+	FVector TargetLocation = GetCardLocationAtIndex(Cards.Num());
+	FollowComponent->SetFollow(nullptr, TargetLocation);
 
 	CardToAdd->SetPlayZone(this);
 	Cards.Add(CardToAdd);
@@ -43,5 +44,14 @@ bool APlayZone::RemoveCard(ACard* CardToRemove)
 	{
 		return false;
 	}
+}
+
+FVector APlayZone::GetCardLocationAtIndex(int Index)
+{
+	FVector ActorLocation = GetActorLocation();
+	float StartOffset = -GetActorScale().Y * 100.0f + Spacing / 2.0f; // Start from left
+	FVector Result = FVector(ActorLocation.X, ActorLocation.Y + Index * Spacing + StartOffset, ActorLocation.Z);
+	
+	return Result;
 }
 
