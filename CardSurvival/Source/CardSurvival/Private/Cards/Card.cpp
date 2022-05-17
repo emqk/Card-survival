@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Card.h"
+#include "Cards/Card.h"
 #include "Components/TextRenderComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Board/PlayZone.h"

@@ -3,7 +3,7 @@
 
 #include "Board/PlayZone.h"
 #include "Utils/FollowComponent.h"
-#include "Card.h"
+#include "Cards/Card.h"
 
 APlayZone::APlayZone()
 {
