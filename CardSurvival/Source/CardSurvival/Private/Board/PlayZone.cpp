@@ -50,8 +50,10 @@ bool APlayZone::RemoveCard(ACard* CardToRemove)
 FVector APlayZone::GetCardLocationAtIndex(int Index)
 {
 	FVector ActorLocation = GetActorLocation();
-	float StartOffset = -GetActorScale().Y * 100.0f + Spacing / 2.0f; // Start from left
-	FVector Result = FVector(ActorLocation.X, ActorLocation.Y + Index * Spacing + StartOffset, ActorLocation.Z);
+	float StartOffsetX = (NumberOfRows - 1) * (SpacingX / 2.0f); // Start from the top
+	float StartOffsetY = -GetActorScale().Y * 100.0f + SpacingY / 2.0f; // Start from the left
+
+	FVector Result = FVector(ActorLocation.X - (Index % NumberOfRows) * SpacingX + StartOffsetX, ActorLocation.Y + (Index / NumberOfRows) * SpacingY + StartOffsetY, ActorLocation.Z);
 	
 	return Result;
 }

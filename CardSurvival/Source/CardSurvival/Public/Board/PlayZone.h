@@ -27,8 +27,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* BaseMeshComponent;
 
+	UPROPERTY(EditAnywhere)
+	int NumberOfRows = 1;
 	UPROPERTY(EditDefaultsOnly)
-	float Spacing = 400;
+	float SpacingX = 600;
+	UPROPERTY(EditDefaultsOnly)
+	float SpacingY = 400;
+
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<ACard*> Cards;
