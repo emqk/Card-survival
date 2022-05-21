@@ -33,6 +33,8 @@ protected:
 	float SpacingX = 600;
 	UPROPERTY(EditDefaultsOnly)
 	float SpacingY = 400;
+	UPROPERTY(EditDefaultsOnly)
+	float OffsetZ = 0;
 
 
 	UPROPERTY(VisibleAnywhere)

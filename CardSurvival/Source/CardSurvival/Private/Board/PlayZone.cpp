@@ -53,7 +53,7 @@ FVector APlayZone::GetCardLocationAtIndex(int Index)
 	float StartOffsetX = (NumberOfRows - 1) * (SpacingX / 2.0f); // Start from the top
 	float StartOffsetY = -GetActorScale().Y * 100.0f + SpacingY / 2.0f; // Start from the left
 
-	FVector Result = FVector(ActorLocation.X - (Index % NumberOfRows) * SpacingX + StartOffsetX, ActorLocation.Y + (Index / NumberOfRows) * SpacingY + StartOffsetY, ActorLocation.Z);
+	FVector Result = FVector(ActorLocation.X - (Index % NumberOfRows) * SpacingX + StartOffsetX, ActorLocation.Y + (Index / NumberOfRows) * SpacingY + StartOffsetY, ActorLocation.Z + OffsetZ);
 	
 	return Result;
 }
