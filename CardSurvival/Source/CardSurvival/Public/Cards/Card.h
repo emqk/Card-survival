@@ -30,11 +30,14 @@ public:
 
 
 protected:
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMeshComponent;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleAnywhere)
 	UTextRenderComponent* NameTextComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	UTextRenderComponent* StrengthTextComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UFollowComponent* FollowComponent;

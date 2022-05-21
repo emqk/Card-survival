@@ -17,6 +17,8 @@ ACard::ACard()
 	BaseMeshComponent->SetupAttachment(RootComponent);
 	NameTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("NameText"));
 	NameTextComponent->SetupAttachment(BaseMeshComponent);
+	StrengthTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("StrengthText"));
+	StrengthTextComponent->SetupAttachment(BaseMeshComponent);
 
 	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
