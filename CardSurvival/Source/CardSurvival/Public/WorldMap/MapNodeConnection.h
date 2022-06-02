@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "MapNodeConnection.generated.h"
 
-class USplineComponent;
+class AMapNode;
 
 UCLASS()
 class CARDSURVIVAL_API AMapNodeConnection : public AActor
@@ -16,10 +16,20 @@ class CARDSURVIVAL_API AMapNodeConnection : public AActor
 public:	
 	AMapNodeConnection();
 
+	void BeginPlay() override;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ConnectTo();
+
+	void SetConnectionData(AMapNode* StartNode, AMapNode* EndNode);
+
 
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> SceneComponent;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<USplineComponent> SplineComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<AMapNode> From;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<AMapNode> To;
 };

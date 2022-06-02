@@ -39,6 +39,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AMapNode* SpawnNode(const FVector& Location);
 
+	UFUNCTION(BlueprintCallable)
+	void ConnectNodesInLevel(int32 LevelIndex);
+
+
 protected:
 	FVector FindLevelLocationByIndex(int32 LevelIndex);
 

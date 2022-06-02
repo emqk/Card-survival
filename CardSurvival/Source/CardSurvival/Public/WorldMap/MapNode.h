@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "MapNode.generated.h"
 
+class AMapNodeConnection;
+
 UCLASS()
 class CARDSURVIVAL_API AMapNode : public AActor
 {
@@ -23,4 +25,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<TObjectPtr<AMapNode>> Connections;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<AMapNodeConnection> ConnectionClass;
 };

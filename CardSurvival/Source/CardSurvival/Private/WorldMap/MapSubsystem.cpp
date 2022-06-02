@@ -55,6 +55,23 @@ AMapNode* UMapSubsystem::SpawnNode(const FVector& Location)
 	return Instance;
 }
 
+void UMapSubsystem::ConnectNodesInLevel(int32 LevelIndex)
+{
+	if (LevelIndex + 1 < Levels.Num())
+	{
+		FMapLevelData& CurrentLevel = Levels[LevelIndex];
+		FMapLevelData& NextLevel = Levels[LevelIndex + 1];
+
+		for (AMapNode* CurrentNode : CurrentLevel.Nodes)
+		{
+			for (AMapNode* NextNode : NextLevel.Nodes)
+			{
+				CurrentNode->AddConnection(NextNode);
+			}
+		}
+	}
+}
+
 FVector UMapSubsystem::FindLevelLocationByIndex(int32 LevelIndex)
 {
 	return FVector(0 , LevelSize.Y * LevelIndex + (LevelSize.Y / 2.0f), 0) + MapLevelStartLocation;

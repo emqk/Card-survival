@@ -2,7 +2,8 @@
 
 
 #include "WorldMap/MapNodeConnection.h"
-#include "Components/SplineComponent.h"
+#include "WorldMap/MapNode.h"
+
 
 AMapNodeConnection::AMapNodeConnection()
 {
@@ -11,7 +12,17 @@ AMapNodeConnection::AMapNodeConnection()
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(SceneComponent);
+}
 
-	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
-	SplineComponent->SetupAttachment(SceneComponent);
+void AMapNodeConnection::BeginPlay()
+{
+	Super::BeginPlay();
+
+	ConnectTo();
+}
+
+void AMapNodeConnection::SetConnectionData(AMapNode* StartNode, AMapNode* EndNode)
+{
+	From = StartNode;
+	To = EndNode;
 }
