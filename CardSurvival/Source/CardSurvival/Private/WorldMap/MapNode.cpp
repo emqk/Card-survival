@@ -20,6 +20,6 @@ void AMapNode::AddConnection(AMapNode* Node)
 	FTransform Transform;
 
 	AMapNodeConnection* ConnectionActor = Cast<AMapNodeConnection>(GetWorld()->SpawnActor(ConnectionClass, &Transform, Params));
-	ConnectionActor->SetConnectionData(this, Node);
+	ConnectionActor->ConnectTo(this, Node);
 	Connections.Add(Node);
 }

@@ -13,16 +13,3 @@ AMapNodeConnection::AMapNodeConnection()
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(SceneComponent);
 }
-
-void AMapNodeConnection::BeginPlay()
-{
-	Super::BeginPlay();
-
-	ConnectTo();
-}
-
-void AMapNodeConnection::SetConnectionData(AMapNode* StartNode, AMapNode* EndNode)
-{
-	From = StartNode;
-	To = EndNode;
-}

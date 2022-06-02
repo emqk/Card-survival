@@ -1,24 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "WorldMap/MapSubsystem.h"
+#include "WorldMap/MapManager.h"
 #include "WorldMap/MapNode.h"
 
-void UMapSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+AMapManager::AMapManager()
 {
-	Super::Initialize(Collection);
-
-	UE_LOG(LogTemp, Warning, TEXT("MapSubsystem initialized (C++)"))
-
-	BlueprintInitialize();
+	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 }
 
-void UMapSubsystem::Deinitialize()
-{
-	Super::Deinitialize();
-}
-
-void UMapSubsystem::CreateNewLevel()
+void AMapManager::CreateNewLevel()
 {
 	int32 NewLevelIndex = Levels.Num();
 	FVector NewLevelLocation = FindLevelLocationByIndex(NewLevelIndex);
@@ -42,7 +34,7 @@ void UMapSubsystem::CreateNewLevel()
 	Levels.Add(NewLevelData);
 }
 
-AMapNode* UMapSubsystem::SpawnNode(const FVector& Location)
+AMapNode* AMapManager::SpawnNode(const FVector& Location)
 {
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -55,7 +47,7 @@ AMapNode* UMapSubsystem::SpawnNode(const FVector& Location)
 	return Instance;
 }
 
-void UMapSubsystem::ConnectNodesInLevel(int32 LevelIndex)
+void AMapManager::ConnectNodesInLevel(int32 LevelIndex)
 {
 	if (LevelIndex + 1 < Levels.Num())
 	{
@@ -72,7 +64,7 @@ void UMapSubsystem::ConnectNodesInLevel(int32 LevelIndex)
 	}
 }
 
-FVector UMapSubsystem::FindLevelLocationByIndex(int32 LevelIndex)
+FVector AMapManager::FindLevelLocationByIndex(int32 LevelIndex)
 {
 	return FVector(0 , LevelSize.Y * LevelIndex + (LevelSize.Y / 2.0f), 0) + MapLevelStartLocation;
 }

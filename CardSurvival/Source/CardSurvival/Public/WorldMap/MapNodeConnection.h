@@ -16,12 +16,8 @@ class CARDSURVIVAL_API AMapNodeConnection : public AActor
 public:	
 	AMapNodeConnection();
 
-	void BeginPlay() override;
-
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void ConnectTo();
-
-	void SetConnectionData(AMapNode* StartNode, AMapNode* EndNode);
+	void ConnectTo(AMapNode* StartNode, AMapNode* EndNode);
 
 
 protected:

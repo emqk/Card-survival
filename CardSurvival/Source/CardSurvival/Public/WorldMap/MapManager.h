@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Subsystems/GameInstanceSubsystem.h"
-#include "MapSubsystem.generated.h"
+#include "MapManager.generated.h"
 
 class AMapNode;
 
@@ -19,16 +18,14 @@ public:
 };
 
 
-UCLASS(Blueprintable, Abstract)
-class CARDSURVIVAL_API UMapSubsystem : public UGameInstanceSubsystem
+UCLASS()
+class CARDSURVIVAL_API AMapManager : public AActor
 {
 	GENERATED_BODY()
 	
 public:
 
-	// Overrides - GameInstanceSubsystem
-	void Initialize(FSubsystemCollectionBase& Collection) override;
-	void Deinitialize() override;
+	AMapManager();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BlueprintInitialize();
