@@ -16,5 +16,5 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	USceneComponent* SceneComponent;
+	TObjectPtr<USceneComponent> SceneComponent;
 };

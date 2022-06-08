@@ -13,7 +13,7 @@ APlayZone::APlayZone()
 	BaseMeshComponent->SetupAttachment(RootComponent);
 }
 
-bool APlayZone::AddCard(ACard* CardToAdd)
+bool APlayZone::AddCard(TObjectPtr<ACard> CardToAdd)
 {
 	if (Cards.Contains(CardToAdd))
 	{
@@ -31,7 +31,7 @@ bool APlayZone::AddCard(ACard* CardToAdd)
 	return true;
 }
 
-bool APlayZone::RemoveCard(ACard* CardToRemove)
+bool APlayZone::RemoveCard(TObjectPtr<ACard> CardToRemove)
 {
 	int32 NumOfRemovedCards = Cards.Remove(CardToRemove);
 

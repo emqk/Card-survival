@@ -43,7 +43,7 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	GetOwner()->SetActorLocation(NewLocation);
 }
 
-void UFollowComponent::SetFollow(AActor* NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick /* = true */)
+void UFollowComponent::SetFollow(TObjectPtr<AActor> NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick /* = true */)
 {
 	FollowActor = NewFollowActor;
 	FollowLocation = NewFollowLocation;

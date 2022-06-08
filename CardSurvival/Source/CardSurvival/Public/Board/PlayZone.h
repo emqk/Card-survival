@@ -16,8 +16,8 @@ class CARDSURVIVAL_API APlayZone : public AActor
 public:	
 	APlayZone();
 
-	bool AddCard(ACard* CardToAdd);
-	bool RemoveCard(ACard* CardToRemove);
+	bool AddCard(TObjectPtr<ACard> CardToAdd);
+	bool RemoveCard(TObjectPtr<ACard> CardToRemove);
 
 protected:
 	FVector GetCardLocationAtIndex(int Index);
@@ -25,7 +25,7 @@ protected:
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* BaseMeshComponent;
+	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
 
 	UPROPERTY(EditAnywhere)
 	int NumberOfRows = 1;
@@ -38,5 +38,5 @@ protected:
 
 
 	UPROPERTY(VisibleAnywhere)
-	TArray<ACard*> Cards;
+	TArray<TObjectPtr<ACard>> Cards;
 };

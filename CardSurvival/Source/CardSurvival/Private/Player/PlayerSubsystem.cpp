@@ -8,7 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 
 
-APlayerPawn* UPlayerSubsystem::GetPlayerPawn() const
+TObjectPtr<APlayerPawn> UPlayerSubsystem::GetPlayerPawn() const
 {
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	APlayerPawn* Player = Cast<APlayerPawn>(PlayerController->GetPawn());
@@ -16,12 +16,12 @@ APlayerPawn* UPlayerSubsystem::GetPlayerPawn() const
 	return Player;
 }
 
-ACursor* UPlayerSubsystem::GetPlayerCursor3D() const
+TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D() const
 {
 	return GetPlayerCursor3D(GetPlayerPawn());
 }
 
-ACursor* UPlayerSubsystem::GetPlayerCursor3D(const APlayerPawn* PlayerPawn) const
+TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D(const TObjectPtr<APlayerPawn> PlayerPawn) const
 {
 	return PlayerPawn->GetCursor3D();
 }

@@ -17,7 +17,7 @@ public:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetFollow(AActor* NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick = true);
+	void SetFollow(TObjectPtr<AActor> NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick = true);
 
 protected:
 	void SetTryDisableTick(bool TryDisableTick) { bTryDisableTick = TryDisableTick; };
@@ -31,7 +31,7 @@ protected:
 	float SnapDistance = 0.1f;
 
 	UPROPERTY(VisibleAnywhere)
-	AActor* FollowActor;
+	TObjectPtr<AActor> FollowActor;
 	UPROPERTY(VisibleAnywhere)
 	FVector FollowLocation;
 

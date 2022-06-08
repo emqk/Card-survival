@@ -13,7 +13,7 @@ AMapNode::AMapNode()
 	SetRootComponent(SceneComponent);
 }
 
-void AMapNode::AddConnection(AMapNode* Node)
+void AMapNode::AddConnection(TObjectPtr<AMapNode> Node)
 {
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

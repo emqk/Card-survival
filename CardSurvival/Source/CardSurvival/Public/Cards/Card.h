@@ -23,29 +23,29 @@ public:
 	bool TickInteraction_Implementation(AActor* Interactor) override;
 	bool EndInteraction_Implementation(AActor* Interactor) override;
 
-	UFollowComponent* GetFollowComponent() const { return FollowComponent; };
+	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };
 
-	APlayZone* GetPlayZone() const { return PlayZone; };
-	void SetPlayZone(APlayZone* NewPlayZone) { PlayZone = NewPlayZone; }
+	TObjectPtr<APlayZone> GetPlayZone() const { return PlayZone; };
+	void SetPlayZone(TObjectPtr<APlayZone> NewPlayZone) { PlayZone = NewPlayZone; }
 
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* BaseMeshComponent;
+	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
 
 	UPROPERTY(VisibleAnywhere)
-	UTextRenderComponent* NameTextComponent;
+	TObjectPtr<UTextRenderComponent> NameTextComponent;
 
 	UPROPERTY(VisibleAnywhere)
-	UTextRenderComponent* StrengthTextComponent;
+	TObjectPtr<UTextRenderComponent> StrengthTextComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UFollowComponent* FollowComponent;
+	TObjectPtr<UFollowComponent> FollowComponent;
 
 
 	// PlayZone in which this card is currently in
 	UPROPERTY(VisibleAnywhere)
-	APlayZone* PlayZone;
+	TObjectPtr<APlayZone> PlayZone;
 	UPROPERTY(EditDefaultsOnly)
 	FVector HoldHeightOffset = FVector(0, 0, 250);
 };

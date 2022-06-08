@@ -32,7 +32,7 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor)
 		PlayZone->RemoveCard(this);
 	}
 
-	ACursor* Cursor3D = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
+	ACursor* Cursor3D = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
 	FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, false);
 
 	return true;

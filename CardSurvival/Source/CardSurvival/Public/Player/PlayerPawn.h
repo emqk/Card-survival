@@ -27,7 +27,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	const FHitResult& GetHitResult() const { return HitResult; };
-	ACursor* GetCursor3D() const;
+	TObjectPtr<ACursor> GetCursor3D() const;
 
 
 private:
@@ -39,18 +39,18 @@ private:
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UCameraComponent* CameraComponent;
+	TObjectPtr<UCameraComponent> CameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UInteractionComponent* InteractionComponent;
+	TObjectPtr<UInteractionComponent> InteractionComponent;
 
 	
 	// Cached interaction hit actor
 	UPROPERTY();
-	AActor* HitActor = nullptr;
+	TObjectPtr<AActor> HitActor = nullptr;
 	UPROPERTY();
 	FHitResult HitResult;
 
 	UPROPERTY(VisibleAnywhere)
-	ACursor* Cursor3D;
+	TObjectPtr<ACursor> Cursor3D;
 };

@@ -71,7 +71,7 @@ void APlayerPawn::PrimaryInputReleased()
 	InteractionComponent->EndInteraction();
 }
 
-ACursor* APlayerPawn::GetCursor3D() const
+TObjectPtr<ACursor> APlayerPawn::GetCursor3D() const
 {
 	return Cursor3D;
 }

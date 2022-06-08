@@ -20,8 +20,8 @@ class CARDSURVIVAL_API UPlayerSubsystem : public UGameInstanceSubsystem
 	
 public:
 
-	APlayerPawn* GetPlayerPawn() const;
-	ACursor* GetPlayerCursor3D() const;
-	ACursor* GetPlayerCursor3D(const APlayerPawn* PlayerPawn) const;
+	TObjectPtr<APlayerPawn> GetPlayerPawn() const;
+	TObjectPtr<ACursor> GetPlayerCursor3D() const;
+	TObjectPtr<ACursor> GetPlayerCursor3D(const TObjectPtr<APlayerPawn> PlayerPawn) const;
 	const FHitResult& GetHitResultUnderCursor() const;
 };

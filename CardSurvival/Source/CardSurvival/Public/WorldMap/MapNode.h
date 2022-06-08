@@ -16,7 +16,7 @@ class CARDSURVIVAL_API AMapNode : public AActor
 public:	
 	AMapNode();
 
-	void AddConnection(AMapNode* Node);
+	void AddConnection(TObjectPtr<AMapNode> Node);
 
 protected:
 	UPROPERTY(VisibleAnywhere)
