@@ -10,6 +10,7 @@
 class UTextRenderComponent;
 class UFollowComponent;
 class APlayZone;
+class UStatistic;
 
 UCLASS()
 class CARDSURVIVAL_API ACard : public AActor, public IInteractable
@@ -18,6 +19,8 @@ class CARDSURVIVAL_API ACard : public AActor, public IInteractable
 	
 public:	
 	ACard();
+
+	void BeginPlay() override;
 
 	bool StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType) override;
 	bool TickInteraction_Implementation(AActor* Interactor) override;
@@ -39,10 +42,14 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UTextRenderComponent> StrengthTextComponent;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> ProgressBarMeshComponent;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UFollowComponent> FollowComponent;
 
-
+	UPROPERTY(EditDefaultsOnly, Instanced)
+	TObjectPtr<UStatistic> Progress;
 	// PlayZone in which this card is currently in
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<APlayZone> PlayZone;

@@ -4,6 +4,7 @@
 #include "Cards/Card.h"
 #include "Components/TextRenderComponent.h"
 #include "Utils/FollowComponent.h"
+#include "Utils/Statistic.h"
 #include "Board/PlayZone.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
@@ -19,23 +20,41 @@ ACard::ACard()
 	NameTextComponent->SetupAttachment(BaseMeshComponent);
 	StrengthTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("StrengthText"));
 	StrengthTextComponent->SetupAttachment(BaseMeshComponent);
+	ProgressBarMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProgressBar"));
+	ProgressBarMeshComponent->SetCastShadow(false);
+	ProgressBarMeshComponent->SetComponentTickEnabled(false);
+	ProgressBarMeshComponent->SetupAttachment(BaseMeshComponent);
 
 	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
+}
+
+void ACard::BeginPlay()
+{
+	Super::BeginPlay();
+
+	ProgressBarMeshComponent->SetVisibility(false);
 }
 
 bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType)
 {		
 	CurrentInteractionType = InteractionType;
 
-	SetActorEnableCollision(false);
-
-	if (PlayZone)
+	if (InteractionType == EInteractionType::Primary)
 	{
-		PlayZone->RemoveCard(this);
-	}
+		SetActorEnableCollision(false);
 
-	ACursor* Cursor3D = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
-	FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, false);
+		if (PlayZone)
+		{
+			PlayZone->RemoveCard(this);
+		}
+
+		ACursor* Cursor3D = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
+		FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, false);
+	}
+	else if (InteractionType == EInteractionType::Secondary)
+	{
+		ProgressBarMeshComponent->SetVisibility(true);
+	}
 
 	return true;
 }
@@ -45,33 +64,51 @@ bool ACard::TickInteraction_Implementation(AActor* Interactor)
 	if (CurrentInteractionType == EInteractionType::Primary)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("TickInteraction_PRIMARY"))
+
+		return true;
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("TickInteraction_SECONDARY"))
+		
+		float Delta = GetWorld()->GetDeltaSeconds();
+		Progress->ChangeByAmount(Delta * 5.0f);
+
+		FVector CurrentBarScale = ProgressBarMeshComponent->GetComponentScale();
+		ProgressBarMeshComponent->SetWorldScale3D(FVector(CurrentBarScale.X, Progress->GetAmount(), CurrentBarScale.Z));
+
+		return Progress->IsMax();
 	}
 
-	return true;
+	return false;
 }
 
 bool ACard::EndInteraction_Implementation(AActor* Interactor)
 {
-	SetActorEnableCollision(true);
-
-	FVector CurrentLocation = GetActorLocation();
-
-	// Add this Card to the PlayZone if available
-	const FHitResult& HitResult = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetHitResultUnderCursor();
-	AActor* HitActor = HitResult.GetActor();
-	APlayZone* HitPlayZone = Cast<APlayZone>(HitActor);
-
-	if (HitPlayZone)
+	if (CurrentInteractionType == EInteractionType::Primary)
 	{
-		HitPlayZone->AddCard(this);
+		SetActorEnableCollision(true);
+
+		FVector CurrentLocation = GetActorLocation();
+
+		// Add this Card to the PlayZone if available
+		const FHitResult& HitResult = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetHitResultUnderCursor();
+		AActor* HitActor = HitResult.GetActor();
+		APlayZone* HitPlayZone = Cast<APlayZone>(HitActor);
+
+		if (HitPlayZone)
+		{
+			HitPlayZone->AddCard(this);
+		}
+		else
+		{
+			FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0));
+		}
 	}
-	else
+	else if (CurrentInteractionType == EInteractionType::Secondary)
 	{
-		FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0));
+		ProgressBarMeshComponent->SetVisibility(false);
+		Progress->SetToMin();
 	}
 
 	return true;
