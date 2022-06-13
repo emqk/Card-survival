@@ -23,8 +23,10 @@ ACard::ACard()
 	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
 
-bool ACard::StartInteraction_Implementation(AActor* Interactor)
+bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType)
 {		
+	CurrentInteractionType = InteractionType;
+
 	SetActorEnableCollision(false);
 
 	if (PlayZone)
@@ -40,6 +42,15 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor)
 
 bool ACard::TickInteraction_Implementation(AActor* Interactor)
 {
+	if (CurrentInteractionType == EInteractionType::Primary)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TickInteraction_PRIMARY"))
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TickInteraction_SECONDARY"))
+	}
+
 	return true;
 }
 

@@ -19,7 +19,7 @@ class CARDSURVIVAL_API ACard : public AActor, public IInteractable
 public:	
 	ACard();
 
-	bool StartInteraction_Implementation(AActor* Interactor) override;
+	bool StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType) override;
 	bool TickInteraction_Implementation(AActor* Interactor) override;
 	bool EndInteraction_Implementation(AActor* Interactor) override;
 
@@ -48,4 +48,6 @@ protected:
 	TObjectPtr<APlayZone> PlayZone;
 	UPROPERTY(EditDefaultsOnly)
 	FVector HoldHeightOffset = FVector(0, 0, 250);
+
+	EInteractionType CurrentInteractionType;
 };

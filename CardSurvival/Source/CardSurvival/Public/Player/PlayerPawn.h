@@ -34,7 +34,8 @@ private:
 	
 	void PrimaryInputPressed();
 	void PrimaryInputReleased();
-
+	void SecondaryInputPressed();
+	void SecondaryInputReleased();
 
 protected:
 

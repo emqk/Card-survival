@@ -17,7 +17,7 @@ class CARDSURVIVAL_API UInteractionComponent : public UActorComponent
 public:	
 	UInteractionComponent();
 
-	void StartInteraction(IInteractable* Interactable);
+	void StartInteraction(IInteractable* Interactable, EInteractionType InteractionType);
 	void TickInteraction();
 	void EndInteraction();
 

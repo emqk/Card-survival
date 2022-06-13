@@ -7,6 +7,13 @@
 #include "Interactable.generated.h"
 
 
+UENUM(BlueprintType)
+enum class EInteractionType : uint8
+{
+	Primary,
+	Secondary,
+};
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI, Blueprintable)
 class UInteractable : public UInterface
@@ -21,7 +28,7 @@ class CARDSURVIVAL_API IInteractable
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool StartInteraction(AActor* Interactor);
+	bool StartInteraction(AActor* Interactor, EInteractionType InteractionType);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool TickInteraction(AActor* Interactor);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

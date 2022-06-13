@@ -10,7 +10,7 @@ UInteractionComponent::UInteractionComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UInteractionComponent::StartInteraction(IInteractable* Interactable)
+void UInteractionComponent::StartInteraction(IInteractable* Interactable, EInteractionType InteractionType)
 {
 	// End interaction with cached interactable (if there is any)
 	if (InteractableTarget)
@@ -21,7 +21,7 @@ void UInteractionComponent::StartInteraction(IInteractable* Interactable)
 	InteractableTarget.SetObject(Interactable->_getUObject());
 
 	// Start interaction
-	IInteractable::Execute_StartInteraction(InteractableTarget.GetObject(), GetOwner());
+	IInteractable::Execute_StartInteraction(InteractableTarget.GetObject(), GetOwner(), InteractionType);
 }
 
 void UInteractionComponent::TickInteraction()

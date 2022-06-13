@@ -50,8 +50,13 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// Primary
 	PlayerInputComponent->BindAction("Primary", IE_Pressed, this, &APlayerPawn::PrimaryInputPressed);
 	PlayerInputComponent->BindAction("Primary", IE_Released, this, &APlayerPawn::PrimaryInputReleased);
+
+	// Secondary
+	PlayerInputComponent->BindAction("Secondary", IE_Pressed, this, &APlayerPawn::SecondaryInputPressed);
+	PlayerInputComponent->BindAction("Secondary", IE_Released, this, &APlayerPawn::SecondaryInputReleased);
 }
 
 void APlayerPawn::PrimaryInputPressed()
@@ -61,12 +66,29 @@ void APlayerPawn::PrimaryInputPressed()
 		IInteractable* Interactable = Cast<IInteractable>(HitActor);
 		if (Interactable)
 		{
-			InteractionComponent->StartInteraction(Interactable);
+			InteractionComponent->StartInteraction(Interactable, EInteractionType::Primary);
 		}
 	}
 }
 
 void APlayerPawn::PrimaryInputReleased()
+{
+	InteractionComponent->EndInteraction();
+}
+
+void APlayerPawn::SecondaryInputPressed()
+{
+	if (HitActor)
+	{
+		IInteractable* Interactable = Cast<IInteractable>(HitActor);
+		if (Interactable)
+		{
+			InteractionComponent->StartInteraction(Interactable, EInteractionType::Secondary);
+		}
+	}
+}
+
+void APlayerPawn::SecondaryInputReleased()
 {
 	InteractionComponent->EndInteraction();
 }
