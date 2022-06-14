@@ -28,7 +28,12 @@ void UInteractionComponent::TickInteraction()
 {
 	if(InteractableTarget)
 	{
-		IInteractable::Execute_TickInteraction(InteractableTarget.GetObject(), GetOwner());
+		bool bResult = IInteractable::Execute_TickInteraction(InteractableTarget.GetObject(), GetOwner());
+		IInteractable::Execute_OnTickInteractionEnd(InteractableTarget.GetObject(), GetOwner(), bResult);
+		if (bResult)
+		{
+			EndInteraction();
+		}
 	}
 }
 

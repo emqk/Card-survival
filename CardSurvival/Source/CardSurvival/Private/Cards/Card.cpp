@@ -61,16 +61,8 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType
 
 bool ACard::TickInteraction_Implementation(AActor* Interactor)
 {
-	if (CurrentInteractionType == EInteractionType::Primary)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("TickInteraction_PRIMARY"))
-
-		return true;
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("TickInteraction_SECONDARY"))
-		
+	if (CurrentInteractionType == EInteractionType::Secondary)
+	{		
 		float Delta = GetWorld()->GetDeltaSeconds();
 		Progress->ChangeByAmount(Delta * 5.0f);
 
@@ -81,6 +73,14 @@ bool ACard::TickInteraction_Implementation(AActor* Interactor)
 	}
 
 	return false;
+}
+
+void ACard::OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEndResult)
+{
+	if (TickEndResult)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Completed!"))
+	}
 }
 
 bool ACard::EndInteraction_Implementation(AActor* Interactor)

@@ -24,6 +24,7 @@ public:
 
 	bool StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType) override;
 	bool TickInteraction_Implementation(AActor* Interactor) override;
+	void OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEndResult) override;
 	bool EndInteraction_Implementation(AActor* Interactor) override;
 
 	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };

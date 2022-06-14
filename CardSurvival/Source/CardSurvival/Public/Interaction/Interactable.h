@@ -32,5 +32,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool TickInteraction(AActor* Interactor);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnTickInteractionEnd(AActor* Interactor, bool TickEndResult);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool EndInteraction(AActor* Interactor);
 };
