@@ -23,7 +23,7 @@ bool APlayZone::AddCard(TObjectPtr<ACard> CardToAdd)
 
 	UFollowComponent* FollowComponent = CardToAdd->GetFollowComponent();
 	FVector TargetLocation = GetCardLocationAtIndex(Cards.Num());
-	FollowComponent->SetFollow(nullptr, TargetLocation);
+	FollowComponent->SetFollow(nullptr, TargetLocation, FRotator());
 
 	CardToAdd->SetPlayZone(this);
 	Cards.Add(CardToAdd);
@@ -65,7 +65,7 @@ void APlayZone::RefreshCardsLocation()
 		ACard* Card = Cards[i];
 		UFollowComponent* FollowComponent = Card->GetFollowComponent();
 		FVector TargetLocation = GetCardLocationAtIndex(i);
-		FollowComponent->SetFollow(nullptr, TargetLocation);
+		FollowComponent->SetFollow(nullptr, TargetLocation, FRotator());
 	}
 }
 

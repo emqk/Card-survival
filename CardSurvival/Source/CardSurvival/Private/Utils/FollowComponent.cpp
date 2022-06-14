@@ -26,6 +26,9 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
 	FVector TargetLocation = FollowLocation + AdditionalOffset;
 
+	FRotator CurrentRotation = GetOwner()->GetActorRotation();
+	FRotator TargetRotation = FollowRotation;
+
 	// If Follow actor exists, follow it and treat TargetLocation as an offset
 	if (FollowActor)
 	{
@@ -33,6 +36,7 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	}
 
 	FVector NewLocation = FMath::Lerp(CurrentLocation, FVector(TargetLocation), FollowSpeed * DeltaTime);
+	FRotator NewRotation = FMath::Lerp(CurrentRotation, TargetRotation, FollowSpeed * DeltaTime);
 
 	// Snap and disable tick if new location is close enough to the target
 	if (bTryDisableTick)
@@ -41,6 +45,7 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		if (DistanceFromTarget <= SnapDistance)
 		{
 			GetOwner()->SetActorLocation(TargetLocation);
+			GetOwner()->SetActorRotation(NewRotation);
 			SetComponentTickEnabled(false);
 			SetTryDisableTick(false);
 			return;
@@ -48,12 +53,22 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	}
 
 	GetOwner()->SetActorLocation(NewLocation);
+	GetOwner()->SetActorRotation(NewRotation);
 }
 
-void UFollowComponent::SetFollow(TObjectPtr<AActor> NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick /* = true */)
+void UFollowComponent::SetFollow(TObjectPtr<AActor> NewFollowActor, const FVector& NewFollowLocation, const FRotator& NewRotation, bool TryDisableTick /* = true */)
 {
 	FollowActor = NewFollowActor;
 	FollowLocation = NewFollowLocation;
+	FollowRotation = NewRotation;
+
+	SetComponentTickEnabled(true);
+	SetTryDisableTick(TryDisableTick);
+}
+
+void UFollowComponent::SetFollowRotation(const FRotator& NewRotation, bool TryDisableTick /* = true */)
+{
+	FollowRotation = NewRotation;
 
 	SetComponentTickEnabled(true);
 	SetTryDisableTick(TryDisableTick);

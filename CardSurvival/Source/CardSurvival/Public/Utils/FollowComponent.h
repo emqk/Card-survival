@@ -18,7 +18,8 @@ public:
 	void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetFollow(TObjectPtr<AActor> NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick = true);
+	void SetFollow(TObjectPtr<AActor> NewFollowActor, const FVector& NewFollowLocation, const FRotator& NewRotation, bool TryDisableTick = true);
+	void SetFollowRotation(const FRotator& NewRotation, bool TryDisableTick = true);
 	void SetAdditionalOffset(const FVector& Offset, bool TryDisableTick = true);
 	void RemoveAdditionalOffset();
 
@@ -37,6 +38,8 @@ protected:
 	TObjectPtr<AActor> FollowActor;
 	UPROPERTY(VisibleAnywhere)
 	FVector FollowLocation;
+	UPROPERTY(VisibleAnywhere)
+	FRotator FollowRotation;
 	UPROPERTY(VisibleAnywhere)
 	FVector AdditionalOffset;
 

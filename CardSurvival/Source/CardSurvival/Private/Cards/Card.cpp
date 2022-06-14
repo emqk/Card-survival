@@ -50,7 +50,7 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType
 		}
 
 		ACursor* Cursor3D = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
-		FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, false);
+		FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, FRotator(), false);
 	}
 	else if (InteractionType == EInteractionType::Secondary)
 	{
@@ -103,7 +103,7 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 		}
 		else
 		{
-			FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0));
+			FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0), FRotator());
 		}
 	}
 	else if (CurrentInteractionType == EInteractionType::Secondary)
@@ -119,6 +119,7 @@ bool ACard::StartSelect_Implementation(AActor* Interactor)
 {
 	FVector CurrentLocation = GetActorLocation();
 	FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
+	FollowComponent->SetFollowRotation(FRotator(25.0f, 0, 0));
 
 	return true;
 }
@@ -132,6 +133,7 @@ bool ACard::EndSelect_Implementation(AActor* Interactor)
 {
 	FVector CurrentLocation = GetActorLocation();
 	FollowComponent->RemoveAdditionalOffset();
+	FollowComponent->SetFollowRotation(FRotator(0, 0, 0));
 
 	return true;
 }
