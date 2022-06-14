@@ -27,6 +27,7 @@ class CARDSURVIVAL_API IInteractable
 
 public:
 
+	// Interaction
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool StartInteraction(AActor* Interactor, EInteractionType InteractionType);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -35,4 +36,12 @@ public:
 	void OnTickInteractionEnd(AActor* Interactor, bool TickEndResult);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool EndInteraction(AActor* Interactor);
+
+	// Select
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool StartSelect(AActor* Interactor);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool TickSelect(AActor* Interactor);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool EndSelect(AActor* Interactor);
 };

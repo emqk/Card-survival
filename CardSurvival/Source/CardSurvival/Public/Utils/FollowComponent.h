@@ -15,9 +15,12 @@ class CARDSURVIVAL_API UFollowComponent : public UActorComponent
 public:	
 	UFollowComponent();
 
+	void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void SetFollow(TObjectPtr<AActor> NewFollowActor, const FVector& NewFollowLocation, bool TryDisableTick = true);
+	void SetAdditionalOffset(const FVector& Offset, bool TryDisableTick = true);
+	void RemoveAdditionalOffset();
 
 protected:
 	void SetTryDisableTick(bool TryDisableTick) { bTryDisableTick = TryDisableTick; };
@@ -34,6 +37,8 @@ protected:
 	TObjectPtr<AActor> FollowActor;
 	UPROPERTY(VisibleAnywhere)
 	FVector FollowLocation;
+	UPROPERTY(VisibleAnywhere)
+	FVector AdditionalOffset;
 
 private:
 	bool bTryDisableTick = false;

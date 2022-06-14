@@ -114,3 +114,24 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 
 	return true;
 }
+
+bool ACard::StartSelect_Implementation(AActor* Interactor)
+{
+	FVector CurrentLocation = GetActorLocation();
+	FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
+
+	return true;
+}
+
+bool ACard::TickSelect_Implementation(AActor* Interactor)
+{	
+	return true;
+}
+
+bool ACard::EndSelect_Implementation(AActor* Interactor)
+{
+	FVector CurrentLocation = GetActorLocation();
+	FollowComponent->RemoveAdditionalOffset();
+
+	return true;
+}

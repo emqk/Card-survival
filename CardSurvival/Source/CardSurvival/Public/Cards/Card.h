@@ -22,10 +22,17 @@ public:
 
 	void BeginPlay() override;
 
+	// Interaction
 	bool StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType) override;
 	bool TickInteraction_Implementation(AActor* Interactor) override;
 	void OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEndResult) override;
 	bool EndInteraction_Implementation(AActor* Interactor) override;
+
+	// Select
+	bool StartSelect_Implementation(AActor* Interactor) override;
+	bool TickSelect_Implementation(AActor* Interactor) override;
+	bool EndSelect_Implementation(AActor* Interactor) override;
+
 
 	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };
 

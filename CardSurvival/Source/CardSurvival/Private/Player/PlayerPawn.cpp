@@ -41,6 +41,24 @@ void APlayerPawn::Tick(float DeltaTime)
 			DrawDebugSphere(GetWorld(), HitResult.Location, 50, 10, FColor::Red, false, -1.0f, 0, 5);	
 		}
 
+		// Select
+		IInteractable* Interactable = Cast<IInteractable>(HitActor);
+		if (Interactable)
+		{
+			if (!InteractionComponent->IsActorSelected(HitResult.GetActor()))
+			{
+				InteractionComponent->StartSelect(Interactable);
+			}
+			else
+			{
+				InteractionComponent->TickSelect();
+			}
+		}
+		else
+		{
+			InteractionComponent->EndSelect();
+		}
+
 		InteractionComponent->TickInteraction();
 		Cursor3D->SetActorLocation(HitResult.Location);
 	}

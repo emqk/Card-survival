@@ -17,12 +17,19 @@ class CARDSURVIVAL_API UInteractionComponent : public UActorComponent
 public:	
 	UInteractionComponent();
 
+	// Interaction
 	void StartInteraction(IInteractable* Interactable, EInteractionType InteractionType);
 	void TickInteraction();
 	void EndInteraction();
 
+	// Select
+	void StartSelect(IInteractable* Interactable);
+	void TickSelect();
+	void EndSelect();
 
 	FHitResult GetResult();
+
+	bool IsActorSelected(AActor* Actor) const;
 
 protected:	
 
@@ -31,4 +38,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TScriptInterface<IInteractable> InteractableTarget = nullptr;
+	UPROPERTY(VisibleAnywhere)
+	TScriptInterface<IInteractable> SelectTarget = nullptr;
 };

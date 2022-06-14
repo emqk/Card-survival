@@ -12,9 +12,7 @@ UInteractionComponent::UInteractionComponent()
 
 void UInteractionComponent::StartInteraction(IInteractable* Interactable, EInteractionType InteractionType)
 {
-	// End interaction with cached interactable (if there is any)
-	if (InteractableTarget)
-		EndInteraction();
+	EndInteraction();
 
 	// Set new interactable
 	InteractableTarget.SetInterface(Interactable);
@@ -46,6 +44,37 @@ void UInteractionComponent::EndInteraction()
 	}
 }
 
+void UInteractionComponent::StartSelect(IInteractable* Interactable)
+{
+	// End selection of cached interactable (if there is any)
+	if (SelectTarget)
+		EndSelect();
+
+	// Set new interactable
+	SelectTarget.SetInterface(Interactable);
+	SelectTarget.SetObject(Interactable->_getUObject());
+
+	// Start selection
+	IInteractable::Execute_StartSelect(SelectTarget.GetObject(), GetOwner());
+}
+
+void UInteractionComponent::TickSelect()
+{
+	if (SelectTarget)
+	{
+		IInteractable::Execute_TickSelect(SelectTarget.GetObject(), GetOwner());
+	}
+}
+
+void UInteractionComponent::EndSelect()
+{
+	if (SelectTarget)
+	{
+		IInteractable::Execute_EndSelect(SelectTarget.GetObject(), GetOwner());
+		SelectTarget = nullptr; // null because we no longer need a reference to (old) interactable
+	}
+}
+
 FHitResult UInteractionComponent::GetResult()
 {
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -68,5 +97,10 @@ FHitResult UInteractionComponent::GetResult()
 	}
 
 	return FHitResult();
+}
+
+bool UInteractionComponent::IsActorSelected(AActor* Actor) const
+{
+	return Actor == SelectTarget.GetObject();
 }
 

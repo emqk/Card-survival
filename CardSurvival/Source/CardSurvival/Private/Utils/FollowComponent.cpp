@@ -9,6 +9,13 @@ UFollowComponent::UFollowComponent()
 	PrimaryComponentTick.bStartWithTickEnabled = false;
 }
 
+void UFollowComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	FollowLocation = GetOwner()->GetActorLocation();
+}
+
 void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -17,7 +24,7 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	//UE_LOG(LogTemp, Warning, TEXT("Tick!"))
 
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
-	FVector TargetLocation = FollowLocation;
+	FVector TargetLocation = FollowLocation + AdditionalOffset;
 
 	// If Follow actor exists, follow it and treat TargetLocation as an offset
 	if (FollowActor)
@@ -50,4 +57,17 @@ void UFollowComponent::SetFollow(TObjectPtr<AActor> NewFollowActor, const FVecto
 
 	SetComponentTickEnabled(true);
 	SetTryDisableTick(TryDisableTick);
+}
+
+void UFollowComponent::SetAdditionalOffset(const FVector& Offset, bool TryDisableTick /* = true */)
+{
+	AdditionalOffset = Offset;
+
+	SetComponentTickEnabled(true);
+	SetTryDisableTick(TryDisableTick);
+}
+
+void UFollowComponent::RemoveAdditionalOffset()
+{
+	AdditionalOffset = FVector(0, 0, 0);
 }
