@@ -104,3 +104,8 @@ bool UInteractionComponent::IsActorSelected(AActor* Actor) const
 	return Actor == SelectTarget.GetObject();
 }
 
+bool UInteractionComponent::IsInteracting() const
+{
+	return InteractableTarget != nullptr;
+}
+

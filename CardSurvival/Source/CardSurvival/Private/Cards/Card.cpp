@@ -117,9 +117,13 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 
 bool ACard::StartSelect_Implementation(AActor* Interactor)
 {
-	FVector CurrentLocation = GetActorLocation();
-	FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
-	FollowComponent->SetFollowRotation(FRotator(25.0f, 0, 0));
+	bool PlayerInteracting = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->IsPlayerInteracting();
+	if (!PlayerInteracting)
+	{
+		FVector CurrentLocation = GetActorLocation();
+		FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
+		FollowComponent->SetFollowRotation(FRotator(25.0f, 0, 0));
+	}
 
 	return true;
 }
@@ -131,9 +135,13 @@ bool ACard::TickSelect_Implementation(AActor* Interactor)
 
 bool ACard::EndSelect_Implementation(AActor* Interactor)
 {
-	FVector CurrentLocation = GetActorLocation();
-	FollowComponent->RemoveAdditionalOffset();
-	FollowComponent->SetFollowRotation(FRotator(0, 0, 0));
+	bool PlayerInteracting = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->IsPlayerInteracting();
+	if (!PlayerInteracting)
+	{
+		FVector CurrentLocation = GetActorLocation();
+		FollowComponent->RemoveAdditionalOffset();
+		FollowComponent->SetFollowRotation(FRotator(0, 0, 0));
+	}
 
 	return true;
 }

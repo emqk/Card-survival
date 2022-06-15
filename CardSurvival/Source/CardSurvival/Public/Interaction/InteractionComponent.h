@@ -30,6 +30,7 @@ public:
 	FHitResult GetResult();
 
 	bool IsActorSelected(AActor* Actor) const;
+	bool IsInteracting() const;
 
 protected:	
 

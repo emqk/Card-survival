@@ -77,6 +77,11 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Secondary", IE_Released, this, &APlayerPawn::SecondaryInputReleased);
 }
 
+bool APlayerPawn::IsInteracting() const
+{
+	return InteractionComponent->IsInteracting();
+}
+
 void APlayerPawn::PrimaryInputPressed()
 {
 	if (HitActor)

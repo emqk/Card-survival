@@ -23,5 +23,6 @@ public:
 	TObjectPtr<APlayerPawn> GetPlayerPawn() const;
 	TObjectPtr<ACursor> GetPlayerCursor3D() const;
 	TObjectPtr<ACursor> GetPlayerCursor3D(const TObjectPtr<APlayerPawn> PlayerPawn) const;
+	bool IsPlayerInteracting() const;
 	const FHitResult& GetHitResultUnderCursor() const;
 };

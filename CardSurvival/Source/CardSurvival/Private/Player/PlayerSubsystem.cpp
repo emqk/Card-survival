@@ -26,6 +26,12 @@ TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D(const TObjectPtr<APlayer
 	return PlayerPawn->GetCursor3D();
 }
 
+bool UPlayerSubsystem::IsPlayerInteracting() const
+{
+	APlayerPawn* Player = GetPlayerPawn();
+	return Player->IsInteracting();
+}
+
 const FHitResult& UPlayerSubsystem::GetHitResultUnderCursor() const
 {
 	APlayerPawn* Player = GetPlayerPawn();

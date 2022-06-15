@@ -26,6 +26,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	bool IsInteracting() const;
+
 	const FHitResult& GetHitResult() const { return HitResult; };
 	TObjectPtr<ACursor> GetCursor3D() const;
 
