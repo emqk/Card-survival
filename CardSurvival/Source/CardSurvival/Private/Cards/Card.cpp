@@ -105,6 +105,9 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 		{
 			FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0), FRotator());
 		}
+
+		// Sometimes EndSelect is not called. Removing additional offset to fix it
+		FollowComponent->RemoveAdditionalOffset();
 	}
 	else if (CurrentInteractionType == EInteractionType::Secondary)
 	{
