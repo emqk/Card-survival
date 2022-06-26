@@ -11,6 +11,7 @@ class UTextRenderComponent;
 class UFollowComponent;
 class APlayZone;
 class UStatistic;
+class UCardData;
 
 UCLASS()
 class CARDSURVIVAL_API ACard : public AActor, public IInteractable
@@ -33,6 +34,8 @@ public:
 	bool TickSelect_Implementation(AActor* Interactor) override;
 	bool EndSelect_Implementation(AActor* Interactor) override;
 
+	UFUNCTION(BlueprintCallable)
+	void ApplyCardData();
 
 	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };
 
@@ -41,7 +44,7 @@ public:
 
 
 protected:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
 
 	UPROPERTY(VisibleAnywhere)
@@ -55,6 +58,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UFollowComponent> FollowComponent;
+
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UCardData> CardData;
 
 	UPROPERTY(EditDefaultsOnly, Instanced)
 	TObjectPtr<UStatistic> Progress;

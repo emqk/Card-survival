@@ -2,9 +2,11 @@
 
 
 #include "Cards/Card.h"
+#include "Cards/CardData.h"
 #include "Components/TextRenderComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Utils/Statistic.h"
+#include "Utils/ParallaxData.h"
 #include "Board/PlayZone.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
@@ -34,6 +36,23 @@ void ACard::BeginPlay()
 	Super::BeginPlay();
 
 	ProgressBarMeshComponent->SetVisibility(false);
+}
+
+void ACard::ApplyCardData()
+{
+	if (CardData && CardData->GetParalaxData())
+	{
+		UParallaxData* ParallaxData = CardData->GetParalaxData();
+	
+		// Text
+		NameTextComponent->SetText(CardData->GetName());
+		StrengthTextComponent->SetText(FText::FromString(FString::FromInt(CardData->GetStrength())));
+
+		// Material
+		UMaterialInstanceDynamic* MaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(2);
+		MaterialInstance->SetTextureParameterValue(FName("Base Image"), ParallaxData->GetBaseTexture());
+		MaterialInstance->SetTextureParameterValue(FName("ZDepthMap"), ParallaxData->GetDepthTexture());
+	}
 }
 
 bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType)
