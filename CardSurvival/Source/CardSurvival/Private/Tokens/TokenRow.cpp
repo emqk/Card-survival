@@ -4,6 +4,7 @@
 #include "Tokens/TokenRow.h"
 #include "Tokens/Token.h"
 #include "Tokens/TokenData.h"
+#include "Tokens/TokenStack.h"
 
 ATokenRow::ATokenRow()
 {
@@ -14,8 +15,8 @@ ATokenRow::ATokenRow()
 void ATokenRow::AddToken(UTokenData* Data)
 {
 	int Index = FindTokenIndexWithData(Data);
-	int LocationIndex = Index < 0 ? TokenDatas.Num() : Index; // If index is < 0, find location based on the last index
-	int TokenHeight = Index < 0 ? 0 : TokenDatas[Index].Tokens.Num();
+	int LocationIndex = Index < 0 ? TokenStacks.Num() : Index; // If index is < 0, find location based on the last index
+	int TokenHeight = Index < 0 ? 0 : TokenStacks[Index]->Tokens.Num();
 
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -25,14 +26,21 @@ void ATokenRow::AddToken(UTokenData* Data)
 	AToken* TokenInstance = Cast<AToken>(GetWorld()->SpawnActor(TokenClass, &Transform, Params));
 	TokenInstance->SetInfoActive(false);
 	TokenInstance->ApplyData(Data);
+	TokenInstance->SetDefaultWorldLocation(Transform.GetLocation());
 
 	if (Index < 0)
 	{
-		TokenDatas.Add(FTokenInstanceData{ Data, {TokenInstance} });
+		UTokenStack* NewTokenStack = NewObject<UTokenStack>(this);
+		NewTokenStack->Data = Data;
+		NewTokenStack->Tokens = { TokenInstance };
+		TokenInstance->SetTokenStack(NewTokenStack);
+
+		TokenStacks.Add(NewTokenStack);
 	}
 	else
 	{
-		TokenDatas[Index].Tokens.Add(TokenInstance);
+		TokenInstance->SetTokenStack(TokenStacks[Index]);
+		TokenStacks[Index]->Tokens.Add(TokenInstance);
 	}
 }
 
@@ -48,34 +56,36 @@ void ATokenRow::RemoveToken(UTokenData* Data)
 	}
 
 	// Destroy token actor and remove it from the array
-	TokenDatas[Index].Tokens.Last()->Destroy();
-	TokenDatas[Index].Tokens.RemoveAt(TokenDatas[Index].Tokens.Num() - 1);
+	TokenStacks[Index]->Tokens.Last()->Destroy();
+	TokenStacks[Index]->Tokens.RemoveAt(TokenStacks[Index]->Tokens.Num() - 1);
 
 	// If token data has been removed, refresh location of all tokens so new ones can fit
-	if (TokenDatas[Index].Tokens.IsEmpty())
+	if (TokenStacks[Index]->Tokens.IsEmpty())
 	{
-		TokenDatas.RemoveAt(Index);
+		TokenStacks.RemoveAt(Index);
 		RefreshTokensLocation();
 	}
 }
 
 void ATokenRow::RefreshTokensLocation()
 {
-	for (int i = 0; i < TokenDatas.Num(); i++)
+	for (int i = 0; i < TokenStacks.Num(); i++)
 	{
-		FTokenInstanceData& Data = TokenDatas[i];
-		for (int j = 0; j < Data.Tokens.Num(); j++)
+		UTokenStack* Data = TokenStacks[i];
+		for (int j = 0; j < Data->Tokens.Num(); j++)
 		{
-			Data.Tokens[j]->SetActorLocation(FindLocationForToken(i, j));
+			FVector NewLocation = FindLocationForToken(i, j);
+			Data->Tokens[j]->SetActorLocation(NewLocation);
+			Data->Tokens[j]->SetDefaultWorldLocation(NewLocation);
 		}
 	}
 }
 
 int ATokenRow::FindTokenIndexWithData(const UTokenData* Data) const
 {
-	for (int i = 0; i < TokenDatas.Num(); i++)
+	for (int i = 0; i < TokenStacks.Num(); i++)
 	{
-		const UTokenData* CurrData = TokenDatas[i].Data;
+		const UTokenData* CurrData = TokenStacks[i]->Data;
 		if (CurrData == Data)
 		{
 			return i;

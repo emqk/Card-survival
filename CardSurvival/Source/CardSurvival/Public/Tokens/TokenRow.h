@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Tokens/TokenInstanceData.h"
 #include "TokenRow.generated.h"
 
 class AToken;
+class UTokenStack;
 
 UCLASS()
 class CARDSURVIVAL_API ATokenRow : public AActor
@@ -32,7 +32,7 @@ protected:
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	TArray<FTokenInstanceData> TokenDatas;
+	TArray<TObjectPtr<UTokenStack>> TokenStacks;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AToken> TokenClass;

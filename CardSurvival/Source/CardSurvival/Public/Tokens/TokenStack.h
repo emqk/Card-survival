@@ -3,19 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TokenInstanceData.generated.h"
+#include "TokenStack.generated.h"
 
 class AToken;
 class UTokenData;
 
-USTRUCT()
-struct CARDSURVIVAL_API FTokenInstanceData
+UCLASS()
+class CARDSURVIVAL_API UTokenStack : public UObject
 {
 	GENERATED_BODY()
 
 public:
+	bool IsTokenOnTop(AToken* Token);
+
+public:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UTokenData> Data;
+
 	UPROPERTY(VisibleAnywhere)
 	TArray<AToken*> Tokens;
+
 };
