@@ -8,6 +8,7 @@
 #include "Card.generated.h"
 
 class UTextRenderComponent;
+class UWidgetComponent;
 class UFollowComponent;
 class APlayZone;
 class UStatistic;
@@ -48,10 +49,7 @@ protected:
 	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UTextRenderComponent> NameTextComponent;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UTextRenderComponent> StrengthTextComponent;
+	TObjectPtr<UWidgetComponent> InfoWidgetComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> ProgressBarMeshComponent;

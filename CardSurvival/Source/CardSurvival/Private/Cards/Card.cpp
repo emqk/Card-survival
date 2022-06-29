@@ -3,7 +3,9 @@
 
 #include "Cards/Card.h"
 #include "Cards/CardData.h"
+#include "Cards/CardInfoWidget.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Utils/Statistic.h"
 #include "Utils/ParallaxData.h"
@@ -19,14 +21,16 @@ ACard::ACard()
 
 	BaseMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
 	BaseMeshComponent->SetupAttachment(RootComponent);
-	NameTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("NameText"));
-	NameTextComponent->SetupAttachment(BaseMeshComponent);
-	StrengthTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("StrengthText"));
-	StrengthTextComponent->SetupAttachment(BaseMeshComponent);
+
+	InfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidget"));
+	InfoWidgetComponent->SetCollisionProfileName("NoCollision");
+	InfoWidgetComponent->SetupAttachment(BaseMeshComponent);
+
 	ProgressBarMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProgressBar"));
 	ProgressBarMeshComponent->SetCastShadow(false);
 	ProgressBarMeshComponent->SetComponentTickEnabled(false);
 	ProgressBarMeshComponent->SetupAttachment(BaseMeshComponent);
+
 
 	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
@@ -43,10 +47,13 @@ void ACard::ApplyCardData()
 	if (CardData && CardData->GetParalaxData())
 	{
 		UParallaxData* ParallaxData = CardData->GetParalaxData();
-	
-		// Text
-		NameTextComponent->SetText(CardData->GetName());
-		StrengthTextComponent->SetText(FText::FromString(FString::FromInt(CardData->GetStrength())));
+
+		// Widget
+		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
+		if (InfoWidget)
+		{
+			InfoWidget->Refresh(CardData);
+		}
 
 		// Material
 		UMaterialInstanceDynamic* MaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(2);
