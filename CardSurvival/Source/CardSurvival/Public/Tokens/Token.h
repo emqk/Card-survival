@@ -43,6 +43,8 @@ protected:
 	TObjectPtr<UStaticMeshComponent> TextBackgroundComponent;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UWidgetComponent> InfoWidgetComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UWidgetComponent> AmountWidgetComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UFollowComponent> FollowComponent;
 
