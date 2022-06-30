@@ -4,7 +4,6 @@
 #include "Cards/Card.h"
 #include "Cards/CardData.h"
 #include "Cards/CardInfoWidget.h"
-#include "Components/TextRenderComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Utils/Statistic.h"
@@ -39,6 +38,7 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetPlayerSubsystem();
 	ProgressBarMeshComponent->SetVisibility(false);
 }
 
@@ -62,6 +62,11 @@ void ACard::ApplyCardData()
 	}
 }
 
+void ACard::SetPlayerSubsystem()
+{
+	PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+}
+
 bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType)
 {		
 	CurrentInteractionType = InteractionType;
@@ -75,7 +80,7 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType
 			PlayZone->RemoveCard(this);
 		}
 
-		ACursor* Cursor3D = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerCursor3D();
+		ACursor* Cursor3D = GetPlayerSubsystem()->GetPlayerCursor3D();
 		FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, FRotator(), false);
 	}
 	else if (InteractionType == EInteractionType::Secondary)
@@ -119,7 +124,7 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 		FVector CurrentLocation = GetActorLocation();
 
 		// Add this Card to the PlayZone if available
-		const FHitResult& HitResult = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetHitResultUnderCursor();
+		const FHitResult& HitResult = GetPlayerSubsystem()->GetHitResultUnderCursor();
 		AActor* HitActor = HitResult.GetActor();
 		APlayZone* HitPlayZone = Cast<APlayZone>(HitActor);
 
@@ -146,7 +151,7 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 
 bool ACard::StartSelect_Implementation(AActor* Interactor)
 {
-	bool PlayerInteracting = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->IsPlayerInteracting();
+	bool PlayerInteracting = GetPlayerSubsystem()->IsPlayerInteracting();
 	if (!PlayerInteracting)
 	{
 		FVector CurrentLocation = GetActorLocation();
@@ -164,7 +169,7 @@ bool ACard::TickSelect_Implementation(AActor* Interactor)
 
 bool ACard::EndSelect_Implementation(AActor* Interactor)
 {
-	bool PlayerInteracting = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->IsPlayerInteracting();
+	bool PlayerInteracting = GetPlayerSubsystem()->IsPlayerInteracting();
 	if (!PlayerInteracting)
 	{
 		FVector CurrentLocation = GetActorLocation();

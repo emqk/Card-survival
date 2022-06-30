@@ -10,6 +10,7 @@
 class UTextRenderComponent;
 class UWidgetComponent;
 class UFollowComponent;
+class UPlayerSubsystem;
 class APlayZone;
 class UStatistic;
 class UCardData;
@@ -43,6 +44,8 @@ public:
 	TObjectPtr<APlayZone> GetPlayZone() const { return PlayZone; };
 	void SetPlayZone(TObjectPtr<APlayZone> NewPlayZone) { PlayZone = NewPlayZone; }
 
+	UPlayerSubsystem* GetPlayerSubsystem() const { return PlayerSubsystem; };
+	void SetPlayerSubsystem();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -70,4 +73,8 @@ protected:
 	FVector HoldHeightOffset = FVector(0, 0, 250);
 
 	EInteractionType CurrentInteractionType;
+
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPlayerSubsystem> PlayerSubsystem;
 };

@@ -21,7 +21,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetStrength() const { return Strength; }
 	UFUNCTION(BlueprintCallable)
-	UParallaxData* GetParalaxData() const { return ParalaxData; }
+	UParallaxData* GetParalaxData() const { return ParallaxData; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -29,5 +29,5 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	int32 Strength;
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UParallaxData> ParalaxData;
+	TObjectPtr<UParallaxData> ParallaxData;
 };
