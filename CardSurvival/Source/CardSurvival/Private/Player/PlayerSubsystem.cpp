@@ -4,9 +4,18 @@
 #include "Player/PlayerSubsystem.h"
 #include "Player/PlayerPawn.h"
 #include "Utils/FollowComponent.h"
+#include "Tokens/TokenRow.h"
 
 #include "Kismet/GameplayStatics.h"
 
+
+
+void UPlayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
+	TokenRow = Cast<ATokenRow>(UGameplayStatics::GetActorOfClass(GetWorld(), ATokenRow::StaticClass()));
+}
 
 TObjectPtr<APlayerPawn> UPlayerSubsystem::GetPlayerPawn() const
 {

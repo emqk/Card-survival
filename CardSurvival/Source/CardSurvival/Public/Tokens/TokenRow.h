@@ -18,6 +18,8 @@ public:
 	ATokenRow();
 
 	UFUNCTION(BlueprintCallable)
+	void AddTokens(UTokenData* Data, int32 Amount);
+	UFUNCTION(BlueprintCallable)
 	void AddToken(UTokenData* Data);
 	UFUNCTION(BlueprintCallable)
 	void RemoveToken(UTokenData* Data);

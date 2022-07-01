@@ -12,8 +12,22 @@ ATokenRow::ATokenRow()
 	PrimaryActorTick.bStartWithTickEnabled = false;
 }
 
+void ATokenRow::AddTokens(UTokenData* Data, int32 Amount)
+{
+	for (int i = 0; i < Amount; i++)
+	{
+		AddToken(Data);
+	}
+}
+
 void ATokenRow::AddToken(UTokenData* Data)
 {
+	if (!Data)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Can't add token - Data is null!"))
+		return;
+	}
+
 	int Index = FindTokenIndexWithData(Data);
 	int LocationIndex = Index < 0 ? TokenStacks.Num() : Index; // If index is < 0, find location based on the last index
 	int TokenHeight = Index < 0 ? 0 : TokenStacks[Index]->Tokens.Num();

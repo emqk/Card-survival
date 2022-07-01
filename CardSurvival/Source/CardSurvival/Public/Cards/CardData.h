@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Tokens/TokenDataInstance.h"
 #include "CardData.generated.h"
 
 class UPrimaryDataAsset;
@@ -22,6 +23,8 @@ public:
 	int32 GetStrength() const { return Strength; }
 	UFUNCTION(BlueprintCallable)
 	UParallaxData* GetParalaxData() const { return ParallaxData; }
+	UFUNCTION(BlueprintCallable)
+	const TArray<FTokenDataInstance>& GetStatuses() const { return Statuses; };
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -30,4 +33,6 @@ protected:
 	int32 Strength;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UParallaxData> ParallaxData;
+	UPROPERTY(EditDefaultsOnly)
+	TArray<FTokenDataInstance> Statuses;
 };

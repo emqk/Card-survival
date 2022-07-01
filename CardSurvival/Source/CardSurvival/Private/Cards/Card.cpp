@@ -4,6 +4,7 @@
 #include "Cards/Card.h"
 #include "Cards/CardData.h"
 #include "Cards/CardInfoWidget.h"
+#include "Tokens/TokenRow.h"
 #include "Components/WidgetComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Utils/Statistic.h"
@@ -111,7 +112,11 @@ void ACard::OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEnd
 {
 	if (TickEndResult)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Completed!"))
+		ATokenRow* TokenRow = GetPlayerSubsystem()->GetTokenRow();
+		for (const FTokenDataInstance& DataInstance : CardData->GetStatuses())
+		{
+			TokenRow->AddTokens(DataInstance.TokenData, DataInstance.Amount);
+		}
 	}
 }
 
