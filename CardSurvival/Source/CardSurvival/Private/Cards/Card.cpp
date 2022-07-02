@@ -164,6 +164,13 @@ bool ACard::StartSelect_Implementation(AActor* Interactor)
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
 		FollowComponent->SetFollowRotation(FRotator(25.0f, 0, 0));
+
+		// Widget
+		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
+		if (InfoWidget)
+		{
+			InfoWidget->OnSelected();
+		}
 	}
 
 	return true;
@@ -182,6 +189,13 @@ bool ACard::EndSelect_Implementation(AActor* Interactor)
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->RemoveAdditionalOffset();
 		FollowComponent->SetFollowRotation(FRotator(0, 0, 0));
+
+		// Widget
+		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
+		if (InfoWidget)
+		{
+			InfoWidget->OnUnselected();
+		}
 	}
 
 	return true;

@@ -16,8 +16,8 @@ struct CARDSURVIVAL_API FTokenDataInstance
 	GENERATED_BODY();
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UTokenData> TokenData;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 Amount = 0;
 };

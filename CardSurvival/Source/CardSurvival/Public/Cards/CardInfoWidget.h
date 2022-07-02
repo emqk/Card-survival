@@ -17,4 +17,9 @@ class CARDSURVIVAL_API UCardInfoWidget : public UUserWidget
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void Refresh(UCardData* CardData);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnSelected();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnUnselected();
 };
