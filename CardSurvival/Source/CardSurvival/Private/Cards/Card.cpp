@@ -5,13 +5,15 @@
 #include "Cards/CardData.h"
 #include "Cards/CardInfoWidget.h"
 #include "Tokens/TokenRow.h"
-#include "Components/WidgetComponent.h"
+#include "Board/PlayZoneComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Utils/Statistic.h"
 #include "Utils/ParallaxData.h"
-#include "Board/PlayZone.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
+
+#include "Components/WidgetComponent.h"
+
 
 
 ACard::ACard()
@@ -130,8 +132,8 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 
 		// Add this Card to the PlayZone if available
 		const FHitResult& HitResult = GetPlayerSubsystem()->GetHitResultUnderCursor();
-		AActor* HitActor = HitResult.GetActor();
-		APlayZone* HitPlayZone = Cast<APlayZone>(HitActor);
+		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+		UPlayZoneComponent* HitPlayZone = Cast<UPlayZoneComponent>(HitComponent);
 
 		if (HitPlayZone)
 		{

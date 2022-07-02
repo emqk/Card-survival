@@ -1,19 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Board/PlayZone.h"
+#include "Board/PlayZoneComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Cards/Card.h"
 
-APlayZone::APlayZone()
+UPlayZoneComponent::UPlayZoneComponent()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = false;
 
-	BaseMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
-	BaseMeshComponent->SetupAttachment(RootComponent);
+	BoxExtent = FVector(100, 100, 100);
 }
 
-bool APlayZone::AddCard(TObjectPtr<ACard> CardToAdd)
+bool UPlayZoneComponent::AddCard(TObjectPtr<ACard> CardToAdd)
 {
 	if (Cards.Contains(CardToAdd))
 	{
@@ -31,7 +31,7 @@ bool APlayZone::AddCard(TObjectPtr<ACard> CardToAdd)
 	return true;
 }
 
-bool APlayZone::RemoveCard(TObjectPtr<ACard> CardToRemove)
+bool UPlayZoneComponent::RemoveCard(TObjectPtr<ACard> CardToRemove)
 {
 	int32 NumOfRemovedCards = Cards.Remove(CardToRemove);
 
@@ -47,18 +47,18 @@ bool APlayZone::RemoveCard(TObjectPtr<ACard> CardToRemove)
 	}
 }
 
-FVector APlayZone::GetCardLocationAtIndex(int Index)
+FVector UPlayZoneComponent::GetCardLocationAtIndex(int Index)
 {
-	FVector ActorLocation = GetActorLocation();
+	FVector ActorLocation = GetComponentLocation();
 	float StartOffsetX = (NumberOfRows - 1) * (SpacingX / 2.0f); // Start from the top
-	float StartOffsetY = -GetActorScale().Y * 100.0f + SpacingY / 2.0f; // Start from the left
+	float StartOffsetY = -GetComponentScale().Y * 100.0f + SpacingY / 2.0f; // Start from the left
 
-	FVector Result = FVector(ActorLocation.X - (Index % NumberOfRows) * SpacingX + StartOffsetX, ActorLocation.Y + (Index / NumberOfRows) * SpacingY + StartOffsetY, ActorLocation.Z + OffsetZ);
+	FVector Result = FVector(ActorLocation.X - (Index % NumberOfRows) * SpacingX + StartOffsetX, ActorLocation.Y + (Index / NumberOfRows) * SpacingY + StartOffsetY + DefaultOffsetY, ActorLocation.Z + OffsetZ);
 	
 	return Result;
 }
 
-void APlayZone::RefreshCardsLocation()
+void UPlayZoneComponent::RefreshCardsLocation()
 {
 	for (int i = 0; i < Cards.Num(); i++)
 	{

@@ -11,7 +11,7 @@ class UTextRenderComponent;
 class UWidgetComponent;
 class UFollowComponent;
 class UPlayerSubsystem;
-class APlayZone;
+class UPlayZoneComponent;
 class UStatistic;
 class UCardData;
 
@@ -41,8 +41,8 @@ public:
 
 	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };
 
-	TObjectPtr<APlayZone> GetPlayZone() const { return PlayZone; };
-	void SetPlayZone(TObjectPtr<APlayZone> NewPlayZone) { PlayZone = NewPlayZone; }
+	TObjectPtr<UPlayZoneComponent> GetPlayZone() const { return PlayZone; };
+	void SetPlayZone(TObjectPtr<UPlayZoneComponent> NewPlayZone) { PlayZone = NewPlayZone; }
 
 	UPlayerSubsystem* GetPlayerSubsystem() const { return PlayerSubsystem; };
 	void SetPlayerSubsystem();
@@ -68,7 +68,7 @@ protected:
 	TObjectPtr<UStatistic> Progress;
 	// PlayZone in which this card is currently in
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<APlayZone> PlayZone;
+	TObjectPtr<UPlayZoneComponent> PlayZone;
 	UPROPERTY(EditDefaultsOnly)
 	FVector HoldHeightOffset = FVector(0, 0, 250);
 

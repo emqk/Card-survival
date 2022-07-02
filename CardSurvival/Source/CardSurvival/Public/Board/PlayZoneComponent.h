@@ -4,17 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PlayZone.generated.h"
+#include "Components/BoxComponent.h"
+#include "PlayZoneComponent.generated.h"
 
 class ACard;
 
 UCLASS()
-class CARDSURVIVAL_API APlayZone : public AActor
+class CARDSURVIVAL_API UPlayZoneComponent : public UBoxComponent
 {
 	GENERATED_BODY()
 	
 public:	
-	APlayZone();
+	UPlayZoneComponent();
 
 	bool AddCard(TObjectPtr<ACard> CardToAdd);
 	bool RemoveCard(TObjectPtr<ACard> CardToRemove);
@@ -24,11 +25,9 @@ protected:
 	void RefreshCardsLocation();
 
 protected:
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
-
 	UPROPERTY(EditAnywhere)
 	int NumberOfRows = 1;
+
 	UPROPERTY(EditDefaultsOnly)
 	float SpacingX = 600;
 	UPROPERTY(EditDefaultsOnly)
@@ -36,6 +35,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float OffsetZ = 0;
 
+	UPROPERTY(EditDefaultsOnly)
+	float DefaultOffsetY = 0;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<TObjectPtr<ACard>> Cards;
