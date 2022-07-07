@@ -2,7 +2,6 @@
 
 
 #include "WorldMap/MapNode.h"
-#include "WorldMap/MapNodeConnection.h"
 
 AMapNode::AMapNode()
 {
@@ -11,15 +10,4 @@ AMapNode::AMapNode()
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(SceneComponent);
-}
-
-void AMapNode::AddConnection(TObjectPtr<AMapNode> Node)
-{
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	FTransform Transform;
-
-	AMapNodeConnection* ConnectionActor = Cast<AMapNodeConnection>(GetWorld()->SpawnActor(ConnectionClass, &Transform, Params));
-	ConnectionActor->ConnectTo(this, Node);
-	Connections.Add(Node);
 }

@@ -16,15 +16,7 @@ class CARDSURVIVAL_API AMapNode : public AActor
 public:	
 	AMapNode();
 
-	void AddConnection(TObjectPtr<AMapNode> Node);
-
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> SceneComponent;
-
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TArray<TObjectPtr<AMapNode>> Connections;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<AMapNodeConnection> ConnectionClass;
 };
