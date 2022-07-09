@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "WorldMap/MapStageData.h"
 #include "MapManager.generated.h"
 
 class AMapNode;
@@ -17,20 +18,41 @@ public:
 	AMapManager();
 
 	UFUNCTION(BlueprintCallable)
-	AMapNode* SpawnNode(const FVector& Location);
+	void GenerateNextStage();
+	UFUNCTION(BlueprintCallable)
+	void SpawnNodes();
 
 protected:
-	FVector FindLevelLocationByIndex(int32 LevelIndex);
+	AMapNode* SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
+	FVector FindStageLocationByIndex(int32 StageIndex);
+	FIntPoint GetGlobalMapStageOffset(const FMapStageData& MapStage) const;
+	FIntPoint GetGlobalXY(const FMapStageData& MapStage, int LocalX, int LocalY) const;
+	bool SetGlobalXY(int GlobalX, int GlobalY, int Value);
+
 
 protected:
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<FMapStageData> MapStages;
+
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMapNode> MapNodeClass;
+	TSubclassOf<AMapNode> RoadNodeClass;
 	UPROPERTY(EditDefaultsOnly)
-	FVector MapLevelStartLocation = {10000, 0, 0};
+	TSubclassOf<AMapNode> EnviroNodeClass;
 	UPROPERTY(EditDefaultsOnly)
-	FVector2D LevelSize = {2000, 1000};
+	TSubclassOf<AMapNode> InteractableForestClass;
+
 	UPROPERTY(EditDefaultsOnly)
-	float NodeSize = 100;
+	FVector MapStartLocation = {10000, 0, 0};
 	UPROPERTY(EditDefaultsOnly)
-	FIntPoint NodesInLevelRange = {2, 5};
+	FIntPoint StageSize = {20, 10};
+	UPROPERTY(EditDefaultsOnly)
+	FIntPoint NodesInStageRange = {2, 5};
+	UPROPERTY(EditDefaultsOnly)
+	int POILocalYMargin = 3;
+	UPROPERTY(EditDefaultsOnly)
+	int POILocalXMargin = 1;
+
+	UPROPERTY(EditDefaultsOnly)
+	FVector2D NodeOffset = FVector2D(300, 250);
 };
