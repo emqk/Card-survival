@@ -20,6 +20,8 @@ APlayerPawn::APlayerPawn()
 	SetRootComponent(SceneComponent);
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetupAttachment(RootComponent);
+
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
 }
 
@@ -27,24 +29,14 @@ void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (bIsBasePlayer)
-	{
-		FActorSpawnParameters Params;
-		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		Cursor3D = GetWorld()->SpawnActor<ACursor>(Params);
-
-		GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetBoardPlayer(this);
-	}
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Cursor3D = GetWorld()->SpawnActor<ACursor>(Params);
 }
 
 void APlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (!bIsBasePlayer)
-	{
-		return;
-	}
 
 	if (InteractionComponent)
 	{

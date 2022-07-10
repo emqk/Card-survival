@@ -2,7 +2,7 @@
 
 
 #include "Player/PlayerSubsystem.h"
-#include "Player/PlayerPawn.h"
+#include "Player/PlayerBoardPawn.h"
 #include "Utils/FollowComponent.h"
 #include "Tokens/TokenRow.h"
 #include "WorldMap/MapManager.h"
@@ -24,7 +24,7 @@ TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D() const
 	return GetPlayerCursor3D(GetPlayerBoardPawn());
 }
 
-TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D(const TObjectPtr<APlayerPawn> PlayerPawn) const
+TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D(const TObjectPtr<APlayerBoardPawn> PlayerPawn) const
 {
 	return PlayerPawn->GetCursor3D();
 }

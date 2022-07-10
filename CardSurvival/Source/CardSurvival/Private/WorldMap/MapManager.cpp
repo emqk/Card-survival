@@ -3,7 +3,7 @@
 
 #include "WorldMap/MapManager.h"
 #include "WorldMap/MapNode.h"
-#include "WorldMap/PlayerMapPawn.h"
+#include "Player/PlayerMapPawn.h"
 
 AMapManager::AMapManager()
 {

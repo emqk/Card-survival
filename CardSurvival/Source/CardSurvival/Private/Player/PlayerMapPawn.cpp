@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "WorldMap/PlayerMapPawn.h"
+#include "Player/PlayerMapPawn.h"
 #include "Utils/FollowComponent.h"
 #include "Player/PlayerSubsystem.h"
 #include "WorldMap/MapManager.h"
@@ -9,8 +9,6 @@
 
 APlayerMapPawn::APlayerMapPawn()
 {
-	CameraComponent->SetupAttachment(RootComponent);
-
 	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
 

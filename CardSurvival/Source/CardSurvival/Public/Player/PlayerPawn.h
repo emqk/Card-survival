@@ -22,7 +22,7 @@ class CARDSURVIVAL_API APlayerPawn : public APawn
 public:
 	APlayerPawn();
 
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -49,9 +49,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UInteractionComponent> InteractionComponent;
-
-	UPROPERTY(EditDefaultsOnly); // Need to remove this, because it's messy... Just create a PlayerBoardPawn and get rid of it
-	bool bIsBasePlayer = false;
 
 	// Cached interaction hit actor
 	UPROPERTY();

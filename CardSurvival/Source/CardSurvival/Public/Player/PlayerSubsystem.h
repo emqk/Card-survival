@@ -6,7 +6,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "PlayerSubsystem.generated.h"
 
-class APlayerPawn;
+class APlayerBoardPawn;
 class APlayerMapPawn;
 class UFollowComponent;
 class ACursor;
@@ -27,14 +27,14 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	
 	// Player
-	void SetBoardPlayer(APlayerPawn* PlayerPawn) { BoardPlayer = PlayerPawn; };
+	void SetBoardPlayer(APlayerBoardPawn* PlayerPawn) { BoardPlayer = PlayerPawn; };
 	void SetMapPlayer(APlayerMapPawn* PlayerPawn) { MapPlayer = PlayerPawn; };
 
-	TObjectPtr<APlayerPawn> GetPlayerBoardPawn() const { return BoardPlayer; };
+	TObjectPtr<APlayerBoardPawn> GetPlayerBoardPawn() const { return BoardPlayer; };
 	TObjectPtr<APlayerMapPawn> GetPlayerMapPawn() const { return MapPlayer; };
 
 	TObjectPtr<ACursor> GetPlayerCursor3D() const;
-	TObjectPtr<ACursor> GetPlayerCursor3D(const TObjectPtr<APlayerPawn> PlayerPawn) const;
+	TObjectPtr<ACursor> GetPlayerCursor3D(const TObjectPtr<APlayerBoardPawn> PlayerPawn) const;
 	bool IsPlayerInteracting() const;
 	const FHitResult& GetHitResultUnderCursor() const;
 
@@ -49,7 +49,7 @@ protected:
 	TObjectPtr<AMapManager> MapManager = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<APlayerPawn> BoardPlayer = nullptr;
+	TObjectPtr<APlayerBoardPawn> BoardPlayer = nullptr;
 	UPROPERTY()
 	TObjectPtr<APlayerMapPawn> MapPlayer = nullptr;
 };

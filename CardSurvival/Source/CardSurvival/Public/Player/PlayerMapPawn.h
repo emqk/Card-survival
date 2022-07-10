@@ -17,7 +17,7 @@ class CARDSURVIVAL_API APlayerMapPawn : public APlayerPawn
 public:	
 	APlayerMapPawn();
 
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 	void MoveToWorldIndex(const FIntPoint& NewLocation);
 	void MoveToWorldIndex_Instant(const FIntPoint& NewLocation);

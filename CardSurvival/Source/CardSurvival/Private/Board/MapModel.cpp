@@ -4,7 +4,7 @@
 #include "Board/MapModel.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/PlayerSubsystem.h"
-#include "WorldMap/PlayerMapPawn.h"
+#include "Player/PlayerMapPawn.h"
 
 AMapModel::AMapModel()
 {
