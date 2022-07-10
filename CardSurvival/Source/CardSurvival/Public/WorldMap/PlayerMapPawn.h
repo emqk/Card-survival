@@ -17,6 +17,8 @@ class CARDSURVIVAL_API APlayerMapPawn : public APlayerPawn
 public:	
 	APlayerMapPawn();
 
+	void BeginPlay() override;
+
 	void MoveToWorldIndex(const FIntPoint& NewLocation);
 	void MoveToWorldIndex_Instant(const FIntPoint& NewLocation);
 
@@ -29,4 +31,5 @@ protected:
 	FVector WalkOffset = FVector(0, 0, 100);
 	UPROPERTY(VisibleAnywhere)
 	FIntPoint WorldLocationIndex;
+
 };

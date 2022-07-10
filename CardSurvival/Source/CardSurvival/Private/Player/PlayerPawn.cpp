@@ -5,6 +5,7 @@
 #include "Player/Cursor.h"
 #include "Interaction/InteractionComponent.h"
 #include "Utils/FollowComponent.h"
+#include "Player/PlayerSubsystem.h"
 
 // Engine
 #include "Camera/CameraComponent.h" 
@@ -26,14 +27,24 @@ void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	Cursor3D = GetWorld()->SpawnActor<ACursor>(Params);
+	if (bIsBasePlayer)
+	{
+		FActorSpawnParameters Params;
+		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		Cursor3D = GetWorld()->SpawnActor<ACursor>(Params);
+
+		GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetBoardPlayer(this);
+	}
 }
 
 void APlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (!bIsBasePlayer)
+	{
+		return;
+	}
 
 	if (InteractionComponent)
 	{

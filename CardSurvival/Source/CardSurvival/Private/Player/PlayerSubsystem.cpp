@@ -19,17 +19,9 @@ void UPlayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	MapManager = Cast<AMapManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AMapManager::StaticClass()));
 }
 
-TObjectPtr<APlayerPawn> UPlayerSubsystem::GetPlayerPawn() const
-{
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	APlayerPawn* Player = Cast<APlayerPawn>(PlayerController->GetPawn());
-
-	return Player;
-}
-
 TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D() const
 {
-	return GetPlayerCursor3D(GetPlayerPawn());
+	return GetPlayerCursor3D(GetPlayerBoardPawn());
 }
 
 TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D(const TObjectPtr<APlayerPawn> PlayerPawn) const
@@ -39,13 +31,13 @@ TObjectPtr<ACursor> UPlayerSubsystem::GetPlayerCursor3D(const TObjectPtr<APlayer
 
 bool UPlayerSubsystem::IsPlayerInteracting() const
 {
-	APlayerPawn* Player = GetPlayerPawn();
+	APlayerPawn* Player = GetPlayerBoardPawn();
 	return Player->IsInteracting();
 }
 
 const FHitResult& UPlayerSubsystem::GetHitResultUnderCursor() const
 {
-	APlayerPawn* Player = GetPlayerPawn();
+	APlayerPawn* Player = GetPlayerBoardPawn();
 	const FHitResult& HitResult = Player->GetHitResult();
 
 	return HitResult;

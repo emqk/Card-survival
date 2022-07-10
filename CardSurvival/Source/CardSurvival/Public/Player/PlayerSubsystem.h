@@ -7,6 +7,7 @@
 #include "PlayerSubsystem.generated.h"
 
 class APlayerPawn;
+class APlayerMapPawn;
 class UFollowComponent;
 class ACursor;
 class ATokenRow;
@@ -26,7 +27,12 @@ public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
 	
 	// Player
-	TObjectPtr<APlayerPawn> GetPlayerPawn() const;
+	void SetBoardPlayer(APlayerPawn* PlayerPawn) { BoardPlayer = PlayerPawn; };
+	void SetMapPlayer(APlayerMapPawn* PlayerPawn) { MapPlayer = PlayerPawn; };
+
+	TObjectPtr<APlayerPawn> GetPlayerBoardPawn() const { return BoardPlayer; };
+	TObjectPtr<APlayerMapPawn> GetPlayerMapPawn() const { return MapPlayer; };
+
 	TObjectPtr<ACursor> GetPlayerCursor3D() const;
 	TObjectPtr<ACursor> GetPlayerCursor3D(const TObjectPtr<APlayerPawn> PlayerPawn) const;
 	bool IsPlayerInteracting() const;
@@ -42,4 +48,8 @@ protected:
 	UPROPERTY()
 	TObjectPtr<AMapManager> MapManager = nullptr;
 
+	UPROPERTY()
+	TObjectPtr<APlayerPawn> BoardPlayer = nullptr;
+	UPROPERTY()
+	TObjectPtr<APlayerMapPawn> MapPlayer = nullptr;
 };

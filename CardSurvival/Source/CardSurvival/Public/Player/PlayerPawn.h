@@ -50,7 +50,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UInteractionComponent> InteractionComponent;
 
-	
+	UPROPERTY(EditDefaultsOnly); // Need to remove this, because it's messy... Just create a PlayerBoardPawn and get rid of it
+	bool bIsBasePlayer = false;
+
 	// Cached interaction hit actor
 	UPROPERTY();
 	TObjectPtr<AActor> HitActor = nullptr;

@@ -14,6 +14,14 @@ APlayerMapPawn::APlayerMapPawn()
 	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
 
+
+void APlayerMapPawn::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetMapPlayer(this);
+}
+
 void APlayerMapPawn::MoveToWorldIndex(const FIntPoint& NewLocation)
 {
 	WorldLocationIndex = NewLocation;
