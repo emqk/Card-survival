@@ -3,6 +3,7 @@
 
 #include "WorldMap/MapManager.h"
 #include "WorldMap/MapNode.h"
+#include "WorldMap/PlayerMapPawn.h"
 
 AMapManager::AMapManager()
 {
@@ -78,6 +79,16 @@ void AMapManager::GenerateNextStage()
 			LastY = Y;
 		}
 	}
+
+	// Player
+	if (MapStages.Num() == 1)
+	{
+		FTransform SpawnTransform;
+		FActorSpawnParameters SpawnParams;
+		PlayerMapPawn = Cast<APlayerMapPawn>(GetWorld()->SpawnActor(PlayerMapPawnClass, &SpawnTransform, SpawnParams));
+		FIntPoint WorldIndex = NewData.GetPOIs()[0];
+		PlayerMapPawn->MoveToWorldIndex_Instant(WorldIndex);
+	}
 }
 
 void AMapManager::SpawnNodes()
@@ -115,6 +126,11 @@ void AMapManager::SpawnNodes()
 
 		i++;
 	}
+}
+
+FVector AMapManager::GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const
+{
+	return FVector(WorldIndex.X * NodeOffset.X + (WorldIndex.Y % 2 == 0 ? NodeOffset.X / 2.0f : 0), WorldIndex.Y * NodeOffset.Y, 0) + MapStartLocation;
 }
 
 AMapNode* AMapManager::SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)

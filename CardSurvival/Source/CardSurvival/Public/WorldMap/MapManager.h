@@ -7,6 +7,7 @@
 #include "MapManager.generated.h"
 
 class AMapNode;
+class APlayerMapPawn;
 
 UCLASS()
 class CARDSURVIVAL_API AMapManager : public AActor
@@ -22,6 +23,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpawnNodes();
 
+	FVector GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const;
+
 protected:
 	AMapNode* SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
 	FVector FindStageLocationByIndex(int32 StageIndex);
@@ -32,6 +35,7 @@ protected:
 
 protected:
 
+	// Map settings
 	UPROPERTY(VisibleAnywhere)
 	TArray<FMapStageData> MapStages;
 
@@ -55,4 +59,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D NodeOffset = FVector2D(300, 250);
+
+
+	// Player
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<APlayerMapPawn> PlayerMapPawnClass;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<APlayerMapPawn> PlayerMapPawn;
 };
