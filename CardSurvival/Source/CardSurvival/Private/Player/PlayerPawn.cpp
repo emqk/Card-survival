@@ -2,7 +2,6 @@
 
 // Player
 #include "Player/PlayerPawn.h"
-#include "Player/Cursor.h"
 #include "Interaction/InteractionComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Player/PlayerSubsystem.h"
@@ -14,7 +13,8 @@
 
 APlayerPawn::APlayerPawn()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(SceneComponent);
@@ -25,64 +25,6 @@ APlayerPawn::APlayerPawn()
 	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
 }
 
-void APlayerPawn::BeginPlay()
-{
-	Super::BeginPlay();
-
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	Cursor3D = GetWorld()->SpawnActor<ACursor>(Params);
-}
-
-void APlayerPawn::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (InteractionComponent)
-	{
-		HitResult = InteractionComponent->GetResult();
-		if (HitResult.bBlockingHit)
-		{
-			HitActor = HitResult.GetActor();
-			DrawDebugSphere(GetWorld(), HitResult.Location, 50, 10, FColor::Red, false, -1.0f, 0, 5);	
-		}
-
-		// Select
-		IInteractable* Interactable = Cast<IInteractable>(HitActor);
-		if (Interactable)
-		{
-			if (!InteractionComponent->IsActorSelected(HitResult.GetActor()))
-			{
-				InteractionComponent->StartSelect(Interactable);
-			}
-			else
-			{
-				InteractionComponent->TickSelect();
-			}
-		}
-		else
-		{
-			InteractionComponent->EndSelect();
-		}
-
-		InteractionComponent->TickInteraction();
-		Cursor3D->SetActorLocation(HitResult.Location);
-	}
-}
-
-void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	// Primary
-	PlayerInputComponent->BindAction("Primary", IE_Pressed, this, &APlayerPawn::PrimaryInputPressed);
-	PlayerInputComponent->BindAction("Primary", IE_Released, this, &APlayerPawn::PrimaryInputReleased);
-
-	// Secondary
-	PlayerInputComponent->BindAction("Secondary", IE_Pressed, this, &APlayerPawn::SecondaryInputPressed);
-	PlayerInputComponent->BindAction("Secondary", IE_Released, this, &APlayerPawn::SecondaryInputReleased);
-}
-
 bool APlayerPawn::IsInteracting() const
 {
 	return InteractionComponent->IsInteracting();
@@ -90,6 +32,7 @@ bool APlayerPawn::IsInteracting() const
 
 void APlayerPawn::PrimaryInputPressed()
 {
+	UE_LOG(LogTemp, Warning, TEXT("aaaaa"))
 	if (HitActor)
 	{
 		IInteractable* Interactable = Cast<IInteractable>(HitActor);
@@ -122,7 +65,36 @@ void APlayerPawn::SecondaryInputReleased()
 	InteractionComponent->EndInteraction();
 }
 
-TObjectPtr<ACursor> APlayerPawn::GetCursor3D() const
+void APlayerPawn::InteractionTick(AActor* Cursor3D)
 {
-	return Cursor3D;
+	if (InteractionComponent)
+	{
+		HitResult = InteractionComponent->GetResult();
+		if (HitResult.bBlockingHit)
+		{
+			HitActor = HitResult.GetActor();
+			DrawDebugSphere(GetWorld(), HitResult.Location, 50, 10, FColor::Red, false, -1.0f, 0, 5);
+		}
+
+		// Select
+		IInteractable* Interactable = Cast<IInteractable>(HitActor);
+		if (Interactable)
+		{
+			if (!InteractionComponent->IsActorSelected(HitResult.GetActor()))
+			{
+				InteractionComponent->StartSelect(Interactable);
+			}
+			else
+			{
+				InteractionComponent->TickSelect();
+			}
+		}
+		else
+		{
+			InteractionComponent->EndSelect();
+		}
+
+		InteractionComponent->TickInteraction();
+		Cursor3D->SetActorLocation(HitResult.Location);
+	}
 }

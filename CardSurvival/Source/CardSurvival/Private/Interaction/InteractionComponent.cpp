@@ -2,7 +2,8 @@
 
 
 #include "Interaction/InteractionComponent.h"
-#include "Kismet/GameplayStatics.h"
+#include "Player/OwnPlayerController.h"
+#include "Player/PlayerSubsystem.h"
 
 // Sets default values for this component's properties
 UInteractionComponent::UInteractionComponent()
@@ -77,7 +78,7 @@ void UInteractionComponent::EndSelect()
 
 FHitResult UInteractionComponent::GetResult()
 {
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	AOwnPlayerController* PlayerController = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
 
 	if (PlayerController)
 	{

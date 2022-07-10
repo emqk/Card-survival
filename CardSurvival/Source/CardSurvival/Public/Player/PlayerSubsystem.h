@@ -8,6 +8,7 @@
 
 class APlayerBoardPawn;
 class APlayerMapPawn;
+class AOwnPlayerController;
 class UFollowComponent;
 class ACursor;
 class ATokenRow;
@@ -32,9 +33,9 @@ public:
 
 	TObjectPtr<APlayerBoardPawn> GetPlayerBoardPawn() const { return BoardPlayer; };
 	TObjectPtr<APlayerMapPawn> GetPlayerMapPawn() const { return MapPlayer; };
+	TObjectPtr<AOwnPlayerController> GetPlayerController() const;
 
 	TObjectPtr<ACursor> GetPlayerCursor3D() const;
-	TObjectPtr<ACursor> GetPlayerCursor3D(const TObjectPtr<APlayerBoardPawn> PlayerPawn) const;
 	bool IsPlayerInteracting() const;
 	const FHitResult& GetHitResultUnderCursor() const;
 

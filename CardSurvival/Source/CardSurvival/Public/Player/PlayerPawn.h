@@ -12,25 +12,22 @@
 class UCameraComponent;
 class UInteractionComponent;
 class UFollowComponent;
-class ACursor;
 
 UCLASS()
 class CARDSURVIVAL_API APlayerPawn : public APawn
 {
 	GENERATED_BODY()
+	
+	friend class AOwnPlayerController;
 
 public:
 	APlayerPawn();
 
-	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	bool IsInteracting() const;
-
 	const FHitResult& GetHitResult() const { return HitResult; };
-	TObjectPtr<ACursor> GetCursor3D() const;
 
+protected:
+	void InteractionTick(AActor* Cursor3D);
 
 private:
 	
@@ -55,7 +52,4 @@ protected:
 	TObjectPtr<AActor> HitActor = nullptr;
 	UPROPERTY();
 	FHitResult HitResult;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<ACursor> Cursor3D;
 };
