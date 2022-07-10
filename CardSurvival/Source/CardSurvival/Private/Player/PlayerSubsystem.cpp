@@ -5,6 +5,7 @@
 #include "Player/PlayerPawn.h"
 #include "Utils/FollowComponent.h"
 #include "Tokens/TokenRow.h"
+#include "WorldMap/MapManager.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -15,6 +16,7 @@ void UPlayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 
 	TokenRow = Cast<ATokenRow>(UGameplayStatics::GetActorOfClass(GetWorld(), ATokenRow::StaticClass()));
+	MapManager = Cast<AMapManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AMapManager::StaticClass()));
 }
 
 TObjectPtr<APlayerPawn> UPlayerSubsystem::GetPlayerPawn() const

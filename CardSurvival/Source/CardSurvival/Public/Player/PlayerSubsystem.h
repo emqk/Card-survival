@@ -10,6 +10,7 @@ class APlayerPawn;
 class UFollowComponent;
 class ACursor;
 class ATokenRow;
+class AMapManager;
 
 /**
  * Player utils
@@ -33,8 +34,12 @@ public:
 
 	// Tokens
 	ATokenRow* GetTokenRow() const { return TokenRow; };
+	AMapManager* GetMapManager() const { return MapManager; };
 
 protected:
 	UPROPERTY()
 	TObjectPtr<ATokenRow> TokenRow = nullptr;
+	UPROPERTY()
+	TObjectPtr<AMapManager> MapManager = nullptr;
+
 };
