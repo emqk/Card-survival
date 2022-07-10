@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Player/PlayerPawn.h"
 #include "PlayerMapPawn.generated.h"
 
 class UFollowComponent;
 
 UCLASS()
-class CARDSURVIVAL_API APlayerMapPawn : public AActor
+class CARDSURVIVAL_API APlayerMapPawn : public APlayerPawn
 {
 	GENERATED_BODY()
 	
@@ -20,8 +21,6 @@ public:
 	void MoveToWorldIndex_Instant(const FIntPoint& NewLocation);
 
 protected:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> SceneComponent;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UFollowComponent> FollowComponent;
 

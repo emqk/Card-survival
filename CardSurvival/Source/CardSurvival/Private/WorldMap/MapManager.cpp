@@ -85,6 +85,7 @@ void AMapManager::GenerateNextStage()
 	{
 		FTransform SpawnTransform;
 		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		PlayerMapPawn = Cast<APlayerMapPawn>(GetWorld()->SpawnActor(PlayerMapPawnClass, &SpawnTransform, SpawnParams));
 		FIntPoint WorldIndex = NewData.GetPOIs()[0];
 		PlayerMapPawn->MoveToWorldIndex_Instant(WorldIndex);

@@ -5,14 +5,11 @@
 #include "Utils/FollowComponent.h"
 #include "Player/PlayerSubsystem.h"
 #include "WorldMap/MapManager.h"
+#include "Camera/CameraComponent.h" 
 
 APlayerMapPawn::APlayerMapPawn()
 {
-	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.bStartWithTickEnabled = false;
-
-	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	SetRootComponent(SceneComponent);
+	CameraComponent->SetupAttachment(RootComponent);
 
 	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }

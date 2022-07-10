@@ -41,6 +41,9 @@ private:
 
 protected:
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> SceneComponent;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UCameraComponent> CameraComponent;
 
