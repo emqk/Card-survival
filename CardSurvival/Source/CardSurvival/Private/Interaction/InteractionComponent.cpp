@@ -78,17 +78,13 @@ void UInteractionComponent::EndSelect()
 
 FHitResult UInteractionComponent::GetResult()
 {
-	AOwnPlayerController* PlayerController = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
+	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	AOwnPlayerController* PlayerController = PlayerSubsystem->GetPlayerController();
 
 	if (PlayerController)
 	{
-		FVector Location;
-		FVector Direction;
-		PlayerController->DeprojectMousePositionToWorld(Location, Direction);
-
-		ECollisionChannel Channel = ECollisionChannel::ECC_Visibility;
 		FHitResult Result;
-		GetWorld()->LineTraceSingleByChannel(Result, Location, Direction * InteractionDistance, Channel);
+		PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Result);
 
 		return Result;
 	}
