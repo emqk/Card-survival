@@ -134,6 +134,15 @@ FVector AMapManager::GetWorldLocationFromIndex(const FIntPoint& WorldIndex) cons
 	return FVector(WorldIndex.X * NodeOffset.X + (WorldIndex.Y % 2 == 0 ? NodeOffset.X / 2.0f : 0), WorldIndex.Y * NodeOffset.Y, 0) + MapStartLocation;
 }
 
+FIntPoint AMapManager::ConvertWorldLocationToMapIndex(const FVector& WorldLocation) const
+{
+	FVector Temp = (WorldLocation - MapStartLocation);
+	Temp.X /= NodeOffset.X;
+	Temp.Y /= NodeOffset.Y;
+
+	return FIntPoint(Temp.X, Temp.Y);
+}
+
 AMapNode* AMapManager::SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)
 {
 	FActorSpawnParameters Params;

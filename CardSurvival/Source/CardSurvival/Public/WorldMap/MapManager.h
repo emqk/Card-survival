@@ -24,6 +24,7 @@ public:
 	void SpawnNodes();
 
 	FVector GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const;
+	FIntPoint ConvertWorldLocationToMapIndex(const FVector& WorldLocation) const;
 
 protected:
 	AMapNode* SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
@@ -31,7 +32,6 @@ protected:
 	FIntPoint GetGlobalMapStageOffset(const FMapStageData& MapStage) const;
 	FIntPoint GetGlobalXY(const FMapStageData& MapStage, int LocalX, int LocalY) const;
 	bool SetGlobalXY(int GlobalX, int GlobalY, int Value);
-
 
 protected:
 
