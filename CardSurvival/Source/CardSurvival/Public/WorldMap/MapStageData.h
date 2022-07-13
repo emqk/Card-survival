@@ -5,13 +5,15 @@
 #include "CoreMinimal.h"
 #include "MapStageData.generated.h"
 
-USTRUCT(BlueprintType)
-struct CARDSURVIVAL_API FMapStageData
+UCLASS(BlueprintType)
+class CARDSURVIVAL_API UMapStageData : public UObject
 {
-
 	GENERATED_BODY()
 
 public:
+
+	UMapStageData();
+
 	void Generate(int NewHeight, int NewWidth, int NewStage);
 	int GetDataAt(int X, int Y) const;
 	void SetDataAt(int X, int Y, int NewData);

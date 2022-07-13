@@ -4,7 +4,12 @@
 #include "WorldMap/MapStageData.h"
 #include "Kismet/KismetMathLibrary.h"
 
-void FMapStageData::Generate(int NewHeight, int NewWidth, int NewStage)
+UMapStageData::UMapStageData()
+{
+
+}
+
+void UMapStageData::Generate(int NewHeight, int NewWidth, int NewStage)
 {
 	Height = NewHeight;
 	Width = NewWidth;
@@ -20,17 +25,17 @@ void FMapStageData::Generate(int NewHeight, int NewWidth, int NewStage)
 	}
 }
 
-int FMapStageData::GetDataAt(int X, int Y) const
+int UMapStageData::GetDataAt(int X, int Y) const
 {
 	return Data[X * Width + Y];
 }
 
-void FMapStageData::SetDataAt(int X, int Y, int NewData)
+void UMapStageData::SetDataAt(int X, int Y, int NewData)
 {
 	Data[X * Width + Y] = NewData;
 }
 
-void FMapStageData::AddPOI(int X, int Y)
+void UMapStageData::AddPOI(int X, int Y)
 {
 	SetDataAt(X, Y, 1);
 	POIs.Add(FIntPoint(X, Y));

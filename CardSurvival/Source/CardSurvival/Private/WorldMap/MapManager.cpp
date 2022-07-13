@@ -29,8 +29,9 @@ void AMapManager::BeginPlay()
 
 void AMapManager::GenerateNextStage()
 {
-	FMapStageData NewData;
-	NewData.Generate(StageSize.X, StageSize.Y, MapStages.Num());
+	UMapStageData* NewData = NewObject<UMapStageData>(this);
+	NewData->Generate(StageSize.X, StageSize.Y, MapStages.Num());
+	MapStages.Add(NewData);
 
 	// POI
 	int32 NumOfNewNodes = FMath::RandRange(NodesInStageRange.X, NodesInStageRange.Y);
@@ -41,25 +42,20 @@ void AMapManager::GenerateNextStage()
 		float X = FMath::RandRange(POILocalXMargin, Split - 1 - POILocalXMargin) + Split * i;
 		float Y = FMath::RandRange(IndexRangeYFromTo.X, IndexRangeYFromTo.Y);
 
-		NewData.AddPOI(X, Y);
+		NewData->AddPOI(X, Y);
 	}
 
 	// Connections
-	bool PreviousMapStageFound = MapStages.IsValidIndex(MapStages.Num() - 1);
-	FMapStageData* PreviousMapStage = nullptr;
-	if (PreviousMapStageFound)
-	{
-		PreviousMapStage = &MapStages[MapStages.Num() - 1];
-	}
+	const int PreviousStageIndex = MapStages.Num() - 2;
+	const bool PreviousMapStageFound = MapStages.IsValidIndex(PreviousStageIndex);
 
-	MapStages.Add(NewData); // Must to add NewData to the array after setting PreviousMapStageFound, and before SetGlobalXY. Need to change FMapStageData from struct to class. This will allow to have an array of pointers, which would remove this weird execution order
-
-	FIntPoint RightPOI = NewData.GetPOIs()[0];
+	FIntPoint RightPOI = NewData->GetPOIs()[0];
 	RightPOI = GetGlobalXY(NewData, RightPOI.X, RightPOI.Y);
 	if (PreviousMapStageFound)
 	{
+		UMapStageData* PreviousMapStage = MapStages[PreviousStageIndex];
 		FIntPoint LeftPOI = PreviousMapStage->GetPOIs()[0];
-		LeftPOI = GetGlobalXY(*PreviousMapStage, LeftPOI.X, LeftPOI.Y);
+		LeftPOI = GetGlobalXY(PreviousMapStage, LeftPOI.X, LeftPOI.Y);
 		int StartY = LeftPOI.Y + 1;
 		int EndY = RightPOI.Y - 1;
 
@@ -103,7 +99,7 @@ void AMapManager::GenerateNextStage()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		PlayerMapPawn = Cast<APlayerMapPawn>(GetWorld()->SpawnActor(PlayerMapPawnClass, &SpawnTransform, SpawnParams));
-		FIntPoint WorldIndex = NewData.GetPOIs()[0];
+		FIntPoint WorldIndex = NewData->GetPOIs()[0];
 		PlayerMapPawn->MoveToWorldIndex_Instant(WorldIndex);
 	}
 }
@@ -111,7 +107,7 @@ void AMapManager::GenerateNextStage()
 void AMapManager::SpawnNodes()
 {
 	int i = 0;
-	for (FMapStageData& Stage : MapStages)
+	for (UMapStageData* Stage : MapStages)
 	{
 		for (int X = 0; X < StageSize.X; X++)
 		{
@@ -123,7 +119,7 @@ void AMapManager::SpawnNodes()
 					+ FVector(0, i * StageSize.Y * NodeOffset.Y, 0);
 
 				TSubclassOf<AMapNode> ToSpawn;
-				int HexData = Stage.GetDataAt(X, Y);
+				int HexData = Stage->GetDataAt(X, Y);
 				if (HexData == 0)
 				{
 					ToSpawn = EnviroNodeClass;
@@ -183,13 +179,13 @@ FVector AMapManager::FindStageLocationByIndex(int32 StageIndex)
 	return FVector(0 , StageSizeWorld.Y * StageIndex + (StageSizeWorld.Y / 2.0f), 0) + MapStartLocation;
 }
 
-FIntPoint AMapManager::GetGlobalMapStageOffset(const FMapStageData& MapStage) const
+FIntPoint AMapManager::GetGlobalMapStageOffset(const UMapStageData* MapStage) const
 {
-	int CurrentStage = MapStage.GetStage();
+	int CurrentStage = MapStage->GetStage();
 	return FIntPoint(0, CurrentStage * StageSize.Y);
 }
 
-FIntPoint AMapManager::GetGlobalXY(const FMapStageData& MapStage, int LocalX, int LocalY) const
+FIntPoint AMapManager::GetGlobalXY(const UMapStageData* MapStage, int LocalX, int LocalY) const
 {
 	FIntPoint CurrentStageOffset = GetGlobalMapStageOffset(MapStage);
 	return FIntPoint(CurrentStageOffset.X + LocalX, CurrentStageOffset.Y + LocalY);
@@ -205,7 +201,7 @@ bool AMapManager::SetDataGlobalXY(int GlobalX, int GlobalY, int Value)
 	}
 
 	int LocalY = GlobalY % StageSize.Y;
-	MapStages[Index].SetDataAt(GlobalX, LocalY, Value);
+	MapStages[Index]->SetDataAt(GlobalX, LocalY, Value);
 	return true;
 }
 
@@ -219,7 +215,7 @@ int AMapManager::GetDataGlobalXY(int GlobalX, int GlobalY) const
 	}
 
 	int LocalY = GlobalY % StageSize.Y;
-	int Data = MapStages[Index].GetDataAt(GlobalX, LocalY);
+	int Data = MapStages[Index]->GetDataAt(GlobalX, LocalY);
 
 	return Data;
 }
