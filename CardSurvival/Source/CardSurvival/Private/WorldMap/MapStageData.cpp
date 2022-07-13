@@ -20,7 +20,7 @@ void FMapStageData::Generate(int NewHeight, int NewWidth, int NewStage)
 	}
 }
 
-int FMapStageData::GetDataAt(int X, int Y)
+int FMapStageData::GetDataAt(int X, int Y) const
 {
 	return Data[X * Width + Y];
 }

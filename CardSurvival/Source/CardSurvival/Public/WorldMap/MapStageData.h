@@ -13,7 +13,7 @@ struct CARDSURVIVAL_API FMapStageData
 
 public:
 	void Generate(int NewHeight, int NewWidth, int NewStage);
-	int GetDataAt(int X, int Y);
+	int GetDataAt(int X, int Y) const;
 	void SetDataAt(int X, int Y, int NewData);
 
 	void AddPOI(int X, int Y);

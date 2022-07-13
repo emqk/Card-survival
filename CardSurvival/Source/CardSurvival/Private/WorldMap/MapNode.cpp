@@ -20,9 +20,15 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 	if (InteractionType == EInteractionType::Primary)
 	{
 		UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+		AMapManager* MapManager = PlayerSubsystem->GetMapManager();
+
 		APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
-		FIntPoint NewMapIndex = PlayerSubsystem->GetMapManager()->ConvertWorldLocationToMapIndex(GetActorLocation());
-		PlayerPawn->MoveToWorldIndex(NewMapIndex);
+		FIntPoint NewMapIndex = MapManager->ConvertWorldLocationToMapIndex(GetActorLocation());
+
+		if (MapManager->IsNodeWalkable(NewMapIndex) && NewMapIndex.Y >= PlayerPawn->GetWorldIndex().Y)
+		{
+			PlayerPawn->MoveToWorldIndex(NewMapIndex);
+		}
 
 		return true;
 	}

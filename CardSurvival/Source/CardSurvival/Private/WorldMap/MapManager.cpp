@@ -75,7 +75,7 @@ void AMapManager::GenerateNextStage()
 			int X = FMath::RoundToInt(CurrentX);
 			int Y = FMath::RoundToInt(CurrentY);
 
-			SetGlobalXY(X, Y, 2);
+			SetDataGlobalXY(X, Y, 2);
 			if (LastX != -1)
 			{
 				int DiffX = FMath::Abs(LastX - X);
@@ -85,7 +85,7 @@ void AMapManager::GenerateNextStage()
 				{
 					int PreviousX = FMath::RoundToInt(CurrentX - Dir.X);
 					int PreviousY = FMath::RoundToInt(CurrentY - Dir.Y);
-					SetGlobalXY(PreviousX, Y, 2);
+					SetDataGlobalXY(PreviousX, Y, 2);
 				}
 			}
 
@@ -159,6 +159,11 @@ FIntPoint AMapManager::ConvertWorldLocationToMapIndex(const FVector& WorldLocati
 	return FIntPoint(Temp.X, Temp.Y);
 }
 
+bool AMapManager::IsNodeWalkable(const FIntPoint& WorldIndex) const
+{
+	return GetDataGlobalXY(WorldIndex.X, WorldIndex.Y) == 2;
+}
+
 AMapNode* AMapManager::SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)
 {
 	FActorSpawnParameters Params;
@@ -190,7 +195,7 @@ FIntPoint AMapManager::GetGlobalXY(const FMapStageData& MapStage, int LocalX, in
 	return FIntPoint(CurrentStageOffset.X + LocalX, CurrentStageOffset.Y + LocalY);
 }
 
-bool AMapManager::SetGlobalXY(int GlobalX, int GlobalY, int Value)
+bool AMapManager::SetDataGlobalXY(int GlobalX, int GlobalY, int Value)
 {		
 	int Index = GlobalY / StageSize.Y;
 	bool Found = MapStages.IsValidIndex(Index);
@@ -202,4 +207,19 @@ bool AMapManager::SetGlobalXY(int GlobalX, int GlobalY, int Value)
 	int LocalY = GlobalY % StageSize.Y;
 	MapStages[Index].SetDataAt(GlobalX, LocalY, Value);
 	return true;
+}
+
+int AMapManager::GetDataGlobalXY(int GlobalX, int GlobalY) const
+{
+	int Index = GlobalY / StageSize.Y;
+	bool Found = MapStages.IsValidIndex(Index);
+	if (!Found)
+	{
+		return -1;
+	}
+
+	int LocalY = GlobalY % StageSize.Y;
+	int Data = MapStages[Index].GetDataAt(GlobalX, LocalY);
+
+	return Data;
 }

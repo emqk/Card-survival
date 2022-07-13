@@ -30,12 +30,15 @@ public:
 	FVector GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const;
 	FIntPoint ConvertWorldLocationToMapIndex(const FVector& WorldLocation) const;
 
+	bool IsNodeWalkable(const FIntPoint& WorldIndex) const;
+
 protected:
 	AMapNode* SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
 	FVector FindStageLocationByIndex(int32 StageIndex);
 	FIntPoint GetGlobalMapStageOffset(const FMapStageData& MapStage) const;
 	FIntPoint GetGlobalXY(const FMapStageData& MapStage, int LocalX, int LocalY) const;
-	bool SetGlobalXY(int GlobalX, int GlobalY, int Value);
+	bool SetDataGlobalXY(int GlobalX, int GlobalY, int Value);
+	int GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
 protected:
 

@@ -32,7 +32,6 @@ bool APlayerPawn::IsInteracting() const
 
 void APlayerPawn::PrimaryInputPressed()
 {
-	UE_LOG(LogTemp, Warning, TEXT("aaaaa"))
 	if (HitActor)
 	{
 		IInteractable* Interactable = Cast<IInteractable>(HitActor);

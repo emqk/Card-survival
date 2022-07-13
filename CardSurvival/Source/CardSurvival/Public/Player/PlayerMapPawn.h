@@ -22,6 +22,8 @@ public:
 	void MoveToWorldIndex(const FIntPoint& NewLocation);
 	void MoveToWorldIndex_Instant(const FIntPoint& NewLocation);
 
+	FIntPoint GetWorldIndex() const { return WorldLocationIndex; };
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UFollowComponent> FollowComponent;
