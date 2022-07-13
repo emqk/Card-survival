@@ -16,6 +16,10 @@ class CARDSURVIVAL_API ATokenRow : public AActor
 	
 public:	
 	ATokenRow();
+	
+	// Overrides
+	void BeginPlay() override;
+
 
 	UFUNCTION(BlueprintCallable)
 	void AddTokens(UTokenData* Data, int32 Amount);

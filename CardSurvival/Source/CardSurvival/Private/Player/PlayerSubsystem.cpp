@@ -11,14 +11,6 @@
 #include "Kismet/GameplayStatics.h"
 
 
-void UPlayerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
-{
-	Super::Initialize(Collection);
-
-	TokenRow = Cast<ATokenRow>(UGameplayStatics::GetActorOfClass(GetWorld(), ATokenRow::StaticClass()));
-	MapManager = Cast<AMapManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AMapManager::StaticClass()));
-}
-
 TObjectPtr<AOwnPlayerController> UPlayerSubsystem::GetPlayerController() const
 {
 	AOwnPlayerController* PlayerController = Cast<AOwnPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));

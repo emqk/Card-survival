@@ -4,11 +4,27 @@
 #include "WorldMap/MapManager.h"
 #include "WorldMap/MapNode.h"
 #include "Player/PlayerMapPawn.h"
+#include "Player/PlayerSubsystem.h"
 
 AMapManager::AMapManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
+}
+
+void AMapManager::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// Register map manager
+	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetMapManager(this);
+
+	// Generate world
+	for (int i = 0; i < NumberOfStagesToGenerate; i++)
+	{
+		GenerateNextStage();
+	}
+	SpawnNodes();
 }
 
 void AMapManager::GenerateNextStage()

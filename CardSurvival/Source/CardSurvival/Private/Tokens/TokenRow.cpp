@@ -5,11 +5,19 @@
 #include "Tokens/Token.h"
 #include "Tokens/TokenData.h"
 #include "Tokens/TokenStack.h"
+#include "Player/PlayerSubsystem.h"
 
 ATokenRow::ATokenRow()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
+}
+
+void ATokenRow::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetTokenRow(this);
 }
 
 void ATokenRow::AddTokens(UTokenData* Data, int32 Amount)

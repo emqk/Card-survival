@@ -18,6 +18,10 @@ public:
 
 	AMapManager();
 
+	// Overrides
+	void BeginPlay() override;
+
+
 	UFUNCTION(BlueprintCallable)
 	void GenerateNextStage();
 	UFUNCTION(BlueprintCallable)
@@ -46,6 +50,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMapNode> InteractableForestClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	int NumberOfStagesToGenerate = 5;
 	UPROPERTY(EditDefaultsOnly)
 	FVector MapStartLocation = {10000, 0, 0};
 	UPROPERTY(EditDefaultsOnly)

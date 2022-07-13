@@ -24,9 +24,6 @@ class CARDSURVIVAL_API UPlayerSubsystem : public UGameInstanceSubsystem
 
 public:
 
-	// Overrides
-	void Initialize(FSubsystemCollectionBase& Collection) override;
-	
 	// Player
 	void SetBoardPlayer(APlayerBoardPawn* PlayerPawn) { BoardPlayer = PlayerPawn; };
 	void SetMapPlayer(APlayerMapPawn* PlayerPawn) { MapPlayer = PlayerPawn; };
@@ -40,7 +37,9 @@ public:
 	const FHitResult& GetHitResultUnderCursor() const;
 
 	// Tokens
+	void SetTokenRow(ATokenRow* NewTokenRow) { TokenRow = NewTokenRow; };
 	ATokenRow* GetTokenRow() const { return TokenRow; };
+	void SetMapManager(AMapManager* NewMapManager) { MapManager = NewMapManager; };
 	AMapManager* GetMapManager() const { return MapManager; };
 
 protected:
