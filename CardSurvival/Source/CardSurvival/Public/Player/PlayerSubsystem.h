@@ -13,6 +13,7 @@ class UFollowComponent;
 class ACursor;
 class ATokenRow;
 class AMapManager;
+class AEventsManager;
 
 /**
  * Player utils
@@ -42,11 +43,18 @@ public:
 	void SetMapManager(AMapManager* NewMapManager) { MapManager = NewMapManager; };
 	AMapManager* GetMapManager() const { return MapManager; };
 
+	// Events
+	void SetEventsManager(AEventsManager* NewEventsManager) { EventsManager = NewEventsManager; };
+	UFUNCTION(BlueprintPure)
+	AEventsManager* GetEventsManager() const { return EventsManager; };
+
 protected:
 	UPROPERTY()
 	TObjectPtr<ATokenRow> TokenRow = nullptr;
 	UPROPERTY()
 	TObjectPtr<AMapManager> MapManager = nullptr;
+	UPROPERTY()
+	TObjectPtr<AEventsManager> EventsManager = nullptr;
 
 	UPROPERTY()
 	TObjectPtr<APlayerBoardPawn> BoardPlayer = nullptr;
