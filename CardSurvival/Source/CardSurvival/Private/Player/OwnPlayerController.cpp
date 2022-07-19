@@ -6,6 +6,11 @@
 #include "Player/Cursor.h"
 
 
+AOwnPlayerController::AOwnPlayerController()
+{
+	bShowMouseCursor = true;
+}
+
 void AOwnPlayerController::BeginPlay()
 {
 	Super::BeginPlay();

@@ -16,6 +16,8 @@ class CARDSURVIVAL_API AOwnPlayerController : public APlayerController
 	
 public:
 	
+	AOwnPlayerController();
+
 	void BeginPlay() override;
 	void PlayerTick(float DeltaTime) override;
 
