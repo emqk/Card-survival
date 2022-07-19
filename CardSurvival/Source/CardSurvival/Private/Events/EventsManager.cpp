@@ -3,6 +3,7 @@
 
 #include "Events/EventsManager.h"
 #include "Player/PlayerSubsystem.h"
+#include "Player/OwnPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Events/EventWidget.h"
 
@@ -33,9 +34,17 @@ void AEventsManager::StartEvent(UEventData* EventData)
 
 	EventWidgetInstance->ShowEvents(EventData);
 	EventWidgetInstance->AddToViewport();
+
+	// Enable UI input
+	AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
+	PlayerController->SetInputMode(FInputModeUIOnly());
 }
 
 void AEventsManager::EndEvent()
 {
 	EventWidgetInstance->RemoveFromViewport();
+
+	// Enable 3D game input
+	AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
+	PlayerController->SetInputMode(FInputModeGameAndUI());
 }
