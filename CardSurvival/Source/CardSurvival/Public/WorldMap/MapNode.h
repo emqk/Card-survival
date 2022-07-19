@@ -8,6 +8,7 @@
 #include "MapNode.generated.h"
 
 class AMapNodeConnection;
+class UEventData;
 
 UCLASS()
 class CARDSURVIVAL_API AMapNode : public AActor, public IInteractable
@@ -20,8 +21,13 @@ public:
 	// Interaction
 	bool StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType) override;
 
+	UFUNCTION(BlueprintCallable)
+	UEventData* GetRandomEventData() const;
+ 
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> SceneComponent;
 
+	UPROPERTY(EditDefaultsOnly)
+	TArray<UEventData*> EventDatas;
 };

@@ -157,7 +157,8 @@ FIntPoint AMapManager::ConvertWorldLocationToMapIndex(const FVector& WorldLocati
 
 bool AMapManager::IsNodeWalkable(const FIntPoint& WorldIndex) const
 {
-	return GetDataGlobalXY(WorldIndex.X, WorldIndex.Y) == 2;
+	int Data = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
+	return Data == 2 || Data == 1;
 }
 
 AMapNode* AMapManager::SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)
