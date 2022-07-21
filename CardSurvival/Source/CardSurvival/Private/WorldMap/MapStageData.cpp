@@ -2,14 +2,13 @@
 
 
 #include "WorldMap/MapStageData.h"
-#include "Kismet/KismetMathLibrary.h"
 
 UMapStageData::UMapStageData()
 {
 
 }
 
-void UMapStageData::Generate(int NewHeight, int NewWidth, int NewStage)
+void UMapStageData::Generate(int NewHeight, int NewWidth, int NewStage, UMapNodeData* EnviroNodeData)
 {
 	Height = NewHeight;
 	Width = NewWidth;
@@ -20,23 +19,23 @@ void UMapStageData::Generate(int NewHeight, int NewWidth, int NewStage)
 	{
 		for (int Y = 0; Y < Width; Y++)
 		{
-			Data[X * Width + Y] = UKismetMathLibrary::RandomIntegerInRange(0, 0);
+			Data[X * Width + Y] = EnviroNodeData;
 		}
 	}
 }
 
-int UMapStageData::GetDataAt(int X, int Y) const
+UMapNodeData* UMapStageData::GetDataAt(int X, int Y) const
 {
 	return Data[X * Width + Y];
 }
 
-void UMapStageData::SetDataAt(int X, int Y, int NewData)
+void UMapStageData::SetDataAt(int X, int Y, UMapNodeData* NewData)
 {
 	Data[X * Width + Y] = NewData;
 }
 
-void UMapStageData::AddPOI(int X, int Y)
+void UMapStageData::AddPOI(int X, int Y, UMapNodeData* POIData)
 {
-	SetDataAt(X, Y, 1);
+	SetDataAt(X, Y, POIData);
 	POIs.Add(FIntPoint(X, Y));
 }

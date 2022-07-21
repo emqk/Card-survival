@@ -3,6 +3,7 @@
 
 #include "WorldMap/MapManager.h"
 #include "WorldMap/MapNode.h"
+#include "WorldMap/MapNodeData.h"
 #include "Player/PlayerMapPawn.h"
 #include "Player/PlayerSubsystem.h"
 
@@ -30,7 +31,7 @@ void AMapManager::BeginPlay()
 void AMapManager::GenerateNextStage()
 {
 	UMapStageData* NewData = NewObject<UMapStageData>(this);
-	NewData->Generate(StageSize.X, StageSize.Y, MapStages.Num());
+	NewData->Generate(StageSize.X, StageSize.Y, MapStages.Num(), ForestNodeData);
 	MapStages.Add(NewData);
 
 	// POI
@@ -42,7 +43,7 @@ void AMapManager::GenerateNextStage()
 		float X = FMath::RandRange(POILocalXMargin, Split - 1 - POILocalXMargin) + Split * i;
 		float Y = FMath::RandRange(IndexRangeYFromTo.X, IndexRangeYFromTo.Y);
 
-		NewData->AddPOI(X, Y);
+		NewData->AddPOI(X, Y, InteractableForestData);
 	}
 
 	// Connections
@@ -71,7 +72,7 @@ void AMapManager::GenerateNextStage()
 			int X = FMath::RoundToInt(CurrentX);
 			int Y = FMath::RoundToInt(CurrentY);
 
-			SetDataGlobalXY(X, Y, 2);
+			SetDataGlobalXY(X, Y, RoadNodeData);
 			if (LastX != -1)
 			{
 				int DiffX = FMath::Abs(LastX - X);
@@ -81,7 +82,7 @@ void AMapManager::GenerateNextStage()
 				{
 					int PreviousX = FMath::RoundToInt(CurrentX - Dir.X);
 					int PreviousY = FMath::RoundToInt(CurrentY - Dir.Y);
-					SetDataGlobalXY(PreviousX, Y, 2);
+					SetDataGlobalXY(PreviousX, Y, RoadNodeData);
 				}
 			}
 
@@ -119,19 +120,8 @@ void AMapManager::SpawnNodes()
 					+ FVector(0, i * StageSize.Y * NodeOffset.Y, 0);
 
 				TSubclassOf<AMapNode> ToSpawn;
-				int HexData = Stage->GetDataAt(X, Y);
-				if (HexData == 0)
-				{
-					ToSpawn = EnviroNodeClass;
-				}
-				else if (HexData == 1)
-				{
-					ToSpawn = InteractableForestClass;
-				}
-				else if (HexData == 2)
-				{
-					ToSpawn = RoadNodeClass;
-				}
+				UMapNodeData* NodeData = Stage->GetDataAt(X, Y);
+				ToSpawn = NodeData->GetNodeClass();
 
 				SpawnNode(SpawnLocation, ToSpawn);
 			}
@@ -157,8 +147,8 @@ FIntPoint AMapManager::ConvertWorldLocationToMapIndex(const FVector& WorldLocati
 
 bool AMapManager::IsNodeWalkable(const FIntPoint& WorldIndex) const
 {
-	int Data = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
-	return Data == 2 || Data == 1;
+	UMapNodeData* Data = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
+	return Data->GetIsWalkable();
 }
 
 AMapNode* AMapManager::SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)
@@ -192,7 +182,7 @@ FIntPoint AMapManager::GetGlobalXY(const UMapStageData* MapStage, int LocalX, in
 	return FIntPoint(CurrentStageOffset.X + LocalX, CurrentStageOffset.Y + LocalY);
 }
 
-bool AMapManager::SetDataGlobalXY(int GlobalX, int GlobalY, int Value)
+bool AMapManager::SetDataGlobalXY(int GlobalX, int GlobalY, UMapNodeData* Value)
 {		
 	int Index = GlobalY / StageSize.Y;
 	bool Found = MapStages.IsValidIndex(Index);
@@ -206,17 +196,17 @@ bool AMapManager::SetDataGlobalXY(int GlobalX, int GlobalY, int Value)
 	return true;
 }
 
-int AMapManager::GetDataGlobalXY(int GlobalX, int GlobalY) const
+UMapNodeData* AMapManager::GetDataGlobalXY(int GlobalX, int GlobalY) const
 {
 	int Index = GlobalY / StageSize.Y;
 	bool Found = MapStages.IsValidIndex(Index);
 	if (!Found)
 	{
-		return -1;
+		return nullptr;
 	}
 
 	int LocalY = GlobalY % StageSize.Y;
-	int Data = MapStages[Index]->GetDataAt(GlobalX, LocalY);
+	UMapNodeData* Data = MapStages[Index]->GetDataAt(GlobalX, LocalY);
 
 	return Data;
 }

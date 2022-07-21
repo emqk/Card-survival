@@ -6,8 +6,9 @@
 #include "WorldMap/MapStageData.h"
 #include "MapManager.generated.h"
 
-class AMapNode;
 class APlayerMapPawn;
+class AMapNode;
+class UMapNodeData;
 
 UCLASS()
 class CARDSURVIVAL_API AMapManager : public AActor
@@ -37,8 +38,8 @@ protected:
 	FVector FindStageLocationByIndex(int32 StageIndex);
 	FIntPoint GetGlobalMapStageOffset(const UMapStageData* MapStage) const;
 	FIntPoint GetGlobalXY(const UMapStageData* MapStage, int LocalX, int LocalY) const;
-	bool SetDataGlobalXY(int GlobalX, int GlobalY, int Value);
-	int GetDataGlobalXY(int GlobalX, int GlobalY) const;
+	bool SetDataGlobalXY(int GlobalX, int GlobalY, UMapNodeData* Value);
+	UMapNodeData* GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
 protected:
 
@@ -47,11 +48,13 @@ protected:
 	TArray<UMapStageData*> MapStages;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMapNode> RoadNodeClass;
+	TObjectPtr<UMapNodeData> RoadNodeData;
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMapNode> EnviroNodeClass;
+	TObjectPtr<UMapNodeData> ForestNodeData;
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AMapNode> InteractableForestClass;
+	TObjectPtr<UMapNodeData> InteractableForestData;
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UMapNodeData> InteractableGraveyardData;
 
 	UPROPERTY(EditDefaultsOnly)
 	int NumberOfStagesToGenerate = 5;
