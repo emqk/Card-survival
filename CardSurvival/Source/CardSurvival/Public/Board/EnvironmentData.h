@@ -17,7 +17,7 @@ class CARDSURVIVAL_API UEnvironmentData : public UPrimaryDataAsset
 
 public:
 	UFUNCTION(BlueprintCallable)
-	TSoftObjectPtr<UWorld> GetLevelInstance() const { return LevelInstance; };
+	const TSoftObjectPtr<UWorld>& GetLevelInstance() const { return LevelInstance; };
 	UFUNCTION(BlueprintCallable)
 	FVector GetOffset() const { return Offset; };
 

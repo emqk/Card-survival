@@ -32,6 +32,7 @@ public:
 	FIntPoint ConvertWorldLocationToMapIndex(const FVector& WorldLocation) const;
 
 	bool IsNodeWalkable(const FIntPoint& WorldIndex) const;
+	UMapNodeData* GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
 protected:
 	AMapNode* SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
@@ -39,7 +40,6 @@ protected:
 	FIntPoint GetGlobalMapStageOffset(const UMapStageData* MapStage) const;
 	FIntPoint GetGlobalXY(const UMapStageData* MapStage, int LocalX, int LocalY) const;
 	bool SetDataGlobalXY(int GlobalX, int GlobalY, UMapNodeData* Value);
-	UMapNodeData* GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
 protected:
 

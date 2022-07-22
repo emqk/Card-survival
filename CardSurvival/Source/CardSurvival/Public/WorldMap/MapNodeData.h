@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Board/EnvironmentData.h"
 #include "MapNodeData.generated.h"
 
 class UPrimaryDataAsset;
@@ -16,7 +17,7 @@ class CARDSURVIVAL_API UMapNodeData : public UPrimaryDataAsset
 public:
 
 	TSubclassOf<AMapNode> GetNodeClass() const { return NodeClass; };
-	TSoftObjectPtr<UWorld> GetLevelInstance() const { return LevelInstance; };
+	UEnvironmentData* GetEnvironmentData() const { return EnvironmentData; };
 	bool GetIsWalkable() const { return bIsWalkable; };
 
 protected:
@@ -24,7 +25,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AMapNode> NodeClass;
 	UPROPERTY(EditDefaultsOnly)
-	TSoftObjectPtr<UWorld> LevelInstance;
+	UEnvironmentData* EnvironmentData;
 	UPROPERTY(EditDefaultsOnly)
 	bool bIsWalkable = false;
 };

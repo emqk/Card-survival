@@ -4,7 +4,10 @@
 #include "WorldMap/MapNode.h"
 #include "Player/PlayerMapPawn.h"
 #include "Player/PlayerSubsystem.h"
+#include "Player/PlayerBoardPawn.h"
 #include "WorldMap/MapManager.h"
+#include "WorldMap/MapNodeData.h"
+#include "Board/LevelStreamingSubsystem.h"
 #include "Events/EventsManager.h"
 
 AMapNode::AMapNode()
@@ -36,6 +39,7 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 
 		APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
 		FIntPoint NewMapIndex = MapManager->ConvertWorldLocationToMapIndex(GetActorLocation());
+		UMapNodeData* NodeData = MapManager->GetDataGlobalXY(NewMapIndex.X, NewMapIndex.Y);
 
 		if (MapManager->IsNodeWalkable(NewMapIndex) && NewMapIndex.Y >= PlayerPawn->GetWorldIndex().Y)
 		{
@@ -45,6 +49,18 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 			if (EventToStart)
 			{
 				PlayerSubsystem->GetEventsManager()->StartEvent(EventToStart);
+			}
+
+			// Go to the board and load the map /// Need to clean this up :) 
+			/// Remember to destroy old enviro!
+			if (NodeData->GetEnvironmentData())
+			{
+				APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+				APlayerBoardPawn* PlayerBoardPawn = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerBoardPawn();
+				PlayerController->Possess(PlayerBoardPawn);
+
+				UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();
+				GetGameInstance()->GetSubsystem<ULevelStreamingSubsystem>()->LoadLevelInstance(EnvironmentData->GetLevelInstance(), EnvironmentData->GetOffset());
 			}
 		}
 
