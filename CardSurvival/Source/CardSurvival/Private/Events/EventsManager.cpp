@@ -37,7 +37,9 @@ void AEventsManager::StartEvent(UEventData* EventData)
 
 	// Enable UI input
 	AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
-	PlayerController->SetInputMode(FInputModeUIOnly());
+	FInputModeUIOnly InputData;
+	InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	PlayerController->SetInputMode(InputData);
 }
 
 void AEventsManager::EndEvent()
@@ -46,5 +48,9 @@ void AEventsManager::EndEvent()
 
 	// Enable 3D game input
 	AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
-	PlayerController->SetInputMode(FInputModeGameAndUI());
+	FInputModeGameAndUI InputData;
+	InputData.SetHideCursorDuringCapture(false);
+	InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	InputData.SetWidgetToFocus(nullptr);
+	PlayerController->SetInputMode(InputData);
 }
