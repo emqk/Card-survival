@@ -22,7 +22,7 @@ ACard::ACard()
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	BaseMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
-	BaseMeshComponent->SetupAttachment(RootComponent);
+	SetRootComponent(BaseMeshComponent);
 
 	InfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidget"));
 	InfoWidgetComponent->SetCollisionProfileName("NoCollision");

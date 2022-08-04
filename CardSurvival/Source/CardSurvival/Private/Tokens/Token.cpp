@@ -15,7 +15,7 @@ AToken::AToken()
 	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	TokenMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TokenMesh"));
-	TokenMeshComponent->SetupAttachment(RootComponent);
+	SetRootComponent(TokenMeshComponent);
 
 	TextBackgroundComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TokenBackgroundMesh"));
 	TextBackgroundComponent->SetupAttachment(TokenMeshComponent);
