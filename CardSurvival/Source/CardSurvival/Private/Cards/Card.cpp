@@ -72,6 +72,24 @@ void ACard::SetPlayerSubsystem()
 	PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
 }
 
+void ACard::HighlightCard(bool Active)
+{
+	HighlightBorder(Active);
+
+	UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
+	if (InfoWidget)
+	{
+		if (Active)
+		{
+			InfoWidget->OnSelected();
+		}
+		else
+		{
+			InfoWidget->OnUnselected();
+		}
+	}
+}
+
 void ACard::HighlightBorder(bool Active)
 {
 	BorderDynamicMaterialInstance->SetScalarParameterValue(TEXT("Emission Strength"), Active ? EmissionStrengthSelect : EmissionStrengthDefault);
@@ -172,17 +190,9 @@ bool ACard::StartSelect_Implementation(AActor* Interactor)
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
 		FollowComponent->SetFollowRotation(FRotator(25.0f, 0, 0));
-
-		// Material
-		HighlightBorder(true);
-
-		// Widget
-		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
-		if (InfoWidget)
-		{
-			InfoWidget->OnSelected();
-		}
 	}
+
+	HighlightCard(true);
 
 	return true;
 }
@@ -201,17 +211,9 @@ bool ACard::EndSelect_Implementation(AActor* Interactor)
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->RemoveAdditionalOffset();
 		FollowComponent->SetFollowRotation(FRotator(0, 0, 0));
-
-		// Material
-		HighlightBorder(false);
-
-		// Widget
-		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
-		if (InfoWidget)
-		{
-			InfoWidget->OnUnselected();
-		}
 	}
+
+	HighlightCard(false);
 
 	return true;
 }

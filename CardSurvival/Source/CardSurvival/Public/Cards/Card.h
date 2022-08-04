@@ -48,6 +48,7 @@ public:
 	void SetPlayerSubsystem();
 
 protected:
+	void HighlightCard(bool Active);
 	void HighlightBorder(bool Active);
 
 protected:
