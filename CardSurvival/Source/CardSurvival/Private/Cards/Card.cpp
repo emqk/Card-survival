@@ -151,6 +151,7 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 {
 	if (CurrentInteractionType == EInteractionType::Primary)
 	{
+		HighlightCard(false);
 		SetActorEnableCollision(true);
 
 		FVector CurrentLocation = GetActorLocation();
@@ -190,9 +191,9 @@ bool ACard::StartSelect_Implementation(AActor* Interactor)
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
 		FollowComponent->SetFollowRotation(FRotator(25.0f, 0, 0));
-	}
 
-	HighlightCard(true);
+		HighlightCard(true);
+	}
 
 	return true;
 }
@@ -211,9 +212,9 @@ bool ACard::EndSelect_Implementation(AActor* Interactor)
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->RemoveAdditionalOffset();
 		FollowComponent->SetFollowRotation(FRotator(0, 0, 0));
-	}
 
-	HighlightCard(false);
+		HighlightCard(false);
+	}
 
 	return true;
 }
