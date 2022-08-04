@@ -48,6 +48,9 @@ public:
 	void SetPlayerSubsystem();
 
 protected:
+	void HighlightBorder(bool Active);
+
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
 
@@ -71,6 +74,14 @@ protected:
 	TObjectPtr<UPlayZoneComponent> PlayZone;
 	UPROPERTY(EditDefaultsOnly)
 	FVector HoldHeightOffset = FVector(0, 0, 250);
+
+	UPROPERTY(EditDefaultsOnly)
+	float EmissionStrengthSelect = 40.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float EmissionStrengthDefault = 1.0f;
+
+	UPROPERTY()
+	TObjectPtr<UMaterialInstanceDynamic> BorderDynamicMaterialInstance = nullptr;
 
 	EInteractionType CurrentInteractionType;
 

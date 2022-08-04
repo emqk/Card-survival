@@ -43,6 +43,8 @@ void ACard::BeginPlay()
 
 	SetPlayerSubsystem();
 	ProgressBarMeshComponent->SetVisibility(false);
+
+	BorderDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(0);
 }
 
 void ACard::ApplyCardData()
@@ -68,6 +70,11 @@ void ACard::ApplyCardData()
 void ACard::SetPlayerSubsystem()
 {
 	PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+}
+
+void ACard::HighlightBorder(bool Active)
+{
+	BorderDynamicMaterialInstance->SetScalarParameterValue(TEXT("Emission Strength"), Active ? EmissionStrengthSelect : EmissionStrengthDefault);
 }
 
 bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType)
@@ -161,9 +168,13 @@ bool ACard::StartSelect_Implementation(AActor* Interactor)
 	bool PlayerInteracting = GetPlayerSubsystem()->IsPlayerInteracting();
 	if (!PlayerInteracting)
 	{
+		// Transform
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->SetAdditionalOffset(FVector(0, 0, 100));
 		FollowComponent->SetFollowRotation(FRotator(25.0f, 0, 0));
+
+		// Material
+		HighlightBorder(true);
 
 		// Widget
 		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
@@ -186,9 +197,13 @@ bool ACard::EndSelect_Implementation(AActor* Interactor)
 	bool PlayerInteracting = GetPlayerSubsystem()->IsPlayerInteracting();
 	if (!PlayerInteracting)
 	{
+		// Transform
 		FVector CurrentLocation = GetActorLocation();
 		FollowComponent->RemoveAdditionalOffset();
 		FollowComponent->SetFollowRotation(FRotator(0, 0, 0));
+
+		// Material
+		HighlightBorder(false);
 
 		// Widget
 		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
