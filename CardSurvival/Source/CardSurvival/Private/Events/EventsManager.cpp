@@ -32,7 +32,7 @@ void AEventsManager::StartEvent(UEventData* EventData)
 		EventWidgetInstance = CreateWidget<UEventWidget>(GetWorld(), EventWidgetClass);
 	}
 
-	EventWidgetInstance->ShowEvents(EventData);
+	EventWidgetInstance->Display(EventData);
 	EventWidgetInstance->AddToViewport();
 
 	// Enable UI input

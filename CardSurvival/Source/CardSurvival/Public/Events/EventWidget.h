@@ -14,6 +14,10 @@ class CARDSURVIVAL_API UEventWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void ShowEvents(UEventData* EventData);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Display(UEventData* NewEventData);
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UEventData> EventData;
 };

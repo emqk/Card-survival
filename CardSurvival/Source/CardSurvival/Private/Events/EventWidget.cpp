@@ -2,3 +2,8 @@
 
 
 #include "Events/EventWidget.h"
+
+void UEventWidget::Display_Implementation(UEventData* NewEventData)
+{
+	EventData = NewEventData;
+}
