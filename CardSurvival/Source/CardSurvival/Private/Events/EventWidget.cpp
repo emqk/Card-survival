@@ -7,3 +7,9 @@ void UEventWidget::Display_Implementation(UEventData* NewEventData)
 {
 	EventData = NewEventData;
 }
+
+void UEventWidget::NextStage()
+{
+	CurrentStage++;
+	OnNextStageOpen(CurrentStage);
+}

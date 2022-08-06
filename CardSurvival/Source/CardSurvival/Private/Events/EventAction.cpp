@@ -7,7 +7,7 @@
 
 void UEventAction::Perform_Implementation()
 {
-	UE_LOG(LogTemp, Error, TEXT("Function not implemented!"))
+	GetEventsManager()->NextStage();
 }
 
 AEventsManager* UEventAction::GetEventsManager() const

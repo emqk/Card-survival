@@ -42,6 +42,21 @@ void AEventsManager::StartEvent(UEventData* EventData)
 	PlayerController->SetInputMode(InputData);
 }
 
+void AEventsManager::NextStage()
+{
+	if (!EventWidgetInstance)
+	{
+		return;
+	}
+
+	EventWidgetInstance->NextStage();
+
+	if (EventWidgetInstance->ShouldEnd())
+	{
+		EndEvent();
+	}
+}
+
 void AEventsManager::EndEvent()
 {
 	EventWidgetInstance->RemoveFromViewport();

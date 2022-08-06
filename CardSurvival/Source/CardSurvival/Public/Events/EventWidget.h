@@ -16,8 +16,18 @@ class CARDSURVIVAL_API UEventWidget : public UUserWidget
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Display(UEventData* NewEventData);
+	UFUNCTION(BlueprintCallable)
+	void NextStage();
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void OnNextStageOpen(int Stage);
+
+	bool ShouldEnd() { return CurrentStage >= 3; };
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UEventData> EventData;
+
+	// -1 = Not started. 0 = First stage
+	UPROPERTY(BlueprintReadWrite)
+	int CurrentStage = -1;
 };

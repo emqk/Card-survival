@@ -22,7 +22,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartEvent(UEventData* EventData);
 	UFUNCTION(BlueprintCallable)
+	void NextStage();
+	UFUNCTION(BlueprintCallable)
 	void EndEvent();
+
 
 
 protected:
