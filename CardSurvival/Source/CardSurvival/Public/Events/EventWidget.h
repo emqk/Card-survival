@@ -17,6 +17,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Display(UEventData* NewEventData);
 	UFUNCTION(BlueprintCallable)
+	void GoToFirstStage();
+	UFUNCTION(BlueprintCallable)
 	void NextStage();
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void OnNextStageOpen(int Stage);
