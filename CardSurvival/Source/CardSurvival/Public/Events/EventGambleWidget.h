@@ -19,4 +19,8 @@ public:
 	void Start();
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void End();
+
+protected:
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsGambling = false;
 };

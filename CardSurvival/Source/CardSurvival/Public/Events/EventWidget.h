@@ -21,7 +21,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void OnNextStageOpen(int Stage);
 
-	bool ShouldEnd() { return CurrentStage >= 3; };
+	bool ShouldEnd() { return CurrentStage >= 2; };
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
