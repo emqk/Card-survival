@@ -26,11 +26,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EndEvent();
 
-
+	UFUNCTION(BlueprintCallable)
+	void SetEventActionChance(int NewEventActionChance) { EventActionChance = NewEventActionChance; }
+	UFUNCTION(BlueprintCallable)
+	int GetEventActionChance() const { return EventActionChance; };
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UEventWidget> EventWidgetClass;
 	UPROPERTY(VisibleAnywhere)
 	UEventWidget* EventWidgetInstance;
+	UPROPERTY(VisibleAnywhere)
+	int EventActionChance;
 };

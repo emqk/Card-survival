@@ -17,8 +17,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetActionClass(const TSubclassOf<UEventAction>& NewActionClass) { ActionClass = NewActionClass; };
 
+	UFUNCTION(BlueprintCallable)
+	int GetChance() const { return Chance; };
+	UFUNCTION(BlueprintCallable)
+	void SetChance(int NewChance) { Chance = NewChance; };
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TSubclassOf<UEventAction> ActionClass;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int Chance;
 };

@@ -8,6 +8,18 @@
 
 class UEventAction;
 
+USTRUCT(BlueprintType)
+struct FEventActionData 
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UEventAction> Actions;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 99))
+	FIntPoint ChanceRange = FIntPoint(1, 99);
+};
+
+
 UCLASS()
 class CARDSURVIVAL_API UEventData : public UPrimaryDataAsset
 {
@@ -19,5 +31,5 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UTexture2D> BackgroundTexture;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TArray<TSubclassOf<UEventAction>> Actions;
+	TArray<FEventActionData> ActionDatas;
 };
