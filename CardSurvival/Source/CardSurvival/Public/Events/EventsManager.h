@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Events/EventData.h"
 #include "GameFramework/Actor.h"
 #include "EventsManager.generated.h"
 
 class UEventWidget;
-class UEventData;
 
 UCLASS()
 class CARDSURVIVAL_API AEventsManager : public AActor
@@ -27,9 +27,9 @@ public:
 	void EndEvent();
 
 	UFUNCTION(BlueprintCallable)
-	void SetEventActionChance(int NewEventActionChance) { EventActionChance = NewEventActionChance; }
+	void SetEventActionInitData(const FEventActionInitData& NewEventActionInitData) { EventActionInitData = NewEventActionInitData; }
 	UFUNCTION(BlueprintCallable)
-	int GetEventActionChance() const { return EventActionChance; };
+	FEventActionInitData GetEventActionInitData() const { return EventActionInitData; };
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -37,5 +37,5 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UEventWidget* EventWidgetInstance;
 	UPROPERTY(VisibleAnywhere)
-	int EventActionChance;
+	FEventActionInitData EventActionInitData;
 };

@@ -9,6 +9,16 @@
 class UEventAction;
 
 USTRUCT(BlueprintType)
+struct FEventActionInitData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int Chance;
+};
+
+
+USTRUCT(BlueprintType)
 struct FEventActionData 
 {
 	GENERATED_BODY()
