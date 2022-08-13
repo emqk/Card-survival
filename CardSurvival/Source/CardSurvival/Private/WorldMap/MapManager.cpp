@@ -204,15 +204,21 @@ void AMapManager::ConnectWithNextStage(int StageIndex)
 	}
 
 	UMapStageData* LeftMapStage = MapStages[StageIndex];
-	FIntPoint LeftPOI = LeftMapStage->GetPOIs()[0];
-	LeftPOI = GetGlobalXY(LeftMapStage, LeftPOI.X, LeftPOI.Y);
+	TArray<FIntPoint> LeftPOIs = LeftMapStage->GetPOIs();
 
 	UMapStageData* RightMapStage = MapStages[StageIndex + 1];
-	FIntPoint RightPOI = RightMapStage->GetPOIs()[0];
-	RightPOI = GetGlobalXY(RightMapStage, RightPOI.X, RightPOI.Y);
+	TArray<FIntPoint> RightPOIs = RightMapStage->GetPOIs();
 
-	//Road
-	CreateRoadFromTo(LeftPOI + FIntPoint(0, 1), RightPOI);
+	for (const FIntPoint& LeftPOI : LeftPOIs)
+	{
+		FIntPoint LeftPOIGlobal = GetGlobalXY(LeftMapStage, LeftPOI.X, LeftPOI.Y);
+
+		for (const FIntPoint& RightPOI : RightPOIs)
+		{
+			FIntPoint RightPOIGlobal = GetGlobalXY(RightMapStage, RightPOI.X, RightPOI.Y);
+			CreateRoadFromTo(LeftPOIGlobal + FIntPoint(0, 1), RightPOIGlobal);
+		}
+	}
 }
 
 void AMapManager::CreateRoadFromTo(const FIntPoint& From, const FIntPoint& To)
