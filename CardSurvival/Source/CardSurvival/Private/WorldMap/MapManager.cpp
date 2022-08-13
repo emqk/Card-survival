@@ -48,52 +48,8 @@ void AMapManager::GenerateNextStage()
 		NewData->AddPOI(X, Y, MapNodeData);
 	}
 
-	// Connections
-	const int PreviousStageIndex = MapStages.Num() - 2;
-	const bool PreviousMapStageFound = MapStages.IsValidIndex(PreviousStageIndex);
-
-	FIntPoint RightPOI = NewData->GetPOIs()[0];
-	RightPOI = GetGlobalXY(NewData, RightPOI.X, RightPOI.Y);
-	if (PreviousMapStageFound)
-	{
-		UMapStageData* PreviousMapStage = MapStages[PreviousStageIndex];
-		FIntPoint LeftPOI = PreviousMapStage->GetPOIs()[0];
-		LeftPOI = GetGlobalXY(PreviousMapStage, LeftPOI.X, LeftPOI.Y);
-		int StartY = LeftPOI.Y + 1;
-		int EndY = RightPOI.Y - 1;
-
-		float CurrentX = LeftPOI.X;
-		float CurrentY = (float)StartY;
-		FVector2D Dir = FVector2D(RightPOI.X - LeftPOI.X, RightPOI.Y - LeftPOI.Y);
-		Dir.Normalize();
-
-		int LastX = -1;
-		int LastY = -1;
-		while (FMath::RoundToInt(CurrentY) <= EndY || FMath::RoundToInt(CurrentX) <= RightPOI.X - 1)
-		{
-			int X = FMath::RoundToInt(CurrentX);
-			int Y = FMath::RoundToInt(CurrentY);
-
-			SetDataGlobalXY(X, Y, RoadNodeData);
-			if (LastX != -1)
-			{
-				int DiffX = FMath::Abs(LastX - X);
-				int DiffY = FMath::Abs(LastY - Y);
-				int MoveSum =  DiffX + DiffY;
-				if (MoveSum > 1)
-				{
-					int PreviousX = FMath::RoundToInt(CurrentX - Dir.X);
-					int PreviousY = FMath::RoundToInt(CurrentY - Dir.Y);
-					SetDataGlobalXY(PreviousX, Y, RoadNodeData);
-				}
-			}
-
-			CurrentX += Dir.X;
-			CurrentY += Dir.Y;
-			LastX = X;
-			LastY = Y;
-		}
-	}
+	// Connection
+	ConnectWithNextStage(MapStages.Num() - 2);
 
 	// Player
 	if (MapStages.Num() == 1)
@@ -196,6 +152,81 @@ bool AMapManager::SetDataGlobalXY(int GlobalX, int GlobalY, UMapNodeData* Value)
 	int LocalY = GlobalY % StageSize.Y;
 	MapStages[Index]->SetDataAt(GlobalX, LocalY, Value);
 	return true;
+}
+
+TArray<FIntPoint> AMapManager::GetNeighbours(const FIntPoint& Center) const
+{
+	TArray<FIntPoint> Result;
+
+	Result.Add(Center + FIntPoint(1, 0));
+	Result.Add(Center + FIntPoint(-1, 0));
+	Result.Add(Center + FIntPoint(0, 1));
+	Result.Add(Center + FIntPoint(0, -1));
+
+	if (Center.Y % 2 == 0)
+	{
+		Result.Add(Center + FIntPoint(1, 1));
+		Result.Add(Center + FIntPoint(1, -1));
+	}
+	else
+	{
+		Result.Add(Center + FIntPoint(-1, 1));
+		Result.Add(Center + FIntPoint(-1, -1));
+	}
+
+	return Result;
+}
+
+FIntPoint AMapManager::FindClosestNeighbour(const TArray<FIntPoint>& Neighbours, const FIntPoint& Destination) const
+{
+	float Closest = TNumericLimits<float>::Max();
+	FIntPoint Result;
+
+	for (const FIntPoint& Curr : Neighbours)
+	{
+		float DistanceSq = FVector2D::DistSquared(Curr, Destination);
+		if (DistanceSq < Closest)
+		{
+			Result = Curr;
+			Closest = DistanceSq;
+		}
+	}
+
+	return Result;
+}
+
+void AMapManager::ConnectWithNextStage(int StageIndex)
+{
+	if (!MapStages.IsValidIndex(StageIndex) || !MapStages.IsValidIndex(StageIndex + 1))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Can't connect with next stage - Index out of range!"))
+		return;
+	}
+
+	UMapStageData* LeftMapStage = MapStages[StageIndex];
+	FIntPoint LeftPOI = LeftMapStage->GetPOIs()[0];
+	LeftPOI = GetGlobalXY(LeftMapStage, LeftPOI.X, LeftPOI.Y);
+
+	UMapStageData* RightMapStage = MapStages[StageIndex + 1];
+	FIntPoint RightPOI = RightMapStage->GetPOIs()[0];
+	RightPOI = GetGlobalXY(RightMapStage, RightPOI.X, RightPOI.Y);
+
+	//Road
+	CreateRoadFromTo(LeftPOI + FIntPoint(0, 1), RightPOI);
+}
+
+void AMapManager::CreateRoadFromTo(const FIntPoint& From, const FIntPoint& To)
+{
+	FIntPoint RoadIndex = From;
+	while (RoadIndex != To)
+	{
+		SetDataGlobalXY(RoadIndex.X, RoadIndex.Y, RoadNodeData);
+
+		TArray<FIntPoint> Neighbours = GetNeighbours(RoadIndex);
+		FIntPoint Closest = FindClosestNeighbour(Neighbours, To);
+
+		RoadIndex = Closest;
+	}
 }
 
 UMapNodeData* AMapManager::GetDataGlobalXY(int GlobalX, int GlobalY) const

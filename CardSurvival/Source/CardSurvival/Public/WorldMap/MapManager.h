@@ -40,6 +40,12 @@ protected:
 	FIntPoint GetGlobalMapStageOffset(const UMapStageData* MapStage) const;
 	FIntPoint GetGlobalXY(const UMapStageData* MapStage, int LocalX, int LocalY) const;
 	bool SetDataGlobalXY(int GlobalX, int GlobalY, UMapNodeData* Value);
+	TArray<FIntPoint> GetNeighbours(const FIntPoint& Center) const;
+	FIntPoint FindClosestNeighbour(const TArray<FIntPoint>& Neighbours, const FIntPoint& Destination) const;
+
+	// Connections
+	void ConnectWithNextStage(int StageIndex);
+	void CreateRoadFromTo(const FIntPoint& From, const FIntPoint& To);
 
 protected:
 
