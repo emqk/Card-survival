@@ -7,6 +7,7 @@
 #include "Utils/FollowComponent.h"
 #include "Tokens/TokenRow.h"
 #include "WorldMap/MapManager.h"
+#include "Cards/CardManager.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -40,4 +41,17 @@ const FHitResult& UPlayerSubsystem::GetHitResultUnderCursor() const
 	const FHitResult& HitResult = Player->GetHitResult();
 
 	return HitResult;
+}
+
+ACardManager* UPlayerSubsystem::GetCardManager()
+{
+	if (CardManager)
+	{
+		return CardManager;
+	}
+	
+	ACardManager* NewCardManager = Cast<ACardManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ACardManager::StaticClass()));
+	SetCardManager(NewCardManager);
+
+	return CardManager;
 }

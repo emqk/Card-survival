@@ -14,6 +14,7 @@ class ACursor;
 class ATokenRow;
 class AMapManager;
 class AEventsManager;
+class ACardManager;
 
 /**
  * Player utils
@@ -48,6 +49,12 @@ public:
 	UFUNCTION(BlueprintPure)
 	AEventsManager* GetEventsManager() const { return EventsManager; };
 
+	// Cards
+	void SetCardManager(ACardManager* NewCardManager) { CardManager = NewCardManager; };
+	UFUNCTION(BlueprintPure)
+	ACardManager* GetCardManager();
+
+
 protected:
 	UPROPERTY()
 	TObjectPtr<ATokenRow> TokenRow = nullptr;
@@ -55,6 +62,8 @@ protected:
 	TObjectPtr<AMapManager> MapManager = nullptr;
 	UPROPERTY()
 	TObjectPtr<AEventsManager> EventsManager = nullptr;
+	UPROPERTY()
+	TObjectPtr<ACardManager> CardManager = nullptr;
 
 	UPROPERTY()
 	TObjectPtr<APlayerBoardPawn> BoardPlayer = nullptr;

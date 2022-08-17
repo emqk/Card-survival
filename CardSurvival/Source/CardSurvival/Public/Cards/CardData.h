@@ -8,9 +8,18 @@
 
 class UPrimaryDataAsset;
 
-/**
- * 
- */
+UENUM(BlueprintType)
+enum class ECardCategory : uint8
+{
+	Equippable, Consumable, Usable, Interactable
+};
+
+UENUM(BlueprintType)
+enum class ECardRarity : uint8
+{
+	Common, Rare, Epic, Legendary
+};
+
 UCLASS()
 class CARDSURVIVAL_API UCardData : public UPrimaryDataAsset
 {
@@ -22,6 +31,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetStrength() const { return Strength; }
 	UFUNCTION(BlueprintCallable)
+	ECardCategory GetCategory() const { return Category; }
+	UFUNCTION(BlueprintCallable)
+	ECardRarity GetRarity() const { return Rarity; }
+	UFUNCTION(BlueprintCallable)
 	UParallaxData* GetParalaxData() const { return ParallaxData; }
 	UFUNCTION(BlueprintCallable)
 	const TArray<FTokenDataInstance>& GetStatuses() const { return Statuses; };
@@ -31,6 +44,10 @@ protected:
 	FText Name;
 	UPROPERTY(EditDefaultsOnly)
 	int32 Strength;
+	UPROPERTY(EditDefaultsOnly)
+	ECardCategory Category;
+	UPROPERTY(EditDefaultsOnly)
+	ECardRarity Rarity;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UParallaxData> ParallaxData;
 	UPROPERTY(EditDefaultsOnly)

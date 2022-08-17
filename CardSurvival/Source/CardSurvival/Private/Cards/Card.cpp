@@ -4,6 +4,8 @@
 #include "Cards/Card.h"
 #include "Cards/CardData.h"
 #include "Cards/CardInfoWidget.h"
+#include "Cards/CardSettings.h"
+#include "Cards/CardManager.h"
 #include "Tokens/TokenRow.h"
 #include "Board/PlayZoneComponent.h"
 #include "Utils/FollowComponent.h"
@@ -45,6 +47,19 @@ void ACard::BeginPlay()
 	ProgressBarMeshComponent->SetVisibility(false);
 
 	BorderDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(0);
+
+
+	// Apply card settings
+	ACardManager* CardManager = PlayerSubsystem->GetCardManager();
+	if (CardManager)
+	{
+		UCardSettings* CardsSettings = CardManager->GetCardsSettings();
+		if (CardsSettings)
+		{
+			FLinearColor Color = CardsSettings->GetRarityColor(CardData->GetRarity());
+			BorderDynamicMaterialInstance->SetVectorParameterValue(FName("Border Color"), Color);
+		}
+	}
 }
 
 void ACard::ApplyCardData()
