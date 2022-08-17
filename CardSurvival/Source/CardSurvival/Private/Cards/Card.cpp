@@ -47,7 +47,7 @@ void ACard::BeginPlay()
 	ProgressBarMeshComponent->SetVisibility(false);
 
 	BorderDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(0);
-
+	BackgroundDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(1);
 
 	// Apply card settings
 	ACardManager* CardManager = PlayerSubsystem->GetCardManager();
@@ -56,8 +56,11 @@ void ACard::BeginPlay()
 		UCardSettings* CardsSettings = CardManager->GetCardsSettings();
 		if (CardsSettings)
 		{
-			FLinearColor Color = CardsSettings->GetRarityColor(CardData->GetRarity());
-			BorderDynamicMaterialInstance->SetVectorParameterValue(FName("Border Color"), Color);
+			FLinearColor BorderColor = CardsSettings->GetRarityColor(CardData->GetRarity());
+			BorderDynamicMaterialInstance->SetVectorParameterValue(FName("Border Color"), BorderColor);
+
+			FLinearColor BackgroundColor = CardsSettings->GetCategoryColor(CardData->GetCategory());
+			BackgroundDynamicMaterialInstance->SetVectorParameterValue(FName("Background Color"), BackgroundColor);
 		}
 	}
 }

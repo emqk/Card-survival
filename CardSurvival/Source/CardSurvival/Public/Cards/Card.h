@@ -83,6 +83,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UMaterialInstanceDynamic> BorderDynamicMaterialInstance = nullptr;
+	UPROPERTY()
+	TObjectPtr<UMaterialInstanceDynamic> BackgroundDynamicMaterialInstance = nullptr;
 
 	EInteractionType CurrentInteractionType;
 

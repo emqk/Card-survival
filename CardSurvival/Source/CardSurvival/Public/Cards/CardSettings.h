@@ -14,8 +14,11 @@ class CARDSURVIVAL_API UCardSettings : public UPrimaryDataAsset
 	
 public:
 	FLinearColor GetRarityColor(ECardRarity Rarity) const{ return RarityColors[Rarity]; }
+	FLinearColor GetCategoryColor(ECardCategory Category) const{ return CategoryColors[Category]; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<ECardRarity, FLinearColor> RarityColors;
+	UPROPERTY(EditDefaultsOnly)
+	TMap<ECardCategory, FLinearColor> CategoryColors;
 };
