@@ -37,6 +37,8 @@ public:
 	bool EndSelect_Implementation(AActor* Interactor) override;
 
 	UFUNCTION(BlueprintCallable)
+	void SetCardData(UCardData* NewCardData) { CardData = NewCardData; };
+	UFUNCTION(BlueprintCallable)
 	void ApplyCardData();
 
 	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };

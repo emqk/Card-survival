@@ -53,3 +53,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FTokenDataInstance> Statuses;
 };
+
+USTRUCT(BlueprintType)
+struct FCardSpawnData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UCardData> CardData;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FIntPoint AmountRange = FIntPoint(1, 2);
+};

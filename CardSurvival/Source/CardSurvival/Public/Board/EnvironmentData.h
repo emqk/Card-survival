@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Cards/CardData.h"
 #include "LevelInstance/LevelInstanceActor.h"
 #include "EnvironmentData.generated.h"
 
@@ -26,4 +27,6 @@ protected:
 	TSoftObjectPtr<UWorld> LevelInstance;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FVector Offset;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FCardSpawnData> CardSpawnData;
 };

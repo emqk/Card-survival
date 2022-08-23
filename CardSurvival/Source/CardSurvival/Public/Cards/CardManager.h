@@ -7,6 +7,15 @@
 #include "CardManager.generated.h"
 
 class UCardSettings;
+class ACard;
+
+UENUM(BlueprintType)
+enum class EBoardRow : uint8
+{
+	EQ,
+	PlayerInventory,
+	Location
+};
 
 UCLASS()
 class CARDSURVIVAL_API ACardManager : public AActor
@@ -22,7 +31,15 @@ public:
 	UFUNCTION(BlueprintPure)
 	UCardSettings* GetCardsSettings() const { return CardSettings; };
 
+	UFUNCTION(BlueprintCallable)
+	bool SpawnCardInRow(EBoardRow BoardRow, UCardData* CardData);
+
+	UFUNCTION(BlueprintCallable)
+	UPlayZoneComponent* GetBoardRowFromEnum(EBoardRow BoardRow) const;
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UCardSettings> CardSettings;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ACard> CardClass;
 };

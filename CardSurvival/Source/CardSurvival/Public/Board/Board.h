@@ -16,6 +16,11 @@ class CARDSURVIVAL_API ABoard : public AActor
 public:	
 	ABoard();
 
+	void BeginPlay() override;
+
+	UPlayZoneComponent* GetEQZone() { return PlayerEQPlayZone; };
+	UPlayZoneComponent* GetInventoryZone() { return PlayerInventoryPlayZone; };
+	UPlayZoneComponent* GetLocationZone() { return LocationPlayZone; };
 
 protected:
 	UPROPERTY(VisibleAnywhere)

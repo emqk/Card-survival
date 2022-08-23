@@ -3,6 +3,7 @@
 
 #include "Board/Board.h"
 #include "Board/PlayZoneComponent.h"
+#include "Player/PlayerSubsystem.h"
 
 ABoard::ABoard()
 {
@@ -28,4 +29,10 @@ ABoard::ABoard()
 	LocationPlayZone = CreateDefaultSubobject<UPlayZoneComponent>(TEXT("LocationPlayZone"));
 	LocationPlayZone->SetCollisionProfileName(TEXT("BlockAll"));
 	LocationPlayZone->SetupAttachment(RootComponent);
+}
+
+void ABoard::BeginPlay()
+{
+	Super::BeginPlay();
+	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetBoard(this);
 }

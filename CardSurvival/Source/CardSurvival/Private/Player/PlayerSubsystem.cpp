@@ -8,6 +8,7 @@
 #include "Tokens/TokenRow.h"
 #include "WorldMap/MapManager.h"
 #include "Cards/CardManager.h"
+#include "Board/Board.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -54,4 +55,17 @@ ACardManager* UPlayerSubsystem::GetCardManager()
 	SetCardManager(NewCardManager);
 
 	return CardManager;
+}
+
+ABoard* UPlayerSubsystem::GetBoard()
+{
+	if (Board)
+	{
+		return Board;
+	}
+
+	ABoard* NewBoard = Cast<ABoard>(UGameplayStatics::GetActorOfClass(GetWorld(), ABoard::StaticClass()));
+	SetBoard(NewBoard);
+
+	return Board;
 }

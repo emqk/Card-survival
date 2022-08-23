@@ -15,6 +15,7 @@ class ATokenRow;
 class AMapManager;
 class AEventsManager;
 class ACardManager;
+class ABoard;
 
 /**
  * Player utils
@@ -54,6 +55,10 @@ public:
 	UFUNCTION(BlueprintPure)
 	ACardManager* GetCardManager();
 
+	// Cards
+	void SetBoard(ABoard* NewBoard) { Board = NewBoard; };
+	UFUNCTION(BlueprintPure)
+	ABoard* GetBoard();
 
 protected:
 	UPROPERTY()
@@ -64,6 +69,8 @@ protected:
 	TObjectPtr<AEventsManager> EventsManager = nullptr;
 	UPROPERTY()
 	TObjectPtr<ACardManager> CardManager = nullptr;
+	UPROPERTY()
+	TObjectPtr<ABoard> Board = nullptr;
 
 	UPROPERTY()
 	TObjectPtr<APlayerBoardPawn> BoardPlayer = nullptr;
