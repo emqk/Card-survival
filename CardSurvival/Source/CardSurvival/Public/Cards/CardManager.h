@@ -33,6 +33,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool SpawnCardInRow(EBoardRow BoardRow, UCardData* CardData);
+	UFUNCTION(BlueprintCallable)
+	void DestroyAllCardsInRow(EBoardRow BoardRow);
 
 	UFUNCTION(BlueprintCallable)
 	UPlayZoneComponent* GetBoardRowFromEnum(EBoardRow BoardRow) const;

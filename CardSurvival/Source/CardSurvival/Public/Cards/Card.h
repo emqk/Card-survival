@@ -37,9 +37,7 @@ public:
 	bool EndSelect_Implementation(AActor* Interactor) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SetCardData(UCardData* NewCardData) { CardData = NewCardData; };
-	UFUNCTION(BlueprintCallable)
-	void ApplyCardData();
+	void SetCardData(UCardData* NewCardData);
 
 	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };
 
@@ -50,6 +48,9 @@ public:
 	void SetPlayerSubsystem();
 
 protected:
+
+	void ApplyCardData();
+
 	void HighlightCard(bool Active);
 	void HighlightBorder(bool Active);
 

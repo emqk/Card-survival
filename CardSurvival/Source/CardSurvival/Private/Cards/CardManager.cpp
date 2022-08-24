@@ -38,6 +38,15 @@ bool ACardManager::SpawnCardInRow(EBoardRow BoardRow, UCardData* CardData)
 	return false;
 }
 
+void ACardManager::DestroyAllCardsInRow(EBoardRow BoardRow)
+{
+	UPlayZoneComponent* PlayZone = GetBoardRowFromEnum(BoardRow);
+	if (PlayZone)
+	{
+		PlayZone->DestroyAllCards();
+	}
+}
+
 UPlayZoneComponent* ACardManager::GetBoardRowFromEnum(EBoardRow BoardRow) const
 {
 	UPlayerSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();

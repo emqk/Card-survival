@@ -22,6 +22,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetOffset() const { return Offset; };
 
+	UFUNCTION(BlueprintPure)
+	const TArray<FCardSpawnData>& GetCardSpawnData() const { return CardSpawnData; };
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UWorld> LevelInstance;

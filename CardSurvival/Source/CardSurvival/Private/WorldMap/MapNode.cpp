@@ -9,6 +9,9 @@
 #include "WorldMap/MapNodeData.h"
 #include "Board/LevelStreamingSubsystem.h"
 #include "Events/EventsManager.h"
+#include "Cards/CardManager.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 AMapNode::AMapNode()
 {
@@ -51,8 +54,10 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 				PlayerSubsystem->GetEventsManager()->StartEvent(EventToStart);
 			}
 
-			// Go to the board and load the map /// Need to clean this up :) 
-			/// Remember to destroy old enviro!
+			// Go to the board and load the map
+			// TODO - START
+			// Move this part to a function (in a subsystem / manager)
+			// TODO - END
 			if (NodeData->GetEnvironmentData())
 			{
 				APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -61,6 +66,20 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 
 				UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();
 				GetGameInstance()->GetSubsystem<ULevelStreamingSubsystem>()->LoadLevelInstance(EnvironmentData->GetLevelInstance(), EnvironmentData->GetOffset());
+				
+				// Destroy old cards and spawn new ones
+				ACardManager* CardManager = PlayerSubsystem->GetCardManager();
+				CardManager->DestroyAllCardsInRow(EBoardRow::Location);
+
+				const TArray<FCardSpawnData>& CardSpawnDatas = EnvironmentData->GetCardSpawnData();
+				for (const FCardSpawnData& SpawnData : CardSpawnDatas)
+				{
+					int Amount = UKismetMathLibrary::RandomIntegerInRange(SpawnData.AmountRange.X, SpawnData.AmountRange.Y);
+					for (int i = 0; i < Amount; i++)
+					{
+						CardManager->SpawnCardInRow(EBoardRow::Location, SpawnData.CardData);
+					}
+				}
 			}
 		}
 

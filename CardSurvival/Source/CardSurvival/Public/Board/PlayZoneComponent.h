@@ -20,6 +20,8 @@ public:
 	bool AddCard(TObjectPtr<ACard> CardToAdd);
 	bool RemoveCard(TObjectPtr<ACard> CardToRemove);
 
+	void DestroyAllCards();
+
 protected:
 	FVector GetCardLocationAtIndex(int Index);
 	void RefreshCardsLocation();

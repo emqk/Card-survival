@@ -63,6 +63,14 @@ void ACard::BeginPlay()
 			BackgroundDynamicMaterialInstance->SetVectorParameterValue(FName("Background Color"), BackgroundColor);
 		}
 	}
+
+	ApplyCardData();
+}
+
+void ACard::SetCardData(UCardData* NewCardData)
+{
+	CardData = NewCardData;
+	ApplyCardData();
 }
 
 void ACard::ApplyCardData()

@@ -47,6 +47,16 @@ bool UPlayZoneComponent::RemoveCard(TObjectPtr<ACard> CardToRemove)
 	}
 }
 
+void UPlayZoneComponent::DestroyAllCards()
+{
+	for (ACard* CurrentCard : Cards)
+	{
+		CurrentCard->Destroy();
+	}
+
+	Cards.Empty();
+}
+
 FVector UPlayZoneComponent::GetCardLocationAtIndex(int Index)
 {
 	FVector ActorLocation = GetComponentLocation();
