@@ -19,8 +19,6 @@ class CARDSURVIVAL_API UEnvironmentData : public UPrimaryDataAsset
 public:
 	UFUNCTION(BlueprintCallable)
 	const TSoftObjectPtr<UWorld>& GetLevelInstance() const { return LevelInstance; };
-	UFUNCTION(BlueprintCallable)
-	FVector GetOffset() const { return Offset; };
 
 	UFUNCTION(BlueprintPure)
 	const TArray<FCardSpawnData>& GetCardSpawnData() const { return CardSpawnData; };
@@ -28,8 +26,6 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSoftObjectPtr<UWorld> LevelInstance;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FVector Offset;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FCardSpawnData> CardSpawnData;
 };

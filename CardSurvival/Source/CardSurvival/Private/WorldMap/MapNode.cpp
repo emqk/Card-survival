@@ -65,7 +65,7 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 				PlayerController->Possess(PlayerBoardPawn);
 
 				UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();
-				GetGameInstance()->GetSubsystem<ULevelStreamingSubsystem>()->LoadLevelInstance(EnvironmentData->GetLevelInstance(), EnvironmentData->GetOffset());
+				GetGameInstance()->GetSubsystem<ULevelStreamingSubsystem>()->LoadLevelInstance(EnvironmentData->GetLevelInstance(), FVector(2350.0f, 0.0f, -80.0f));
 				
 				// Destroy old cards and spawn new ones
 				ACardManager* CardManager = PlayerSubsystem->GetCardManager();
