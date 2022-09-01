@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Statistic.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeChange, UStatistic*, ModifiedStatistic);
+
 
 UCLASS(BlueprintType, EditInlineNew)
 class UStatistic : public UObject
@@ -15,28 +17,36 @@ public:
     ~UStatistic();
 
     UFUNCTION(BlueprintCallable)
-    void ChangeByAmount(const float& _Amount);
+    void ChangeByAmount(int _Amount);
     UFUNCTION(BlueprintCallable)
-    void SetAmount(const float& _Amount);
+    void SetAmount(int _Amount);
 	UFUNCTION(BlueprintCallable)
 	void SetToMin();
+	UFUNCTION(BlueprintCallable)
+    void SetToMax();
+	UFUNCTION(BlueprintCallable)
+	void SetMaxAmount(int NewMaxAmount);
 
     UFUNCTION(BlueprintCallable)
     float GetAmountNormalized() const;
     UFUNCTION(BlueprintCallable)
-    float GetAmount() const;
+    int GetAmount() const;
 
     // Is the amount after subtraction >= 0 ?
     UFUNCTION(BlueprintPure)
-    bool CanSubtract(float ToSubtract) const;
+    bool CanSubtract(int ToSubtract) const;
     UFUNCTION(BlueprintPure)
     bool IsMax();
 
+public:
+	UPROPERTY(BlueprintAssignable)
+	FAttributeChange OnAttributeChange;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float MaxAmount = 100.0f;
+    int MaxAmount = 100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float MinAmount = 0.0f;
+	int MinAmount = 0;
     UPROPERTY(VisibleAnywhere)
-    float Amount = 0.0f;
+    int Amount = 0;
 };

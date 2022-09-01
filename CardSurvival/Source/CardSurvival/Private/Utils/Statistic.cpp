@@ -11,34 +11,46 @@ UStatistic::~UStatistic()
 {
 }
 
-void UStatistic::ChangeByAmount(const float& _Amount)
+void UStatistic::ChangeByAmount(int _Amount)
 {
 	SetAmount(Amount + _Amount);
 }
 
-void UStatistic::SetAmount(const float& _Amount)
+void UStatistic::SetAmount(int _Amount)
 {
 	Amount = FMath::Clamp(_Amount, MinAmount, MaxAmount);
+	OnAttributeChange.Broadcast(this);
 }
 
 void UStatistic::SetToMin()
 {
 	Amount = MinAmount;
+	OnAttributeChange.Broadcast(this);
+}
+
+void UStatistic::SetToMax()
+{
+	SetAmount(MaxAmount);
+}
+
+void UStatistic::SetMaxAmount(int NewMaxAmount)
+{
+	MaxAmount = NewMaxAmount;
 }
 
 float UStatistic::GetAmountNormalized() const
 {
-	return GetAmount() / MaxAmount;
+	return GetAmount() / (float)MaxAmount;
 }
 
-float UStatistic::GetAmount() const
+int UStatistic::GetAmount() const
 {
 	return Amount;
 }
 
-bool UStatistic::CanSubtract(float ToSubtract) const
+bool UStatistic::CanSubtract(int ToSubtract) const
 {
-	return (Amount - ToSubtract) >= 0.0f;
+	return (Amount - ToSubtract) >= 0;
 }
 
 bool UStatistic::IsMax()
