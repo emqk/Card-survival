@@ -12,7 +12,6 @@ class UWidgetComponent;
 class UFollowComponent;
 class UPlayerSubsystem;
 class UPlayZoneComponent;
-class UStatistic;
 class UCardData;
 
 UCLASS()
@@ -71,8 +70,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UCardData> CardData;
 
-	UPROPERTY(EditDefaultsOnly, Instanced)
-	TObjectPtr<UStatistic> Progress;
+	UPROPERTY(VisibleAnywhere)
+	float Progress = 0.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float ProgressMax = 3.8f;
+
 	// PlayZone in which this card is currently in
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPlayZoneComponent> PlayZone;

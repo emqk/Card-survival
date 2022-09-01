@@ -9,7 +9,6 @@
 #include "Tokens/TokenRow.h"
 #include "Board/PlayZoneComponent.h"
 #include "Utils/FollowComponent.h"
-#include "Utils/Statistic.h"
 #include "Utils/ParallaxData.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
@@ -150,12 +149,12 @@ bool ACard::TickInteraction_Implementation(AActor* Interactor)
 	if (CurrentInteractionType == EInteractionType::Secondary)
 	{		
 		float Delta = GetWorld()->GetDeltaSeconds();
-		Progress->ChangeByAmount(Delta * 5.0f);
+		Progress += (Delta * 5.0f);
 
 		FVector CurrentBarScale = ProgressBarMeshComponent->GetComponentScale();
-		ProgressBarMeshComponent->SetWorldScale3D(FVector(CurrentBarScale.X, Progress->GetAmount(), CurrentBarScale.Z));
+		ProgressBarMeshComponent->SetWorldScale3D(FVector(CurrentBarScale.X, Progress, CurrentBarScale.Z));
 
-		return Progress->IsMax();
+		return Progress >= ProgressMax;
 	}
 
 	return false;
@@ -202,7 +201,7 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 	else if (CurrentInteractionType == EInteractionType::Secondary)
 	{
 		ProgressBarMeshComponent->SetVisibility(false);
-		Progress->SetToMin();
+		Progress = 0.0f;
 	}
 
 	return true;
