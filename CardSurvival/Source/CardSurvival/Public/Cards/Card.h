@@ -47,8 +47,8 @@ public:
 	void SetPlayerSubsystem();
 
 protected:
-
 	void ApplyCardData();
+	void ApplyCardDataVisuals();
 
 	void HighlightCard(bool Active);
 	void HighlightBorder(bool Active);
@@ -90,6 +90,8 @@ protected:
 	TObjectPtr<UMaterialInstanceDynamic> BorderDynamicMaterialInstance = nullptr;
 	UPROPERTY()
 	TObjectPtr<UMaterialInstanceDynamic> BackgroundDynamicMaterialInstance = nullptr;
+	UPROPERTY()
+	TObjectPtr<UMaterialInstanceDynamic> ItemTextureMaterialInstance = nullptr;
 
 	EInteractionType CurrentInteractionType;
 
