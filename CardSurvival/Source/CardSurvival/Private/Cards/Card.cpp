@@ -47,23 +47,7 @@ void ACard::BeginPlay()
 
 	BorderDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(0);
 	BackgroundDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(1);
-
-	// Apply card settings
-	ACardManager* CardManager = PlayerSubsystem->GetCardManager();
-	if (CardManager)
-	{
-		UCardSettings* CardsSettings = CardManager->GetCardsSettings();
-		if (CardsSettings)
-		{
-			FLinearColor BorderColor = CardsSettings->GetRarityColor(CardData->GetRarity());
-			BorderDynamicMaterialInstance->SetVectorParameterValue(FName("Border Color"), BorderColor);
-
-			FLinearColor BackgroundColor = CardsSettings->GetCategoryColor(CardData->GetCategory());
-			BackgroundDynamicMaterialInstance->SetVectorParameterValue(FName("Background Color"), BackgroundColor);
-		}
-	}
-
-	ApplyCardData();
+	ItemTextureMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(2);
 }
 
 void ACard::SetCardData(UCardData* NewCardData)
@@ -76,8 +60,6 @@ void ACard::ApplyCardData()
 {
 	if (CardData && CardData->GetParalaxData())
 	{
-		UParallaxData* ParallaxData = CardData->GetParalaxData();
-
 		// Widget
 		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
 		if (InfoWidget)
@@ -85,10 +67,35 @@ void ACard::ApplyCardData()
 			InfoWidget->Refresh(CardData);
 		}
 
-		// Material
-		UMaterialInstanceDynamic* MaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(2);
-		MaterialInstance->SetTextureParameterValue(FName("Base Image"), ParallaxData->GetBaseTexture());
-		MaterialInstance->SetTextureParameterValue(FName("ZDepthMap"), ParallaxData->GetDepthTexture());
+		// Material parameters
+		ApplyCardDataVisuals();
+	}
+}
+
+void ACard::ApplyCardDataVisuals()
+{
+	// Item texture
+	UParallaxData* ParallaxData = CardData->GetParalaxData();
+	if (ParallaxData && ItemTextureMaterialInstance)
+	{
+		ItemTextureMaterialInstance->SetTextureParameterValue(FName("Base Image"), ParallaxData->GetBaseTexture());
+		ItemTextureMaterialInstance->SetTextureParameterValue(FName("ZDepthMap"), ParallaxData->GetDepthTexture());
+	}
+
+	// Border and Background
+	ACardManager* CardManager = PlayerSubsystem->GetCardManager();
+	if (CardManager)
+	{
+		UCardSettings* CardsSettings = CardManager->GetCardsSettings();
+
+		if (CardsSettings && BorderDynamicMaterialInstance && BackgroundDynamicMaterialInstance)
+		{
+			FLinearColor BorderColor = CardsSettings->GetRarityColor(CardData->GetRarity());
+			BorderDynamicMaterialInstance->SetVectorParameterValue(FName("Border Color"), BorderColor);
+
+			FLinearColor BackgroundColor = CardsSettings->GetCategoryColor(CardData->GetCategory());
+			BackgroundDynamicMaterialInstance->SetVectorParameterValue(FName("Background Color"), BackgroundColor);
+		}
 	}
 }
 
