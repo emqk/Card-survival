@@ -9,7 +9,6 @@
 #include "Tokens/TokenRow.h"
 #include "Board/PlayZoneComponent.h"
 #include "Utils/FollowComponent.h"
-#include "Utils/ParallaxData.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
 
@@ -58,7 +57,7 @@ void ACard::SetCardData(UCardData* NewCardData)
 
 void ACard::ApplyCardData()
 {
-	if (CardData && CardData->GetParalaxData())
+	if (CardData)
 	{
 		// Widget
 		UCardInfoWidget* InfoWidget = Cast<UCardInfoWidget>(InfoWidgetComponent->GetWidget());
@@ -75,11 +74,10 @@ void ACard::ApplyCardData()
 void ACard::ApplyCardDataVisuals()
 {
 	// Item texture
-	UParallaxData* ParallaxData = CardData->GetParalaxData();
-	if (ParallaxData && ItemTextureMaterialInstance)
+	if (ItemTextureMaterialInstance)
 	{
-		ItemTextureMaterialInstance->SetTextureParameterValue(FName("Base Image"), ParallaxData->GetBaseTexture());
-		ItemTextureMaterialInstance->SetTextureParameterValue(FName("ZDepthMap"), ParallaxData->GetDepthTexture());
+		ItemTextureMaterialInstance->SetTextureParameterValue(FName("Base Image"), CardData->GetBaseTexture());
+		ItemTextureMaterialInstance->SetTextureParameterValue(FName("ZDepthMap"), CardData->GetDepthTexture());
 	}
 
 	// Border and Background

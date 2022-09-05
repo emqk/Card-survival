@@ -35,9 +35,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	ECardRarity GetRarity() const { return Rarity; }
 	UFUNCTION(BlueprintCallable)
-	UParallaxData* GetParalaxData() const { return ParallaxData; }
-	UFUNCTION(BlueprintCallable)
 	const TArray<FTokenDataInstance>& GetStatuses() const { return Statuses; };
+
+	UFUNCTION(BlueprintCallable, Category="Category")
+	UTexture* GetBaseTexture() const { return BaseTexture; }
+	UFUNCTION(BlueprintCallable, Category = "Category")
+	UTexture* GetDepthTexture() const { return DepthTexture; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -49,9 +52,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	ECardRarity Rarity;
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UParallaxData> ParallaxData;
-	UPROPERTY(EditDefaultsOnly)
 	TArray<FTokenDataInstance> Statuses;
+
+	UPROPERTY(EditDefaultsOnly, Category="Visuals")
+	TObjectPtr<UTexture> BaseTexture;
+	UPROPERTY(EditDefaultsOnly, Category = "Visuals")
+	TObjectPtr<UTexture> DepthTexture;
 };
 
 USTRUCT(BlueprintType)
