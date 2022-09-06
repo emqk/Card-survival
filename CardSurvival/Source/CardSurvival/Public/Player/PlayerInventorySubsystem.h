@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Utils/StatisticID.h"
 #include "PlayerInventorySubsystem.generated.h"
 
 class UStatistic;
@@ -15,6 +16,8 @@ class CARDSURVIVAL_API UPlayerInventorySubsystem : public UGameInstanceSubsystem
 	
 public:
 	void Initialize(FSubsystemCollectionBase& Collection) override;
+
+	UStatistic* GetStatisticByID(EStatisticID ID) const;
 
 	UFUNCTION(BlueprintPure)
 	UStatistic* GetGold() const { return Gold; };

@@ -55,7 +55,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	ACardManager* GetCardManager();
 
-	// Cards
+	// Board
 	void SetBoard(ABoard* NewBoard) { Board = NewBoard; };
 	UFUNCTION(BlueprintPure)
 	ABoard* GetBoard();

@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RemoveToken(UTokenData* Data);
 
+	UFUNCTION()
+	void ApplyAllTokensEffects();
+
 protected:
 	void RefreshTokensLocation();
 

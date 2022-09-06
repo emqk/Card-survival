@@ -21,3 +21,16 @@ void UPlayerInventorySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Energy->SetToMax();
 	Sanity->SetToMax();
 }
+
+UStatistic* UPlayerInventorySubsystem::GetStatisticByID(EStatisticID ID) const
+{
+	switch (ID)
+	{
+		case EStatisticID::Gold: return Gold;
+		case EStatisticID::Health: return Health;
+		case EStatisticID::Energy: return Energy;
+		case EStatisticID::Sanity: return Sanity;
+	}
+
+	return nullptr;
+}

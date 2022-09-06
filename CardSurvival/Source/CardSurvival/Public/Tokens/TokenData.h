@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Utils/StatisticID.h"
 #include "TokenData.generated.h"
 
 class UPrimaryDataAsset;
@@ -23,6 +24,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UStaticMesh* GetMesh() const { return Mesh; }
 
+
+	UFUNCTION(BlueprintCallable, Category = "Effect")
+	EStatisticID GetStatisticID() const { return StatisticID; };
+	UFUNCTION(BlueprintCallable, Category = "Effect")
+	int32 GetImpact() const { return Impact; };
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	FText Name;
@@ -30,4 +37,9 @@ protected:
 	FText Description;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMesh> Mesh;
+
+	UPROPERTY(EditDefaultsOnly, Category="Effect")
+	EStatisticID StatisticID;
+	UPROPERTY(EditDefaultsOnly, Category = "Effect")
+	int32 Impact;
 };

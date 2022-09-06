@@ -12,6 +12,7 @@
 #include "Cards/CardManager.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Tokens/TokenRow.h"
 
 AMapNode::AMapNode()
 {
@@ -54,12 +55,13 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 				PlayerSubsystem->GetEventsManager()->StartEvent(EventToStart);
 			}
 
-			// Go to the board and load the map
+			// Go to the board
 			// TODO - START
 			// Move this part to a function (in a subsystem / manager)
 			// TODO - END
 			if (NodeData->GetEnvironmentData())
 			{
+				// Possess the board player and load the environment
 				APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 				APlayerBoardPawn* PlayerBoardPawn = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerBoardPawn();
 				PlayerController->Possess(PlayerBoardPawn);
@@ -80,10 +82,17 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 						CardManager->SpawnCardInRow(EBoardRow::Location, SpawnData.CardData);
 					}
 				}
+
+				// Apply token effects
+				ATokenRow* TokenRow = PlayerSubsystem->GetTokenRow();
+				if (TokenRow)
+				{
+					TokenRow->ApplyAllTokensEffects();
+				}
+
+				return true;
 			}
 		}
-
-		return true;
 	}
 
 	return false;

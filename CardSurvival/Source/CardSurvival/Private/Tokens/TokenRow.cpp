@@ -6,6 +6,8 @@
 #include "Tokens/TokenData.h"
 #include "Tokens/TokenStack.h"
 #include "Player/PlayerSubsystem.h"
+#include "Player/PlayerInventorySubsystem.h"
+#include "Utils/Statistic.h"
 
 ATokenRow::ATokenRow()
 {
@@ -86,6 +88,28 @@ void ATokenRow::RemoveToken(UTokenData* Data)
 	{
 		TokenStacks.RemoveAt(Index);
 		RefreshTokensLocation();
+	}
+}
+
+void ATokenRow::ApplyAllTokensEffects()
+{
+	for (UTokenStack* Stack : TokenStacks)
+	{
+		UTokenData* Data = Stack->Data;
+		if (Data)
+		{
+			 EStatisticID StatID = Data->GetStatisticID();
+			 int32 Impact = Data->GetImpact();
+
+			 UPlayerInventorySubsystem* Inventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+			 if (Inventory)
+			 {
+				UStatistic* Stat = Inventory->GetStatisticByID(StatID);
+				int32 TokenCount = Stack->Tokens.Num();
+				
+				Stat->ChangeByAmount(Impact * TokenCount);
+			 }
+		}
 	}
 }
 

@@ -7,7 +7,6 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeChange, UStatistic*, ModifiedStatistic);
 
-
 UCLASS(BlueprintType, EditInlineNew)
 class UStatistic : public UObject
 {
