@@ -8,9 +8,17 @@
 
 class UPrimaryDataAsset;
 
-/**
- * 
- */
+USTRUCT(BlueprintType)
+struct CARDSURVIVAL_API FTokenEffect
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	EStatisticID StatisticID;
+	UPROPERTY(EditDefaultsOnly)
+	int32 Impact;
+};
+
 UCLASS()
 class CARDSURVIVAL_API UTokenData : public UPrimaryDataAsset
 {
@@ -24,11 +32,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UStaticMesh* GetMesh() const { return Mesh; }
 
-
-	UFUNCTION(BlueprintCallable, Category = "Effect")
-	EStatisticID GetStatisticID() const { return StatisticID; };
-	UFUNCTION(BlueprintCallable, Category = "Effect")
-	int32 GetImpact() const { return Impact; };
+	UFUNCTION(BlueprintPure)
+	const TArray<FTokenEffect>& GetEffects() const { return Effects; };
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -38,8 +43,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMesh> Mesh;
 
-	UPROPERTY(EditDefaultsOnly, Category="Effect")
-	EStatisticID StatisticID;
-	UPROPERTY(EditDefaultsOnly, Category = "Effect")
-	int32 Impact;
+	UPROPERTY(EditDefaultsOnly)
+	TArray<FTokenEffect> Effects;
 };
