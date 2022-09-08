@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Cards/CardBase.h"
 #include "Interaction/Interactable.h"
 #include "Card.generated.h"
 
 class UTextRenderComponent;
 class UWidgetComponent;
-class UFollowComponent;
 class UPlayerSubsystem;
-class UPlayZoneComponent;
 class UCardData;
+class ACardDummy;
 
 UCLASS()
-class CARDSURVIVAL_API ACard : public AActor, public IInteractable
+class CARDSURVIVAL_API ACard : public ACardBase, public IInteractable
 {
 	GENERATED_BODY()
 	
@@ -38,11 +38,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCardData(UCardData* NewCardData);
 
-	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };
-
-	TObjectPtr<UPlayZoneComponent> GetPlayZone() const { return PlayZone; };
-	void SetPlayZone(TObjectPtr<UPlayZoneComponent> NewPlayZone) { PlayZone = NewPlayZone; }
-
 	UPlayerSubsystem* GetPlayerSubsystem() const { return PlayerSubsystem; };
 	void SetPlayerSubsystem();
 
@@ -54,17 +49,11 @@ protected:
 	void HighlightBorder(bool Active);
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
-
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UWidgetComponent> InfoWidgetComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> ProgressBarMeshComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UFollowComponent> FollowComponent;
 
 
 	UPROPERTY(EditDefaultsOnly)
@@ -75,9 +64,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float ProgressMax = 3.8f;
 
-	// PlayZone in which this card is currently in
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UPlayZoneComponent> PlayZone;
 	UPROPERTY(EditDefaultsOnly)
 	FVector HoldHeightOffset = FVector(0, 0, 250);
 
@@ -94,6 +80,7 @@ protected:
 	TObjectPtr<UMaterialInstanceDynamic> ItemTextureMaterialInstance = nullptr;
 
 	EInteractionType CurrentInteractionType;
+	TObjectPtr<ACardDummy> CardDummy = nullptr;
 
 
 	UPROPERTY(VisibleAnywhere)

@@ -13,7 +13,7 @@ UPlayZoneComponent::UPlayZoneComponent()
 	BoxExtent = FVector(100, 100, 100);
 }
 
-bool UPlayZoneComponent::AddCard(TObjectPtr<ACard> CardToAdd)
+bool UPlayZoneComponent::AddCard(TObjectPtr<ACardBase> CardToAdd, int32 Index /*= INDEX_NONE*/)
 {
 	if (Cards.Contains(CardToAdd))
 	{
@@ -21,17 +21,30 @@ bool UPlayZoneComponent::AddCard(TObjectPtr<ACard> CardToAdd)
 		return false;
 	}
 
+	if (UPlayZoneComponent* CurrentZone = CardToAdd->GetPlayZone())
+	{
+		CurrentZone->RemoveCard(CardToAdd);
+	}
+
 	UFollowComponent* FollowComponent = CardToAdd->GetFollowComponent();
 	FVector TargetLocation = GetCardLocationAtIndex(Cards.Num());
 	FollowComponent->SetFollow(nullptr, TargetLocation, FRotator());
 
 	CardToAdd->SetPlayZone(this);
-	Cards.Add(CardToAdd);
+	if (Cards.IsValidIndex(Index))
+	{
+		Cards.Insert({ CardToAdd }, Index);
+	}
+	else
+	{
+		Cards.Add(CardToAdd);
+	}
+	RefreshCardsLocation();
 
 	return true;
 }
 
-bool UPlayZoneComponent::RemoveCard(TObjectPtr<ACard> CardToRemove)
+bool UPlayZoneComponent::RemoveCard(TObjectPtr<ACardBase> CardToRemove)
 {
 	int32 NumOfRemovedCards = Cards.Remove(CardToRemove);
 
@@ -47,9 +60,34 @@ bool UPlayZoneComponent::RemoveCard(TObjectPtr<ACard> CardToRemove)
 	}
 }
 
+void UPlayZoneComponent::MoveCardToIndex(ACardBase* CardToMove, int32 NewIndex)
+{
+	int32 CurrentIndex = Cards.IndexOfByKey(CardToMove);
+	if (CurrentIndex == INDEX_NONE)
+	{
+		return;
+	}
+
+	if (NewIndex > Cards.Num() - 1)
+	{
+		NewIndex = Cards.Num() - 1;
+	}
+
+	if (CurrentIndex == NewIndex)
+	{
+		return;
+	}
+
+	if (CurrentIndex != INDEX_NONE)
+	{
+		Swap(Cards[CurrentIndex], Cards[NewIndex]);
+		RefreshCardsLocation();
+	}
+}
+
 void UPlayZoneComponent::DestroyAllCards()
 {
-	for (ACard* CurrentCard : Cards)
+	for (ACardBase* CurrentCard : Cards)
 	{
 		CurrentCard->Destroy();
 	}
@@ -57,13 +95,30 @@ void UPlayZoneComponent::DestroyAllCards()
 	Cards.Empty();
 }
 
+int32 UPlayZoneComponent::GetCardIndex(ACardBase* Card) const
+{
+	return Cards.IndexOfByKey(Card);
+}
+
+int32 UPlayZoneComponent::GetCardIndexFromLocation(const FVector& GlobalLocation)
+{
+	FVector ComponentLocation = GetComponentLocation();
+	float StartY = (ComponentLocation.Y - GetComponentScale().Y * 100.0f) + DefaultOffsetY;
+	float DifferenceY = GlobalLocation.Y - StartY;
+	int32 Result = (DifferenceY) / (SpacingY);
+
+	UE_LOG(LogTemp, Warning, TEXT("diffY %f, result %i"), DifferenceY, Result)
+
+	return Result;
+}
+
 FVector UPlayZoneComponent::GetCardLocationAtIndex(int Index)
 {
-	FVector ActorLocation = GetComponentLocation();
+	FVector ComponentLocation = GetComponentLocation();
 	float StartOffsetX = (NumberOfRows - 1) * (SpacingX / 2.0f); // Start from the top
 	float StartOffsetY = -GetComponentScale().Y * 100.0f + SpacingY / 2.0f; // Start from the left
 
-	FVector Result = FVector(ActorLocation.X - (Index % NumberOfRows) * SpacingX + StartOffsetX, ActorLocation.Y + (Index / NumberOfRows) * SpacingY + StartOffsetY + DefaultOffsetY, ActorLocation.Z + OffsetZ);
+	FVector Result = FVector(ComponentLocation.X - (Index % NumberOfRows) * SpacingX + StartOffsetX, ComponentLocation.Y + (Index / NumberOfRows) * SpacingY + StartOffsetY + DefaultOffsetY, ComponentLocation.Z + OffsetZ);
 	
 	return Result;
 }
@@ -72,7 +127,7 @@ void UPlayZoneComponent::RefreshCardsLocation()
 {
 	for (int i = 0; i < Cards.Num(); i++)
 	{
-		ACard* Card = Cards[i];
+		ACardBase* Card = Cards[i];
 		UFollowComponent* FollowComponent = Card->GetFollowComponent();
 		FVector TargetLocation = GetCardLocationAtIndex(i);
 		FollowComponent->SetFollow(nullptr, TargetLocation, FRotator());

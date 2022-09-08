@@ -8,6 +8,7 @@
 
 class UCardSettings;
 class ACard;
+class ACardDummy;
 
 UENUM(BlueprintType)
 enum class EBoardRow : uint8
@@ -37,6 +38,11 @@ public:
 	void DestroyAllCardsInRow(EBoardRow BoardRow);
 
 	UFUNCTION(BlueprintCallable)
+	ACardDummy* EnableCardDummy();
+	UFUNCTION(BlueprintCallable)
+	void DisableCardDummy();
+
+	UFUNCTION(BlueprintCallable)
 	UPlayZoneComponent* GetBoardRowFromEnum(EBoardRow BoardRow) const;
 
 protected:
@@ -44,4 +50,9 @@ protected:
 	TObjectPtr<UCardSettings> CardSettings;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ACard> CardClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ACardDummy> CardDummyClass;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<ACardDummy> CardDummyInstance;
 };

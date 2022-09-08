@@ -7,7 +7,9 @@
 #include "Components/BoxComponent.h"
 #include "PlayZoneComponent.generated.h"
 
+class ACardBase;
 class ACard;
+class ACardDummy;
 
 UCLASS()
 class CARDSURVIVAL_API UPlayZoneComponent : public UBoxComponent
@@ -17,10 +19,14 @@ class CARDSURVIVAL_API UPlayZoneComponent : public UBoxComponent
 public:	
 	UPlayZoneComponent();
 
-	bool AddCard(TObjectPtr<ACard> CardToAdd);
-	bool RemoveCard(TObjectPtr<ACard> CardToRemove);
+	bool AddCard(TObjectPtr<ACardBase> CardToAdd, int32 Index = INDEX_NONE);
+	bool RemoveCard(TObjectPtr<ACardBase> CardToRemove);
+	void MoveCardToIndex(ACardBase* CardToMove, int32 NewIndex);
 
 	void DestroyAllCards();
+
+	int32 GetCardIndex(ACardBase* Card) const;
+	int32 GetCardIndexFromLocation(const FVector& GlobalLocation);
 
 protected:
 	FVector GetCardLocationAtIndex(int Index);
@@ -41,5 +47,5 @@ protected:
 	float DefaultOffsetY = 0;
 
 	UPROPERTY(VisibleAnywhere)
-	TArray<TObjectPtr<ACard>> Cards;
+	TArray<TObjectPtr<ACardBase>> Cards;
 };

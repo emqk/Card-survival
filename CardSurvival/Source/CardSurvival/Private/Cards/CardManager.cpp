@@ -3,6 +3,7 @@
 
 #include "Cards/CardManager.h"
 #include "Cards/Card.h"
+#include "Cards/CardDummy.h"
 #include "Player/PlayerSubsystem.h"
 #include "Board/Board.h"
 #include "Board/PlayZoneComponent.h"
@@ -17,6 +18,16 @@ void ACardManager::BeginPlay()
 {
 	Super::BeginPlay();
 	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetCardManager(this);
+
+	// Spawn dummy card
+	if (CardDummyClass)
+	{
+		FActorSpawnParameters Params;
+		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		FTransform Transform;
+		CardDummyInstance = Cast<ACardDummy>(GetWorld()->SpawnActor(CardDummyClass, &Transform, Params));
+		DisableCardDummy();
+	}
 }
 
 bool ACardManager::SpawnCardInRow(EBoardRow BoardRow, UCardData* CardData)
@@ -45,6 +56,17 @@ void ACardManager::DestroyAllCardsInRow(EBoardRow BoardRow)
 	{
 		PlayZone->DestroyAllCards();
 	}
+}
+
+ACardDummy* ACardManager::EnableCardDummy()
+{
+	CardDummyInstance->SetActorHiddenInGame(false);
+	return CardDummyInstance;
+}
+
+void ACardManager::DisableCardDummy()
+{
+	CardDummyInstance->SetActorHiddenInGame(true);
 }
 
 UPlayZoneComponent* ACardManager::GetBoardRowFromEnum(EBoardRow BoardRow) const

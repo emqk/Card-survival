@@ -2,6 +2,7 @@
 
 
 #include "Cards/Card.h"
+#include "Cards/CardDummy.h"
 #include "Cards/CardData.h"
 #include "Cards/CardInfoWidget.h"
 #include "Cards/CardSettings.h"
@@ -18,12 +19,6 @@
 
 ACard::ACard()
 {
-	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.bStartWithTickEnabled = false;
-
-	BaseMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
-	SetRootComponent(BaseMeshComponent);
-
 	InfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidget"));
 	InfoWidgetComponent->SetCollisionProfileName("NoCollision");
 	InfoWidgetComponent->SetupAttachment(BaseMeshComponent);
@@ -32,9 +27,6 @@ ACard::ACard()
 	ProgressBarMeshComponent->SetCastShadow(false);
 	ProgressBarMeshComponent->SetComponentTickEnabled(false);
 	ProgressBarMeshComponent->SetupAttachment(BaseMeshComponent);
-
-
-	FollowComponent = CreateDefaultSubobject<UFollowComponent>(TEXT("FollowComponent"));
 }
 
 void ACard::BeginPlay()
@@ -151,7 +143,33 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType
 
 bool ACard::TickInteraction_Implementation(AActor* Interactor)
 {
-	if (CurrentInteractionType == EInteractionType::Secondary)
+	if (CurrentInteractionType == EInteractionType::Primary)
+	{
+		// Refresh dummy 
+		ACardManager* CardManager = PlayerSubsystem->GetCardManager();
+		CardDummy = CardManager->EnableCardDummy();
+
+		const FHitResult& HitResult = GetPlayerSubsystem()->GetHitResultUnderCursor();
+		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+
+		if (HitComponent)
+		{
+			UPlayZoneComponent* HitPlayZone = Cast<UPlayZoneComponent>(HitComponent);
+			if (HitPlayZone)
+			{
+				int32 NewIndex = HitPlayZone->GetCardIndexFromLocation(HitResult.Location);
+				if (UPlayZoneComponent* DummyZone = CardDummy->GetPlayZone())
+				{
+					DummyZone->MoveCardToIndex(CardDummy, NewIndex);
+				}
+				else
+				{
+					HitPlayZone->AddCard(CardDummy, NewIndex);
+				}
+			}
+		}
+	}
+	else if (CurrentInteractionType == EInteractionType::Secondary)
 	{		
 		float Delta = GetWorld()->GetDeltaSeconds();
 		Progress += (Delta * 5.0f);
@@ -193,11 +211,20 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 
 		if (HitPlayZone)
 		{
-			HitPlayZone->AddCard(this);
+			int32 NewIndex = HitPlayZone->GetCardIndexFromLocation(HitResult.Location);
+			HitPlayZone->AddCard(this, NewIndex);
 		}
 		else
 		{
-			FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0), FRotator());
+			if (UPlayZoneComponent* DummyPlayZone = CardDummy->GetPlayZone())
+			{
+				// Add the card in place of the dummy card
+				DummyPlayZone->AddCard(this, DummyPlayZone->GetCardIndex(CardDummy));
+			}
+			else
+			{
+				FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0), FRotator());
+			}
 		}
 
 		// Sometimes EndSelect is not called. Removing additional offset to fix it
@@ -207,6 +234,19 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 	{
 		ProgressBarMeshComponent->SetVisibility(false);
 		Progress = 0.0f;
+	}
+
+	// Disable dummy
+	if (CardDummy)
+	{
+		if (UPlayZoneComponent* Zone = CardDummy->GetPlayZone())
+		{
+			Zone->RemoveCard(CardDummy);
+		}
+
+		ACardManager* CardManager = PlayerSubsystem->GetCardManager();
+		CardManager->DisableCardDummy();
+		CardDummy = nullptr;
 	}
 
 	return true;
