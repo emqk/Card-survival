@@ -112,6 +112,25 @@ int32 UPlayZoneComponent::GetCardIndexFromLocation(const FVector& GlobalLocation
 	return Result;
 }
 
+bool UPlayZoneComponent::IsLocationInPlayZone(const FVector2D& Location2D)
+{
+	FVector ComponentLocation = GetComponentLocation();
+	FVector ComponentScale = GetComponentScale() * 100.0f;
+
+	float StartX = ComponentLocation.X - ComponentScale.X;
+	float EndX = ComponentLocation.X + ComponentScale.X;
+	float StartY = ComponentLocation.Y - ComponentScale.Y;
+	float EndY = ComponentLocation.Y + ComponentScale.Y;
+
+	if (Location2D.X >= StartX && Location2D.X <= EndX
+	&&	Location2D.Y >= StartY && Location2D.Y <= EndY)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 FVector UPlayZoneComponent::GetCardLocationAtIndex(int Index)
 {
 	FVector ComponentLocation = GetComponentLocation();

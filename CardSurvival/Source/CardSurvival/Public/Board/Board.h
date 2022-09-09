@@ -22,6 +22,8 @@ public:
 	UPlayZoneComponent* GetInventoryZone() { return PlayerInventoryPlayZone; };
 	UPlayZoneComponent* GetLocationZone() { return LocationPlayZone; };
 
+	UPlayZoneComponent* GetPlayZoneFromLocation(const FVector2D& Location2D) const;
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> SceneComponent;

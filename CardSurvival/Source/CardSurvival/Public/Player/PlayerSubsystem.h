@@ -7,6 +7,7 @@
 #include "PlayerSubsystem.generated.h"
 
 class APlayerBoardPawn;
+class UPlayZoneComponent;
 class APlayerMapPawn;
 class AOwnPlayerController;
 class UFollowComponent;
@@ -59,6 +60,7 @@ public:
 	void SetBoard(ABoard* NewBoard) { Board = NewBoard; };
 	UFUNCTION(BlueprintPure)
 	ABoard* GetBoard();
+	UPlayZoneComponent* GetPlayZoneFromLocation(const FVector2D& Location2D) const;
 
 protected:
 	UPROPERTY()

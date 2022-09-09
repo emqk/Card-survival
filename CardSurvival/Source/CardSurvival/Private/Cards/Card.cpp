@@ -150,24 +150,21 @@ bool ACard::TickInteraction_Implementation(AActor* Interactor)
 		CardDummy = CardManager->EnableCardDummy();
 
 		const FHitResult& HitResult = GetPlayerSubsystem()->GetHitResultUnderCursor();
-		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
 
-		if (HitComponent)
+		UPlayZoneComponent* HitPlayZone = GetPlayerSubsystem()->GetPlayZoneFromLocation(FVector2D(HitResult.Location));
+		if (HitPlayZone)
 		{
-			UPlayZoneComponent* HitPlayZone = Cast<UPlayZoneComponent>(HitComponent);
-			if (HitPlayZone)
+			int32 NewIndex = HitPlayZone->GetCardIndexFromLocation(HitResult.Location);
+			if (UPlayZoneComponent* DummyZone = CardDummy->GetPlayZone())
 			{
-				int32 NewIndex = HitPlayZone->GetCardIndexFromLocation(HitResult.Location);
-				if (UPlayZoneComponent* DummyZone = CardDummy->GetPlayZone())
-				{
-					DummyZone->MoveCardToIndex(CardDummy, NewIndex);
-				}
-				else
-				{
-					HitPlayZone->AddCard(CardDummy, NewIndex);
-				}
+				DummyZone->MoveCardToIndex(CardDummy, NewIndex);
+			}
+			else
+			{
+				HitPlayZone->AddCard(CardDummy, NewIndex);
 			}
 		}
+		
 	}
 	else if (CurrentInteractionType == EInteractionType::Secondary)
 	{		
@@ -206,8 +203,7 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 
 		// Add this Card to the PlayZone if available
 		const FHitResult& HitResult = GetPlayerSubsystem()->GetHitResultUnderCursor();
-		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
-		UPlayZoneComponent* HitPlayZone = Cast<UPlayZoneComponent>(HitComponent);
+		UPlayZoneComponent* HitPlayZone = GetPlayerSubsystem()->GetPlayZoneFromLocation(FVector2D(HitResult.Location));
 
 		if (HitPlayZone)
 		{

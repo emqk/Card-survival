@@ -28,6 +28,8 @@ public:
 	int32 GetCardIndex(ACardBase* Card) const;
 	int32 GetCardIndexFromLocation(const FVector& GlobalLocation);
 
+	bool IsLocationInPlayZone(const FVector2D& Location2D);
+
 protected:
 	FVector GetCardLocationAtIndex(int Index);
 	void RefreshCardsLocation();

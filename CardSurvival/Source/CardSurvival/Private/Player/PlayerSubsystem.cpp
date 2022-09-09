@@ -69,3 +69,13 @@ ABoard* UPlayerSubsystem::GetBoard()
 
 	return Board;
 }
+
+UPlayZoneComponent* UPlayerSubsystem::GetPlayZoneFromLocation(const FVector2D& Location2D) const
+{
+	if (Board)
+	{
+		return Board->GetPlayZoneFromLocation(Location2D);
+	}
+
+	return nullptr;
+}

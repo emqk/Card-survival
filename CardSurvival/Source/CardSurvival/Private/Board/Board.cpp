@@ -36,3 +36,21 @@ void ABoard::BeginPlay()
 	Super::BeginPlay();
 	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetBoard(this);
 }
+
+UPlayZoneComponent* ABoard::GetPlayZoneFromLocation(const FVector2D& Location2D) const
+{
+	if (PlayerEQPlayZone->IsLocationInPlayZone(Location2D))
+	{
+		return PlayerEQPlayZone;
+	}
+	else if (PlayerInventoryPlayZone->IsLocationInPlayZone(Location2D))
+	{
+		return PlayerInventoryPlayZone;
+	}
+	else if (LocationPlayZone->IsLocationInPlayZone(Location2D))
+	{
+		return LocationPlayZone;
+	}
+
+	return nullptr;
+}
