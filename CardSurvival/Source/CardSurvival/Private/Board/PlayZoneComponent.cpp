@@ -103,13 +103,18 @@ int32 UPlayZoneComponent::GetCardIndex(ACardBase* Card) const
 int32 UPlayZoneComponent::GetCardIndexFromLocation(const FVector& GlobalLocation)
 {
 	FVector ComponentLocation = GetComponentLocation();
+	
+	float StartX = (ComponentLocation.X - GetComponentScale().X * 100.0f);
+	float ComponentFullScaleX = GetComponentScale().X * 100.0f * 2.0f;
+	float DifferenceX = FMath::Abs(GlobalLocation.X - StartX - ComponentFullScaleX);
+
 	float StartY = (ComponentLocation.Y - GetComponentScale().Y * 100.0f) + DefaultOffsetY;
 	float DifferenceY = GlobalLocation.Y - StartY;
-	int32 Result = (DifferenceY) / (SpacingY);
 
-	UE_LOG(LogTemp, Warning, TEXT("diffY %f, result %i"), DifferenceY, Result)
+	int32 IndexX = DifferenceX / SpacingX;
+	int32 IndexY = int32(DifferenceY / SpacingY) * NumberOfRows;
 
-	return Result;
+	return IndexX + IndexY;
 }
 
 bool UPlayZoneComponent::IsLocationInPlayZone(const FVector2D& Location2D)

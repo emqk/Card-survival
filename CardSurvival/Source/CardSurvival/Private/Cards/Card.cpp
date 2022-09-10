@@ -171,7 +171,6 @@ bool ACard::TickInteraction_Implementation(AActor* Interactor)
 				HitPlayZone->AddCard(CardDummy, NewIndex);
 			}
 		}
-		
 	}
 	else if (CurrentInteractionType == EInteractionType::Secondary)
 	{		
