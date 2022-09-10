@@ -157,7 +157,14 @@ bool ACard::TickInteraction_Implementation(AActor* Interactor)
 			int32 NewIndex = HitPlayZone->GetCardIndexFromLocation(HitResult.Location);
 			if (UPlayZoneComponent* DummyZone = CardDummy->GetPlayZone())
 			{
-				DummyZone->MoveCardToIndex(CardDummy, NewIndex);
+				if (DummyZone != HitPlayZone)
+				{
+					HitPlayZone->AddCard(CardDummy, NewIndex);
+				}
+				else
+				{
+					DummyZone->MoveCardToIndex(CardDummy, NewIndex);
+				}
 			}
 			else
 			{
