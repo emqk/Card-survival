@@ -35,8 +35,10 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		TargetLocation += FollowActor->GetActorLocation();
 	}
 
-	FVector NewLocation = FMath::Lerp(CurrentLocation, FVector(TargetLocation), FollowSpeed * DeltaTime);
-	FRotator NewRotation = FMath::Lerp(CurrentRotation, TargetRotation, FollowSpeed * DeltaTime);
+	// Calculate new location and rotation
+	float Delta = FMath::Clamp(FollowSpeed * DeltaTime, 0.0f, 1.0f);
+	FVector NewLocation = FMath::Lerp(CurrentLocation, TargetLocation, Delta);
+	FRotator NewRotation = FMath::Lerp(CurrentRotation, TargetRotation, Delta);
 
 	// Snap and disable tick if new location is close enough to the target
 	if (bTryDisableTick)
