@@ -25,7 +25,11 @@ void AMapManager::BeginPlay()
 	{
 		GenerateNextStage();
 	}
-	SpawnNodes();
+
+	if (bDebugShowAllNodes)
+	{
+		SpawnAllNodes();
+	}
 }
 
 void AMapManager::GenerateNextStage()
@@ -63,29 +67,14 @@ void AMapManager::GenerateNextStage()
 	}
 }
 
-void AMapManager::SpawnNodes()
+void AMapManager::SpawnAllNodes()
 {
-	int i = 0;
-	for (UMapStageData* Stage : MapStages)
+	for (int X = 0; X < StageSize.X; X++)
 	{
-		for (int X = 0; X < StageSize.X; X++)
+		for (int Y = 0; Y < StageSize.Y * MapStages.Num(); Y++)
 		{
-			for (int Y = 0; Y < StageSize.Y; Y++)
-			{
-				FVector SpawnLocation =
-					MapStartLocation
-					+ FVector(X * NodeOffset.X + (Y % 2 == 0 ? NodeOffset.X / 2.0f : 0), Y * NodeOffset.Y, 0) /*+ FVector(0, 500 * i, 0)*/
-					+ FVector(0, i * StageSize.Y * NodeOffset.Y, 0);
-
-				TSubclassOf<AMapNode> ToSpawn;
-				UMapNodeData* NodeData = Stage->GetDataAt(X, Y);
-				ToSpawn = NodeData->GetNodeClass();
-
-				SpawnNode(SpawnLocation, ToSpawn);
-			}
+			SpawnNodeAtIndex(FIntPoint(X, Y));
 		}
-
-		i++;
 	}
 }
 
@@ -109,7 +98,7 @@ bool AMapManager::IsNodeWalkable(const FIntPoint& WorldIndex) const
 	return Data->GetIsWalkable();
 }
 
-AMapNode* AMapManager::SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)
+AMapNode* AMapManager::SpawnNodeFromDataAtLocation(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)
 {
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -122,10 +111,35 @@ AMapNode* AMapManager::SpawnNode(const FVector& Location, const TSubclassOf<AMap
 	return Instance;
 }
 
+AMapNode* AMapManager::SpawnNodeAtIndex(const FIntPoint& WorldIndex)
+{
+	UMapNodeData* NodeData = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
+	TSubclassOf<AMapNode> ToSpawn = NodeData->GetNodeClass();
+
+	return SpawnNodeFromDataAtIndex(WorldIndex, ToSpawn);
+}
+
+AMapNode* AMapManager::SpawnNodeFromDataAtIndex(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn)
+{
+	FVector WorldLocation = FindWorldLocationFromIndex(WorldIndex);
+	return SpawnNodeFromDataAtLocation(WorldLocation, ClassToSpawn);
+}
+
+int32 AMapManager::FindStageIndexByIndex(const FIntPoint& WorldIndex)
+{
+	return WorldIndex.Y / StageSize.Y;
+}
+
 FVector AMapManager::FindStageLocationByIndex(int32 StageIndex)
 {
 	FVector2D StageSizeWorld = FVector2D(StageSize.X * 100, StageSize.Y * 100);
 	return FVector(0 , StageSizeWorld.Y * StageIndex + (StageSizeWorld.Y / 2.0f), 0) + MapStartLocation;
+}
+
+FVector AMapManager::FindWorldLocationFromIndex(const FIntPoint& WorldIndex)
+{
+	int32 StageIndex = FindStageIndexByIndex(WorldIndex);
+	return MapStartLocation + FVector(WorldIndex.X * NodeOffset.X + (WorldIndex.Y % 2 == 0 ? NodeOffset.X / 2.0f : 0), WorldIndex.Y * NodeOffset.Y, 0);
 }
 
 FIntPoint AMapManager::GetGlobalMapStageOffset(const UMapStageData* MapStage) const

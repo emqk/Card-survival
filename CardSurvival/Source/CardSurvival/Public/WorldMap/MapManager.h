@@ -26,7 +26,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GenerateNextStage();
 	UFUNCTION(BlueprintCallable)
-	void SpawnNodes();
+	void SpawnAllNodes();
+	void SpawnNodesAround(const FIntPoint& WorldIndex);
 
 	FVector GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const;
 	FIntPoint ConvertWorldLocationToMapIndex(const FVector& WorldLocation) const;
@@ -35,8 +36,12 @@ public:
 	UMapNodeData* GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
 protected:
-	AMapNode* SpawnNode(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
+	AMapNode* SpawnNodeFromDataAtLocation(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
+	AMapNode* SpawnNodeAtIndex(const FIntPoint& WorldIndex);
+	AMapNode* SpawnNodeFromDataAtIndex(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn);
+	int32 FindStageIndexByIndex(const FIntPoint& WorldIndex);
 	FVector FindStageLocationByIndex(int32 StageIndex);
+	FVector FindWorldLocationFromIndex(const FIntPoint& WorldIndex);
 	FIntPoint GetGlobalMapStageOffset(const UMapStageData* MapStage) const;
 	FIntPoint GetGlobalXY(const UMapStageData* MapStage, int LocalX, int LocalY) const;
 	bool SetDataGlobalXY(int GlobalX, int GlobalY, UMapNodeData* Value);
@@ -84,4 +89,8 @@ protected:
 	TSubclassOf<APlayerMapPawn> PlayerMapPawnClass;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<APlayerMapPawn> PlayerMapPawn;
+
+	// Debug
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bDebugShowAllNodes = true;
 };

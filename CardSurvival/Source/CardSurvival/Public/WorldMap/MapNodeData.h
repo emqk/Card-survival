@@ -18,6 +18,7 @@ public:
 
 	TSubclassOf<AMapNode> GetNodeClass() const { return NodeClass; };
 	UEnvironmentData* GetEnvironmentData() const { return EnvironmentData; };
+	int32 GetVisibility() const { return Visibility; };
 	bool GetIsWalkable() const { return bIsWalkable; };
 
 protected:
@@ -26,6 +27,8 @@ protected:
 	TSubclassOf<AMapNode> NodeClass;
 	UPROPERTY(EditDefaultsOnly)
 	UEnvironmentData* EnvironmentData;
+	UPROPERTY(EditDefaultsOnly)
+	int32 Visibility = 1;
 	UPROPERTY(EditDefaultsOnly)
 	bool bIsWalkable = false;
 };
