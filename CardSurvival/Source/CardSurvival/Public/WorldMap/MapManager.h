@@ -41,6 +41,8 @@ protected:
 	AMapNode* GetNodeAtIndex(const FIntPoint& WorldIndex) const;
 	bool IsNodeAtIndex(const FIntPoint& WorldIndex) const;
 
+	TArray<FIntPoint> FindNodeIndicesInView(const FIntPoint& Origin, int32 View) const;
+
 	int32 FindStageIndexByIndex(const FIntPoint& WorldIndex) const;
 	FVector FindStageLocationByIndex(int32 StageIndex) const;
 	FVector FindWorldLocationFromIndex(const FIntPoint& WorldIndex) const;
@@ -86,6 +88,7 @@ protected:
 	FVector2D NodeOffset = FVector2D(300, 250);
 
 	// Runtime data
+	UPROPERTY(VisibleAnywhere)
 	TMap<FIntPoint, AMapNode*> SpawnedNodes;
 
 	// Player

@@ -85,21 +85,29 @@ void AMapManager::SpawnNodesInView(const FIntPoint& WorldIndex, int32 View)
 {
 	/////////// TO DO////////////
 	//
-	//	1) Destroy nodes out of View nodes
-	//	2) Amount of spawned nodes should be based on the View distance, not just neighbours
+	//	1) Amount of spawned nodes should be based on the View distance, not just neighbours
 	//
 	////////////////////////////
 
 
-	// Spawn neighbour nodes
-	TArray<FIntPoint> Neighbours = GetNeighbours(WorldIndex);
-	for (const FIntPoint& Point : Neighbours)
+	// Spawn nodes
+	TArray<FIntPoint> Indices =	FindNodeIndicesInView(WorldIndex, View);
+	for (const FIntPoint& Index : Indices)
 	{
-		SpawnNodeAtIndex(Point);
+		SpawnNodeAtIndex(Index);
 	}
 
-	// Spawn center node
-	SpawnNodeAtIndex(WorldIndex);
+	// Remove out of view
+	TArray<FIntPoint> SpawnedIndices;
+	SpawnedNodes.GetKeys(SpawnedIndices);
+	for (const FIntPoint& Index : SpawnedIndices)
+	{
+		if (!Indices.Contains(Index))
+		{
+			SpawnedNodes[Index]->Destroy();
+			SpawnedNodes.Remove(Index);
+		}
+	}
 }
 
 FVector AMapManager::GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const
@@ -163,6 +171,16 @@ AMapNode* AMapManager::GetNodeAtIndex(const FIntPoint& WorldIndex) const
 bool AMapManager::IsNodeAtIndex(const FIntPoint& WorldIndex) const
 {
 	return SpawnedNodes.Contains(WorldIndex);
+}
+
+TArray<FIntPoint> AMapManager::FindNodeIndicesInView(const FIntPoint& Origin, int32 View) const
+{
+	TArray<FIntPoint> Result;
+
+	Result = GetNeighbours(Origin);
+	Result.Add(Origin);
+
+	return Result;
 }
 
 int32 AMapManager::FindStageIndexByIndex(const FIntPoint& WorldIndex) const
