@@ -26,6 +26,20 @@ void AMapManager::BeginPlay()
 		GenerateNextStage();
 	}
 
+	// Spawn Player
+	if (MapStages.Num() > 0)
+	{
+		FTransform SpawnTransform;
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		PlayerMapPawn = Cast<APlayerMapPawn>(GetWorld()->SpawnActor(PlayerMapPawnClass, &SpawnTransform, SpawnParams));
+		FIntPoint WorldIndex = MapStages[0]->GetPOIs()[0];
+
+		PlayerMapPawn->MoveToWorldIndex_Instant(WorldIndex);
+	}
+
+	// Debug
 	if (bDebugShowAllNodes)
 	{
 		SpawnAllNodes();
@@ -54,17 +68,6 @@ void AMapManager::GenerateNextStage()
 
 	// Connection
 	ConnectWithNextStage(MapStages.Num() - 2);
-
-	// Player
-	if (MapStages.Num() == 1)
-	{
-		FTransform SpawnTransform;
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		PlayerMapPawn = Cast<APlayerMapPawn>(GetWorld()->SpawnActor(PlayerMapPawnClass, &SpawnTransform, SpawnParams));
-		FIntPoint WorldIndex = NewData->GetPOIs()[0];
-		PlayerMapPawn->MoveToWorldIndex_Instant(WorldIndex);
-	}
 }
 
 void AMapManager::SpawnAllNodes()
@@ -76,6 +79,27 @@ void AMapManager::SpawnAllNodes()
 			SpawnNodeAtIndex(FIntPoint(X, Y));
 		}
 	}
+}
+
+void AMapManager::SpawnNodesInView(const FIntPoint& WorldIndex, int32 View)
+{
+	/////////// TO DO////////////
+	//
+	//	1) Destroy nodes out of View nodes
+	//	2) Amount of spawned nodes should be based on the View distance, not just neighbours
+	//
+	////////////////////////////
+
+
+	// Spawn neighbour nodes
+	TArray<FIntPoint> Neighbours = GetNeighbours(WorldIndex);
+	for (const FIntPoint& Point : Neighbours)
+	{
+		SpawnNodeAtIndex(Point);
+	}
+
+	// Spawn center node
+	SpawnNodeAtIndex(WorldIndex);
 }
 
 FVector AMapManager::GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const
@@ -98,15 +122,22 @@ bool AMapManager::IsNodeWalkable(const FIntPoint& WorldIndex) const
 	return Data->GetIsWalkable();
 }
 
-AMapNode* AMapManager::SpawnNodeFromDataAtLocation(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn)
+AMapNode* AMapManager::SpawnNodeAtIndexFromData(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn)
 {
+	if (IsNodeAtIndex(WorldIndex))
+	{
+		return nullptr;
+	}
+
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
+	FVector WorldLocation = FindWorldLocationFromIndex(WorldIndex);
 	FTransform Transform;
-	Transform.SetLocation(Location);
+	Transform.SetLocation(WorldLocation);
 
 	AMapNode* Instance = Cast<AMapNode>(GetWorld()->SpawnActor(ClassToSpawn, &Transform, Params));
+	SpawnedNodes.Add(WorldIndex, Instance);
 
 	return Instance;
 }
@@ -116,27 +147,36 @@ AMapNode* AMapManager::SpawnNodeAtIndex(const FIntPoint& WorldIndex)
 	UMapNodeData* NodeData = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
 	TSubclassOf<AMapNode> ToSpawn = NodeData->GetNodeClass();
 
-	return SpawnNodeFromDataAtIndex(WorldIndex, ToSpawn);
+	return SpawnNodeAtIndexFromData(WorldIndex, ToSpawn);
 }
 
-AMapNode* AMapManager::SpawnNodeFromDataAtIndex(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn)
+AMapNode* AMapManager::GetNodeAtIndex(const FIntPoint& WorldIndex) const
 {
-	FVector WorldLocation = FindWorldLocationFromIndex(WorldIndex);
-	return SpawnNodeFromDataAtLocation(WorldLocation, ClassToSpawn);
+	if (!IsNodeAtIndex(WorldIndex))
+	{
+		return nullptr;
+	}
+
+	return SpawnedNodes[WorldIndex];
 }
 
-int32 AMapManager::FindStageIndexByIndex(const FIntPoint& WorldIndex)
+bool AMapManager::IsNodeAtIndex(const FIntPoint& WorldIndex) const
+{
+	return SpawnedNodes.Contains(WorldIndex);
+}
+
+int32 AMapManager::FindStageIndexByIndex(const FIntPoint& WorldIndex) const
 {
 	return WorldIndex.Y / StageSize.Y;
 }
 
-FVector AMapManager::FindStageLocationByIndex(int32 StageIndex)
+FVector AMapManager::FindStageLocationByIndex(int32 StageIndex) const
 {
 	FVector2D StageSizeWorld = FVector2D(StageSize.X * 100, StageSize.Y * 100);
 	return FVector(0 , StageSizeWorld.Y * StageIndex + (StageSizeWorld.Y / 2.0f), 0) + MapStartLocation;
 }
 
-FVector AMapManager::FindWorldLocationFromIndex(const FIntPoint& WorldIndex)
+FVector AMapManager::FindWorldLocationFromIndex(const FIntPoint& WorldIndex) const
 {
 	int32 StageIndex = FindStageIndexByIndex(WorldIndex);
 	return MapStartLocation + FVector(WorldIndex.X * NodeOffset.X + (WorldIndex.Y % 2 == 0 ? NodeOffset.X / 2.0f : 0), WorldIndex.Y * NodeOffset.Y, 0);

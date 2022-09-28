@@ -25,6 +25,9 @@ public:
 	FIntPoint GetWorldIndex() const { return WorldLocationIndex; };
 
 protected:
+	void SpawnNodesInView();
+
+protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UFollowComponent> FollowComponent;
 

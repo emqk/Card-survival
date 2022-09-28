@@ -27,7 +27,7 @@ public:
 	void GenerateNextStage();
 	UFUNCTION(BlueprintCallable)
 	void SpawnAllNodes();
-	void SpawnNodesAround(const FIntPoint& WorldIndex);
+	void SpawnNodesInView(const FIntPoint& WorldIndex, int32 View);
 
 	FVector GetWorldLocationFromIndex(const FIntPoint& WorldIndex) const;
 	FIntPoint ConvertWorldLocationToMapIndex(const FVector& WorldLocation) const;
@@ -36,12 +36,14 @@ public:
 	UMapNodeData* GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
 protected:
-	AMapNode* SpawnNodeFromDataAtLocation(const FVector& Location, const TSubclassOf<AMapNode>& ClassToSpawn);
+	AMapNode* SpawnNodeAtIndexFromData(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn);
 	AMapNode* SpawnNodeAtIndex(const FIntPoint& WorldIndex);
-	AMapNode* SpawnNodeFromDataAtIndex(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn);
-	int32 FindStageIndexByIndex(const FIntPoint& WorldIndex);
-	FVector FindStageLocationByIndex(int32 StageIndex);
-	FVector FindWorldLocationFromIndex(const FIntPoint& WorldIndex);
+	AMapNode* GetNodeAtIndex(const FIntPoint& WorldIndex) const;
+	bool IsNodeAtIndex(const FIntPoint& WorldIndex) const;
+
+	int32 FindStageIndexByIndex(const FIntPoint& WorldIndex) const;
+	FVector FindStageLocationByIndex(int32 StageIndex) const;
+	FVector FindWorldLocationFromIndex(const FIntPoint& WorldIndex) const;
 	FIntPoint GetGlobalMapStageOffset(const UMapStageData* MapStage) const;
 	FIntPoint GetGlobalXY(const UMapStageData* MapStage, int LocalX, int LocalY) const;
 	bool SetDataGlobalXY(int GlobalX, int GlobalY, UMapNodeData* Value);
@@ -83,6 +85,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D NodeOffset = FVector2D(300, 250);
 
+	// Runtime data
+	TMap<FIntPoint, AMapNode*> SpawnedNodes;
 
 	// Player
 	UPROPERTY(EditDefaultsOnly)
@@ -92,5 +96,5 @@ protected:
 
 	// Debug
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	bool bDebugShowAllNodes = true;
+	bool bDebugShowAllNodes = false;
 };

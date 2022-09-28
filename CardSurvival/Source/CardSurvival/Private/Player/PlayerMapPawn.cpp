@@ -27,6 +27,8 @@ void APlayerMapPawn::MoveToWorldIndex(const FIntPoint& NewLocation)
 	AMapManager* MapManager = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
 	FVector NewLocation3D = MapManager->GetWorldLocationFromIndex(NewLocation) + WalkOffset;
 	FollowComponent->SetFollow(nullptr, NewLocation3D, GetActorRotation());
+
+	SpawnNodesInView();
 }
 
 void APlayerMapPawn::MoveToWorldIndex_Instant(const FIntPoint& NewLocation)
@@ -36,4 +38,12 @@ void APlayerMapPawn::MoveToWorldIndex_Instant(const FIntPoint& NewLocation)
 	AMapManager* MapManager = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
 	FVector NewLocation3D = MapManager->GetWorldLocationFromIndex(NewLocation) + WalkOffset;
 	SetActorLocation(NewLocation3D);
+
+	SpawnNodesInView();
+}
+
+void APlayerMapPawn::SpawnNodesInView()
+{
+	AMapManager* MapManager = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
+	MapManager->SpawnNodesInView(WorldLocationIndex, 2);
 }
