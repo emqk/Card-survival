@@ -92,8 +92,7 @@ void AMapManager::SpawnNodesInView(const FIntPoint& WorldIndex, int32 View)
 
 	// Spawn nodes
 	TArray<FIntPoint> Indices;
-	UMapNodeData* StartNodeData = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
-	FindNodeIndicesInView(WorldIndex, View + StartNodeData->GetVisibility(), Indices);
+	FindNodeIndicesInView(WorldIndex, View, Indices);
 	for (const FIntPoint& Index : Indices)
 	{
 		SpawnNodeAtIndex(Index);
@@ -190,9 +189,6 @@ void AMapManager::FindNodeIndicesInView(const FIntPoint& Origin, int32 View, TAr
 		return;
 	}
 
-	// Apply visibility cost
-	View -= NodeData->GetVisibility();
-
 	// Is this node still visible after applying visibility cost?
 	if (View >= 0)
 	{
@@ -202,6 +198,9 @@ void AMapManager::FindNodeIndicesInView(const FIntPoint& Origin, int32 View, TAr
 	{
 		return;
 	}
+
+	// Apply visibility cost
+	View -= NodeData->GetVisibility();
 
 	// Check neighbours
 	TArray<FIntPoint> Neighbours = GetNeighbours(Origin);
