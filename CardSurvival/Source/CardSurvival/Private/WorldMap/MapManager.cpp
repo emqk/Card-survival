@@ -91,7 +91,9 @@ void AMapManager::SpawnNodesInView(const FIntPoint& WorldIndex, int32 View)
 
 
 	// Spawn nodes
-	TArray<FIntPoint> Indices =	FindNodeIndicesInView(WorldIndex, View);
+	TArray<FIntPoint> Indices;
+	UMapNodeData* StartNodeData = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
+	FindNodeIndicesInView(WorldIndex, View + StartNodeData->GetVisibility(), Indices);
 	for (const FIntPoint& Index : Indices)
 	{
 		SpawnNodeAtIndex(Index);
@@ -134,6 +136,7 @@ AMapNode* AMapManager::SpawnNodeAtIndexFromData(const FIntPoint& WorldIndex, con
 {
 	if (IsNodeAtIndex(WorldIndex))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Can't spawn map node! - Already in the location"))
 		return nullptr;
 	}
 
@@ -173,14 +176,39 @@ bool AMapManager::IsNodeAtIndex(const FIntPoint& WorldIndex) const
 	return SpawnedNodes.Contains(WorldIndex);
 }
 
-TArray<FIntPoint> AMapManager::FindNodeIndicesInView(const FIntPoint& Origin, int32 View) const
+void AMapManager::FindNodeIndicesInView(const FIntPoint& Origin, int32 View, TArray<FIntPoint>& OutIndices) const
 {
-	TArray<FIntPoint> Result;
+	if (View < 0)
+	{
+		return;
+	}
 
-	Result = GetNeighbours(Origin);
-	Result.Add(Origin);
+	// Get data of the current node
+	UMapNodeData* NodeData = GetDataGlobalXY(Origin.X, Origin.Y);
+	if (!NodeData)
+	{
+		return;
+	}
 
-	return Result;
+	// Apply visibility cost
+	View -= NodeData->GetVisibility();
+
+	// Is this node still visible after applying visibility cost?
+	if (View >= 0)
+	{
+		OutIndices.AddUnique(Origin);
+	}
+	else
+	{
+		return;
+	}
+
+	// Check neighbours
+	TArray<FIntPoint> Neighbours = GetNeighbours(Origin);
+	for (const FIntPoint& NeighbourIndex : Neighbours)
+	{
+		FindNodeIndicesInView(NeighbourIndex, View, OutIndices);
+	}
 }
 
 int32 AMapManager::FindStageIndexByIndex(const FIntPoint& WorldIndex) const

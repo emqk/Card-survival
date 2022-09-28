@@ -41,7 +41,7 @@ protected:
 	AMapNode* GetNodeAtIndex(const FIntPoint& WorldIndex) const;
 	bool IsNodeAtIndex(const FIntPoint& WorldIndex) const;
 
-	TArray<FIntPoint> FindNodeIndicesInView(const FIntPoint& Origin, int32 View) const;
+	void FindNodeIndicesInView(const FIntPoint& Origin, int32 View, TArray<FIntPoint>& OutIndices) const;
 
 	int32 FindStageIndexByIndex(const FIntPoint& WorldIndex) const;
 	FVector FindStageLocationByIndex(int32 StageIndex) const;

@@ -45,5 +45,5 @@ void APlayerMapPawn::MoveToWorldIndex_Instant(const FIntPoint& NewLocation)
 void APlayerMapPawn::SpawnNodesInView()
 {
 	AMapManager* MapManager = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
-	MapManager->SpawnNodesInView(WorldLocationIndex, 2);
+	MapManager->SpawnNodesInView(WorldLocationIndex, ViewDistance);
 }

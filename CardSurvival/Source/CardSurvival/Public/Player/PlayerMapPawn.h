@@ -28,6 +28,8 @@ protected:
 	void SpawnNodesInView();
 
 protected:
+	UPROPERTY(EditDefaultsOnly)
+	int32 ViewDistance = 2;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UFollowComponent> FollowComponent;
 

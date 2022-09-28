@@ -26,7 +26,13 @@ void UMapStageData::Generate(int NewHeight, int NewWidth, int NewStage, UMapNode
 
 UMapNodeData* UMapStageData::GetDataAt(int X, int Y) const
 {
-	return Data[X * Width + Y];
+	int Index = X * Width + Y;
+	if (!Data.IsValidIndex(Index))
+	{
+		return nullptr;
+	}
+
+	return Data[Index];
 }
 
 void UMapStageData::SetDataAt(int X, int Y, UMapNodeData* NewData)
