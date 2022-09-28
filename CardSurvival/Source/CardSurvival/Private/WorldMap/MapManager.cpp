@@ -83,13 +83,6 @@ void AMapManager::SpawnAllNodes()
 
 void AMapManager::SpawnNodesInView(const FIntPoint& WorldIndex, int32 View)
 {
-	/////////// TO DO////////////
-	//
-	//	1) Amount of spawned nodes should be based on the View distance, not just neighbours
-	//
-	////////////////////////////
-
-
 	// Spawn nodes
 	TArray<FIntPoint> Indices;
 	FindNodeIndicesInView(WorldIndex, View, Indices);
