@@ -74,7 +74,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	int NumberOfStagesToGenerate = 5;
 	UPROPERTY(EditDefaultsOnly)
-	FVector MapStartLocation = {10000, 0, 0};
+	FVector MapStartLocation = {50000, 0, 0};
 	UPROPERTY(EditDefaultsOnly)
 	FIntPoint StageSize = {20, 10};
 	UPROPERTY(EditDefaultsOnly)
