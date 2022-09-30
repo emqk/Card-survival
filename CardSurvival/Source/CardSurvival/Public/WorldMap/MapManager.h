@@ -67,9 +67,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UMapNodeData> ForestNodeData;
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UMapNodeData> InteractableForestData;
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UMapNodeData> InteractableGraveyardData;
+	TArray<UMapNodeData*> POIsData;
 
 	UPROPERTY(EditDefaultsOnly)
 	int NumberOfStagesToGenerate = 5;

@@ -61,8 +61,8 @@ void AMapManager::GenerateNextStage()
 		float X = FMath::RandRange(POILocalXMargin, Split - 1 - POILocalXMargin) + Split * i;
 		float Y = FMath::RandRange(IndexRangeYFromTo.X, IndexRangeYFromTo.Y);
 
-		// Add (random POI)
-		UMapNodeData* MapNodeData = FMath::RandRange(0, 1) == 0 ? InteractableForestData : InteractableGraveyardData;
+		// Add random POI
+		UMapNodeData* MapNodeData = POIsData[FMath::RandRange(0, POIsData.Num() - 1)];
 		NewData->AddPOI(X, Y, MapNodeData);
 	}
 
