@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/PlayerMapPawn.h"
+#include "World/WorldLoaderSubsystem.h"
 
 AMapModel::AMapModel()
 {
@@ -19,10 +20,13 @@ bool AMapModel::StartInteraction_Implementation(AActor* Interactor, EInteraction
 {
 	UE_LOG(LogTemp, Warning, TEXT("Interacted with the map"))
 		
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	APlayerMapPawn* PlayerPawn = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerMapPawn();
-	
-	PlayerController->Possess(PlayerPawn);
+	UWorldLoaderSubsystem* WorldLoader = GetGameInstance()->GetSubsystem<UWorldLoaderSubsystem>();
+	if (!WorldLoader)
+	{
+		return false;
+	}
+
+	WorldLoader->OpenMap();
 
 	return true;
 }

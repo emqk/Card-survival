@@ -2,17 +2,12 @@
 
 
 #include "WorldMap/MapNode.h"
-#include "Player/PlayerMapPawn.h"
 #include "Player/PlayerSubsystem.h"
-#include "Player/PlayerBoardPawn.h"
+#include "Player/PlayerMapPawn.h"
 #include "WorldMap/MapManager.h"
 #include "WorldMap/MapNodeData.h"
-#include "Board/LevelStreamingSubsystem.h"
+#include "World/WorldLoaderSubsystem.h"
 #include "Events/EventsManager.h"
-#include "Cards/CardManager.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Kismet/GameplayStatics.h"
-#include "Tokens/TokenRow.h"
 
 AMapNode::AMapNode()
 {
@@ -55,41 +50,13 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 				PlayerSubsystem->GetEventsManager()->StartEvent(EventToStart);
 			}
 
+		
 			// Go to the board
-			// TODO - START
-			// Move this part to a function (in a subsystem / manager)
-			// TODO - END
-			if (NodeData->GetEnvironmentData())
+			UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();
+			UWorldLoaderSubsystem* WorldLoader = GetGameInstance()->GetSubsystem<UWorldLoaderSubsystem>();
+			if (EnvironmentData && WorldLoader)
 			{
-				// Possess the board player and load the environment
-				APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-				APlayerBoardPawn* PlayerBoardPawn = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerBoardPawn();
-				PlayerController->Possess(PlayerBoardPawn);
-
-				UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();
-				GetGameInstance()->GetSubsystem<ULevelStreamingSubsystem>()->LoadLevelInstance(EnvironmentData->GetLevelInstance(), FVector(2350.0f, 0.0f, -80.0f));
-				
-				// Destroy old cards and spawn new ones
-				ACardManager* CardManager = PlayerSubsystem->GetCardManager();
-				CardManager->DestroyAllCardsInRow(EBoardRow::Location);
-
-				const TArray<FCardSpawnData>& CardSpawnDatas = EnvironmentData->GetCardSpawnData();
-				for (const FCardSpawnData& SpawnData : CardSpawnDatas)
-				{
-					int Amount = UKismetMathLibrary::RandomIntegerInRange(SpawnData.AmountRange.X, SpawnData.AmountRange.Y);
-					for (int i = 0; i < Amount; i++)
-					{
-						CardManager->SpawnCardInRow(EBoardRow::Location, SpawnData.CardData);
-					}
-				}
-
-				// Apply token effects
-				ATokenRow* TokenRow = PlayerSubsystem->GetTokenRow();
-				if (TokenRow)
-				{
-					TokenRow->ApplyAllTokensEffects();
-				}
-
+				WorldLoader->OpenNewEnvironment(EnvironmentData);
 				return true;
 			}
 		}
