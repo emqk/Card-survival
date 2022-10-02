@@ -47,7 +47,7 @@ void UFollowComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		if (DistanceFromTarget <= SnapDistance)
 		{
 			GetOwner()->SetActorLocation(TargetLocation);
-			GetOwner()->SetActorRotation(NewRotation);
+			GetOwner()->SetActorRotation(TargetRotation);
 			SetComponentTickEnabled(false);
 			SetTryDisableTick(false);
 			return;
