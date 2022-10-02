@@ -7,6 +7,7 @@
 #include "CardData.generated.h"
 
 class UPrimaryDataAsset;
+class UCardUseBase;
 
 UENUM(BlueprintType)
 enum class ECardCategory : uint8
@@ -42,6 +43,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Category")
 	UTexture* GetDepthTexture() const { return DepthTexture; }
 
+	UCardUseBase* GetUseObject() const { return UseObject; };
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	FText Name;
@@ -58,6 +61,9 @@ protected:
 	TObjectPtr<UTexture> BaseTexture;
 	UPROPERTY(EditDefaultsOnly, Category = "Visuals")
 	TObjectPtr<UTexture> DepthTexture;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Use", Instanced)
+	TObjectPtr<UCardUseBase> UseObject;
 };
 
 USTRUCT(BlueprintType)

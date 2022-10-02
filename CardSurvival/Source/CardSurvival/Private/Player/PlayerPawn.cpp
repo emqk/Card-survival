@@ -35,7 +35,7 @@ void APlayerPawn::PrimaryInputPressed()
 	if (HitActor)
 	{
 		IInteractable* Interactable = Cast<IInteractable>(HitActor);
-		if (Interactable)
+		if (Interactable && IInteractable::Execute_CanInteract(HitActor, EInteractionType::Primary))
 		{
 			InteractionComponent->StartInteraction(Interactable, EInteractionType::Primary);
 		}
@@ -52,9 +52,13 @@ void APlayerPawn::SecondaryInputPressed()
 	if (HitActor)
 	{
 		IInteractable* Interactable = Cast<IInteractable>(HitActor);
-		if (Interactable)
+		if (Interactable && IInteractable::Execute_CanInteract(HitActor, EInteractionType::Secondary))
 		{
 			InteractionComponent->StartInteraction(Interactable, EInteractionType::Secondary);
+		}
+		else
+		{
+			InteractionComponent->DestroyInteractionAim();
 		}
 	}
 }
@@ -77,7 +81,7 @@ void APlayerPawn::InteractionTick(AActor* Cursor3D)
 
 		// Select
 		IInteractable* Interactable = Cast<IInteractable>(HitActor);
-		if (Interactable)
+		if (Interactable && IInteractable::Execute_CanSelect(HitActor, HitActor))
 		{
 			if (!InteractionComponent->IsActorSelected(HitResult.GetActor()))
 			{

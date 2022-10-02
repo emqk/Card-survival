@@ -19,10 +19,11 @@ class CARDSURVIVAL_API UPlayZoneComponent : public UBoxComponent
 public:	
 	UPlayZoneComponent();
 
-	bool AddCard(TObjectPtr<ACardBase> CardToAdd, int32 Index = INDEX_NONE);
-	bool RemoveCard(TObjectPtr<ACardBase> CardToRemove);
+	bool AddCard(ACardBase* CardToAdd, int32 Index = INDEX_NONE);
+	bool RemoveCard(ACardBase* CardToRemove);
 	void MoveCardToIndex(ACardBase* CardToMove, int32 NewIndex);
 
+	void DestroyCard(ACardBase* Card);
 	void DestroyAllCards();
 
 	int32 GetCardIndex(ACardBase* Card) const;

@@ -8,6 +8,7 @@
 
 class APlayerBoardPawn;
 class UPlayZoneComponent;
+class UInteractionComponent;
 class APlayerMapPawn;
 class AOwnPlayerController;
 class UFollowComponent;
@@ -38,6 +39,7 @@ public:
 
 	TObjectPtr<ACursor> GetPlayerCursor3D() const;
 	bool IsPlayerInteracting() const;
+	UInteractionComponent* GetInteractionComponentBoard() const;
 	const FHitResult& GetHitResultUnderCursor() const;
 
 	// Tokens

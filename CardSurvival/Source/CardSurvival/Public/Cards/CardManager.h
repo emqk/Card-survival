@@ -9,6 +9,7 @@
 class UCardSettings;
 class ACard;
 class ACardDummy;
+class AInteractionAim;
 
 UENUM(BlueprintType)
 enum class EBoardRow : uint8

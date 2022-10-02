@@ -4,6 +4,7 @@
 #include "Cards/Card.h"
 #include "Cards/CardDummy.h"
 #include "Cards/CardData.h"
+#include "Cards/CardUseBase.h"
 #include "Cards/CardInfoWidget.h"
 #include "Cards/CardSettings.h"
 #include "Cards/CardManager.h"
@@ -12,9 +13,9 @@
 #include "Utils/FollowComponent.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
+#include "Interaction/InteractionComponent.h"
 
 #include "Components/WidgetComponent.h"
-
 
 
 ACard::ACard()
@@ -39,6 +40,11 @@ void ACard::BeginPlay()
 	BorderDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(0);
 	BackgroundDynamicMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(1);
 	ItemTextureMaterialInstance = BaseMeshComponent->CreateDynamicMaterialInstance(2);
+}
+
+bool ACard::CanSelect_Implementation(AActor* Interactor)
+{
+	return CanInteractAim();
 }
 
 void ACard::SetCardData(UCardData* NewCardData)
@@ -117,12 +123,73 @@ void ACard::HighlightBorder(bool Active)
 	BorderDynamicMaterialInstance->SetScalarParameterValue(TEXT("Emission Strength"), Active ? EmissionStrengthSelect : EmissionStrengthDefault);
 }
 
+bool ACard::CanInteractAim()
+{
+	UInteractionComponent* InteractionComponent = PlayerSubsystem->GetInteractionComponentBoard();
+	if (!InteractionComponent->IsAiming())
+	{
+		return true;
+	}
+
+	ACard* AimStartCard = Cast<ACard>(InteractionComponent->GetAimStart());
+	if (!AimStartCard)
+	{
+		return true;
+	}
+
+	if (AimStartCard == this)
+	{
+		return false;
+	}
+
+	UCardUseBase* UseObject = CardData->GetUseObject();
+	if (!UseObject)
+	{
+		return false;
+	}
+
+	if (!UseObject->IsCardAccepted(AimStartCard->GetCardData()))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType)
 {		
 	CurrentInteractionType = InteractionType;
+	InteractionStartTime = GetWorld()->GetTimeSeconds();
 
 	if (InteractionType == EInteractionType::Primary)
 	{
+		// If aiming
+		UInteractionComponent* InteractionComponent = PlayerSubsystem->GetInteractionComponentBoard();
+		if (InteractionComponent->IsAiming())
+		{
+			UCardUseBase* UseObject = CardData->GetUseObject();
+			if (UseObject)
+			{
+				UseObject->Use(Cast<ACardBase>(InteractionComponent->GetAimStart()), this);
+				InteractionComponent->DestroyInteractionAim();
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Can't use - No use object!"))
+			}
+
+			/*	if (CardData->GetCategory() == ECardCategory::Interactable)
+				{
+					PlayZone->RemoveCard(this);
+					Destroy();
+
+					InteractionComponent->DestroyInteractionAim();
+				}*/
+
+			return false;
+		}
+
+		//If not aiming
 		SetActorEnableCollision(false);
 
 		if (PlayZone)
@@ -200,6 +267,11 @@ void ACard::OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEnd
 
 bool ACard::EndInteraction_Implementation(AActor* Interactor)
 {
+	if (!IsValid(this))
+	{
+		return false;
+	}
+
 	if (CurrentInteractionType == EInteractionType::Primary)
 	{
 		HighlightCard(false);
@@ -236,6 +308,13 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 	{
 		ProgressBarMeshComponent->SetVisibility(false);
 		Progress = 0.0f;
+
+		float TimeSinceInteractionStart = GetWorld()->GetTimeSeconds() - InteractionStartTime;
+		if (TimeSinceInteractionStart <= InteractionAimTimeThreshold)
+		{
+			UInteractionComponent* InteractionComponent = PlayerSubsystem->GetInteractionComponentBoard();
+			InteractionComponent->GetInteractionAim(this);
+		}
 	}
 
 	// Disable dummy
@@ -252,6 +331,11 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 	}
 
 	return true;
+}
+
+bool ACard::CanInteract_Implementation(EInteractionType InteractionType)
+{
+	return CanInteractAim();
 }
 
 bool ACard::StartSelect_Implementation(AActor* Interactor)

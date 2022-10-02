@@ -36,6 +36,11 @@ bool UPlayerSubsystem::IsPlayerInteracting() const
 	return Player->IsInteracting();
 }
 
+UInteractionComponent* UPlayerSubsystem::GetInteractionComponentBoard() const
+{
+	return GetPlayerBoardPawn()->GetInteractionComponent();
+}
+
 const FHitResult& UPlayerSubsystem::GetHitResultUnderCursor() const
 {
 	APlayerPawn* Player = GetPlayerBoardPawn();

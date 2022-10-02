@@ -7,6 +7,7 @@
 #include "Player/PlayerSubsystem.h"
 #include "Board/Board.h"
 #include "Board/PlayZoneComponent.h"
+#include "Interaction/InteractionAim.h"
 
 ACardManager::ACardManager()
 {

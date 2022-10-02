@@ -24,6 +24,7 @@ public:
 	APlayerPawn();
 
 	bool IsInteracting() const;
+	UInteractionComponent* GetInteractionComponent() const { return InteractionComponent; };
 	const FHitResult& GetHitResult() const { return HitResult; };
 
 protected:

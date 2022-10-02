@@ -29,14 +29,17 @@ public:
 	bool TickInteraction_Implementation(AActor* Interactor) override;
 	void OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEndResult) override;
 	bool EndInteraction_Implementation(AActor* Interactor) override;
+	bool CanInteract_Implementation(EInteractionType InteractionType) override;
 
 	// Select
 	bool StartSelect_Implementation(AActor* Interactor) override;
 	bool TickSelect_Implementation(AActor* Interactor) override;
 	bool EndSelect_Implementation(AActor* Interactor) override;
+	bool CanSelect_Implementation(AActor* Interactor) override;
 
 	UFUNCTION(BlueprintCallable)
 	void SetCardData(UCardData* NewCardData);
+	UCardData* GetCardData() const { return CardData; };
 
 	UPlayerSubsystem* GetPlayerSubsystem() const { return PlayerSubsystem; };
 	void SetPlayerSubsystem();
@@ -47,6 +50,8 @@ protected:
 
 	void HighlightCard(bool Active);
 	void HighlightBorder(bool Active);
+
+	bool CanInteractAim();
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -80,9 +85,11 @@ protected:
 	TObjectPtr<UMaterialInstanceDynamic> ItemTextureMaterialInstance = nullptr;
 
 	EInteractionType CurrentInteractionType;
+	float InteractionStartTime = 0.0f;
+	const float InteractionAimTimeThreshold = 0.2f;
 	TObjectPtr<ACardDummy> CardDummy = nullptr;
-
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPlayerSubsystem> PlayerSubsystem;
+
 };

@@ -3,3 +3,13 @@
 
 #include "Interaction/Interactable.h"
 
+
+bool IInteractable::CanInteract_Implementation(EInteractionType InteractionType)
+{
+	return true;
+}
+
+bool IInteractable::CanSelect_Implementation(AActor* Interactor)
+{
+	return true;
+}

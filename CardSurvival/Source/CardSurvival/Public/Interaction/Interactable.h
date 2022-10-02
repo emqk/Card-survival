@@ -36,6 +36,9 @@ public:
 	void OnTickInteractionEnd(AActor* Interactor, bool TickEndResult);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool EndInteraction(AActor* Interactor);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool CanInteract(EInteractionType InteractionType);
+	virtual bool CanInteract_Implementation(EInteractionType InteractionType);
 
 	// Select
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -44,4 +47,7 @@ public:
 	bool TickSelect(AActor* Interactor);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool EndSelect(AActor* Interactor);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool CanSelect(AActor* Interactor);
+	virtual bool CanSelect_Implementation(AActor* Interactor);
 };

@@ -8,6 +8,8 @@
 #include "Components/ActorComponent.h"
 #include "InteractionComponent.generated.h"
 
+class AInteractionAim;
+class ACardBase;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CARDSURVIVAL_API UInteractionComponent : public UActorComponent
@@ -32,6 +34,13 @@ public:
 	bool IsActorSelected(AActor* Actor) const;
 	bool IsInteracting() const;
 
+	// Aim
+	void TickAim();
+	bool IsAiming() const { return InteractionAimInstance != nullptr; }
+	AActor* GetAimStart() const;
+	AInteractionAim* GetInteractionAim(AActor* Start);
+	void DestroyInteractionAim();
+
 protected:	
 
 	UPROPERTY(EditDefaultsOnly)
@@ -41,4 +50,10 @@ protected:
 	TScriptInterface<IInteractable> InteractableTarget = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	TScriptInterface<IInteractable> SelectTarget = nullptr;
+
+	// Aim
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AInteractionAim> InteractionAimClass;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<AInteractionAim> InteractionAimInstance;
 };

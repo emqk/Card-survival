@@ -2,8 +2,10 @@
 
 
 #include "Interaction/InteractionComponent.h"
+#include "Interaction/InteractionAim.h"
 #include "Player/OwnPlayerController.h"
 #include "Player/PlayerSubsystem.h"
+#include "Cards/CardBase.h"
 
 // Sets default values for this component's properties
 UInteractionComponent::UInteractionComponent()
@@ -34,6 +36,8 @@ void UInteractionComponent::TickInteraction()
 			EndInteraction();
 		}
 	}
+
+	TickAim();
 }
 
 void UInteractionComponent::EndInteraction()
@@ -106,3 +110,55 @@ bool UInteractionComponent::IsInteracting() const
 	return InteractableTarget != nullptr;
 }
 
+void UInteractionComponent::TickAim()
+{
+	if(!InteractionAimInstance)
+		return;
+
+	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	const FHitResult& HitResult = PlayerSubsystem->GetHitResultUnderCursor();
+
+	InteractionAimInstance->UpdateEnd(HitResult.Location);
+}
+
+AActor* UInteractionComponent::GetAimStart() const
+{
+	if (!InteractionAimInstance)
+	{
+		return nullptr;
+	}
+
+	return InteractionAimInstance->GetAimStart();
+}
+
+AInteractionAim* UInteractionComponent::GetInteractionAim(AActor* Start)
+{
+	if (!Start)
+	{
+		return nullptr;
+	}
+
+	if (InteractionAimInstance)
+	{
+		return InteractionAimInstance;
+	}
+
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	FTransform Transform;
+	InteractionAimInstance = Cast<AInteractionAim>(GetWorld()->SpawnActor(InteractionAimClass, &Transform, Params));
+	InteractionAimInstance->Init(Start, Start->GetActorLocation() + FVector(1500, 0, 0));
+
+	return InteractionAimInstance;
+}
+
+void UInteractionComponent::DestroyInteractionAim()
+{
+	if (!InteractionAimInstance)
+	{
+		return;
+	}
+
+	InteractionAimInstance->Destroy();
+	InteractionAimInstance = nullptr;
+}

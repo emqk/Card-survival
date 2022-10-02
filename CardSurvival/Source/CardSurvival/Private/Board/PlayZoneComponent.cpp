@@ -13,7 +13,7 @@ UPlayZoneComponent::UPlayZoneComponent()
 	BoxExtent = FVector(100, 100, 100);
 }
 
-bool UPlayZoneComponent::AddCard(TObjectPtr<ACardBase> CardToAdd, int32 Index /*= INDEX_NONE*/)
+bool UPlayZoneComponent::AddCard(ACardBase* CardToAdd, int32 Index /*= INDEX_NONE*/)
 {
 	if (Cards.Contains(CardToAdd))
 	{
@@ -44,7 +44,7 @@ bool UPlayZoneComponent::AddCard(TObjectPtr<ACardBase> CardToAdd, int32 Index /*
 	return true;
 }
 
-bool UPlayZoneComponent::RemoveCard(TObjectPtr<ACardBase> CardToRemove)
+bool UPlayZoneComponent::RemoveCard(ACardBase* CardToRemove)
 {
 	int32 NumOfRemovedCards = Cards.Remove(CardToRemove);
 
@@ -83,6 +83,12 @@ void UPlayZoneComponent::MoveCardToIndex(ACardBase* CardToMove, int32 NewIndex)
 		Swap(Cards[CurrentIndex], Cards[NewIndex]);
 		RefreshCardsLocation();
 	}
+}
+
+void UPlayZoneComponent::DestroyCard(ACardBase* Card)
+{
+	RemoveCard(Card);
+	Card->Destroy();
 }
 
 void UPlayZoneComponent::DestroyAllCards()

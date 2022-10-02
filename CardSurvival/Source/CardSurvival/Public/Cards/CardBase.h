@@ -22,6 +22,8 @@ public:
 
 	TObjectPtr<UFollowComponent> GetFollowComponent() const { return FollowComponent; };
 
+	void DestroyMe();
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> BaseMeshComponent;
@@ -33,5 +35,4 @@ protected:
 	// PlayZone in which this card is currently in
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPlayZoneComponent> PlayZone;
-
 };

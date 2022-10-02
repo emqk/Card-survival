@@ -11,6 +11,7 @@
 #include "Player/PlayerMapPawn.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/PlayerBoardPawn.h"
+#include "Interaction/InteractionComponent.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -57,8 +58,9 @@ void UWorldLoaderSubsystem::OpenNewEnvironment(UEnvironmentData* EnvironmentData
 void UWorldLoaderSubsystem::OpenMap()
 {
 	// Possess the map player
+	UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	APlayerMapPawn* PlayerPawn = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerMapPawn();
+	APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
 
 	PlayerController->Possess(PlayerPawn);
 
@@ -68,4 +70,7 @@ void UWorldLoaderSubsystem::OpenMap()
 		MapLighting->Activate();
 		MapPostProcess->bEnabled = true;
 	}
+
+	// Destroy Aim - We don't want it to point from destroyed (null) card
+	PlayerSubsystem->GetInteractionComponentBoard()->DestroyInteractionAim();
 }
