@@ -178,14 +178,6 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType
 				UE_LOG(LogTemp, Error, TEXT("Can't use - No use object!"))
 			}
 
-			/*	if (CardData->GetCategory() == ECardCategory::Interactable)
-				{
-					PlayZone->RemoveCard(this);
-					Destroy();
-
-					InteractionComponent->DestroyInteractionAim();
-				}*/
-
 			return false;
 		}
 

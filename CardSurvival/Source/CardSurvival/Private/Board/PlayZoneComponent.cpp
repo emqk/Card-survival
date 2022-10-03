@@ -28,7 +28,7 @@ bool UPlayZoneComponent::AddCard(ACardBase* CardToAdd, int32 Index /*= INDEX_NON
 
 	UFollowComponent* FollowComponent = CardToAdd->GetFollowComponent();
 	FVector TargetLocation = GetCardLocationAtIndex(Cards.Num());
-	FollowComponent->SetFollow(nullptr, TargetLocation, FRotator());
+	FollowComponent->SetFollow(nullptr, TargetLocation, FRotator::ZeroRotator);
 
 	CardToAdd->SetPlayZone(this);
 	if (Cards.IsValidIndex(Index))
@@ -160,7 +160,7 @@ void UPlayZoneComponent::RefreshCardsLocation()
 		ACardBase* Card = Cards[i];
 		UFollowComponent* FollowComponent = Card->GetFollowComponent();
 		FVector TargetLocation = GetCardLocationAtIndex(i);
-		FollowComponent->SetFollow(nullptr, TargetLocation, FRotator());
+		FollowComponent->SetFollow(nullptr, TargetLocation, FRotator::ZeroRotator);
 	}
 }
 
