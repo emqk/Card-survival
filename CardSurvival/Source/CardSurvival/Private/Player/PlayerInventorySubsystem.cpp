@@ -3,6 +3,7 @@
 
 #include "Player/PlayerInventorySubsystem.h"
 #include "Utils/Statistic.h"
+#include "Tokens/TokenData.h"
 
 void UPlayerInventorySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -33,4 +34,22 @@ UStatistic* UPlayerInventorySubsystem::GetStatisticByID(EStatisticID ID) const
 	}
 
 	return nullptr;
+}
+
+void UPlayerInventorySubsystem::ApplyEffects(const TArray<FTokenEffect>& Effects, int32 Amount)
+{
+	for (const FTokenEffect& Effect : Effects)
+	{
+		ApplyEffect(Effect, Amount);
+	}
+}
+
+void UPlayerInventorySubsystem::ApplyEffect(const FTokenEffect& Effect, int32 Amount)
+{
+	UStatistic* Stat = GetStatisticByID(Effect.StatisticID);
+	if (Stat)
+	{
+		int32 TokenCount = Amount;
+		Stat->ChangeByAmount(Effect.Impact * TokenCount);
+	}
 }

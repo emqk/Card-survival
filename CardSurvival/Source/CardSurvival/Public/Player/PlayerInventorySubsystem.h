@@ -8,6 +8,7 @@
 #include "PlayerInventorySubsystem.generated.h"
 
 class UStatistic;
+struct FTokenEffect;
 
 UCLASS()
 class CARDSURVIVAL_API UPlayerInventorySubsystem : public UGameInstanceSubsystem
@@ -27,6 +28,9 @@ public:
 	UStatistic* GetEnergy() const { return Energy; };
 	UFUNCTION(BlueprintPure)
 	UStatistic* GetSanity() const { return Sanity; };
+
+	void ApplyEffects(const TArray<FTokenEffect>& Effects, int32 Amount);
+	void ApplyEffect(const FTokenEffect& Effect, int32 Amount);
 
 protected:
 	UPROPERTY()

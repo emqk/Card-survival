@@ -102,13 +102,7 @@ void ATokenRow::ApplyAllTokensEffects()
 			for (const FTokenEffect& CurrentEffect : Effects)
 			{
 				UPlayerInventorySubsystem* Inventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
-				if (Inventory)
-				{
-					UStatistic* Stat = Inventory->GetStatisticByID(CurrentEffect.StatisticID);
-					int32 TokenCount = Stack->Tokens.Num();
-
-					Stat->ChangeByAmount(CurrentEffect.Impact * TokenCount);
-				}
+				Inventory->ApplyEffect(CurrentEffect, Stack->Tokens.Num());
 			}
 		}
 	}

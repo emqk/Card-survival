@@ -8,6 +8,12 @@
 
 class UPrimaryDataAsset;
 
+UENUM(BlueprintType)
+enum class EStatusType : uint8
+{
+	Instant, Durable
+};
+
 USTRUCT(BlueprintType)
 struct CARDSURVIVAL_API FTokenEffect
 {
@@ -26,6 +32,8 @@ class CARDSURVIVAL_API UTokenData : public UPrimaryDataAsset
 
 public:
 	UFUNCTION(BlueprintCallable)
+	EStatusType GetStatusType() const { return Type; };
+	UFUNCTION(BlueprintCallable)
 	FText GetName() const { return Name; }
 	UFUNCTION(BlueprintCallable)
 	FText GetDescription() const { return Description; }
@@ -36,6 +44,8 @@ public:
 	const TArray<FTokenEffect>& GetEffects() const { return Effects; };
 
 protected:
+	UPROPERTY(EditDefaultsOnly)
+	EStatusType Type;
 	UPROPERTY(EditDefaultsOnly)
 	FText Name;
 	UPROPERTY(EditDefaultsOnly)

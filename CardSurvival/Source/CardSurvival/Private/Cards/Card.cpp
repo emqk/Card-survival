@@ -9,10 +9,12 @@
 #include "Cards/CardSettings.h"
 #include "Cards/CardManager.h"
 #include "Tokens/TokenRow.h"
+#include "Tokens/TokenData.h"
 #include "Board/PlayZoneComponent.h"
 #include "Utils/FollowComponent.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/Cursor.h"
+#include "Player/PlayerInventorySubsystem.h"
 #include "Interaction/InteractionComponent.h"
 
 #include "Components/WidgetComponent.h"
@@ -252,7 +254,16 @@ void ACard::OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEnd
 		ATokenRow* TokenRow = GetPlayerSubsystem()->GetTokenRow();
 		for (const FTokenDataInstance& DataInstance : CardData->GetStatuses())
 		{
-			TokenRow->AddTokens(DataInstance.TokenData, DataInstance.Amount);
+			UTokenData* TokenData = DataInstance.TokenData;
+			if (TokenData->GetStatusType() == EStatusType::Durable)
+			{
+				TokenRow->AddTokens(TokenData, DataInstance.Amount);
+			}
+			else if (TokenData->GetStatusType() == EStatusType::Instant)
+			{
+				UPlayerInventorySubsystem* Inventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+				Inventory->ApplyEffects(TokenData->GetEffects(), DataInstance.Amount);
+			}
 		}
 	}
 }
