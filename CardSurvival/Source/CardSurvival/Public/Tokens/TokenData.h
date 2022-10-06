@@ -32,16 +32,18 @@ class CARDSURVIVAL_API UTokenData : public UPrimaryDataAsset
 
 public:
 	UFUNCTION(BlueprintCallable)
-	EStatusType GetStatusType() const { return Type; };
+	EStatusType GetStatusType() const { return Type; }
 	UFUNCTION(BlueprintCallable)
 	FText GetName() const { return Name; }
 	UFUNCTION(BlueprintCallable)
 	FText GetDescription() const { return Description; }
 	UFUNCTION(BlueprintCallable)
 	UStaticMesh* GetMesh() const { return Mesh; }
+	UFUNCTION(BlueprintCallable)
+	UTexture2D* GetIcon() const { return Icon; }
 
 	UFUNCTION(BlueprintPure)
-	const TArray<FTokenEffect>& GetEffects() const { return Effects; };
+	const TArray<FTokenEffect>& GetEffects() const { return Effects; }
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -52,6 +54,8 @@ protected:
 	FText Description;
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMesh> Mesh;
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UTexture2D> Icon;
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FTokenEffect> Effects;
