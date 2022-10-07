@@ -71,7 +71,7 @@ void AToken::ApplyData(UTokenData* Data)
 	UTokenInfoWidget* TokenInfoWidget = Cast<UTokenInfoWidget>(InfoWidgetComponent->GetWidget());
 	if (TokenInfoWidget)
 	{
-		TokenInfoWidget->Refresh(Data->GetName(), Data->GetDescription());
+		TokenInfoWidget->Refresh(Data->GetName(), Data->GetDescription(), 0, Data->GetIcon());
 	}
 }
 

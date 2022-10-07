@@ -39,6 +39,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetCardData(UCardData* NewCardData);
+	UFUNCTION(BlueprintPure)
 	UCardData* GetCardData() const { return CardData; };
 
 	UPlayerSubsystem* GetPlayerSubsystem() const { return PlayerSubsystem; };

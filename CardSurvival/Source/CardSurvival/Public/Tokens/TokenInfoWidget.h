@@ -15,6 +15,6 @@ class CARDSURVIVAL_API UTokenInfoWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintImplementableEvent)
-	void Refresh(const FText& Name, const FText& Description);
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void Refresh(const FText& Name, const FText& Description, int32 Amount, UTexture2D* IconTexture);
 };

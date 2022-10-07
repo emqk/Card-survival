@@ -33,8 +33,11 @@ public:
 	void SetBoardPlayer(APlayerBoardPawn* PlayerPawn) { BoardPlayer = PlayerPawn; };
 	void SetMapPlayer(APlayerMapPawn* PlayerPawn) { MapPlayer = PlayerPawn; };
 
-	TObjectPtr<APlayerBoardPawn> GetPlayerBoardPawn() const { return BoardPlayer; };
-	TObjectPtr<APlayerMapPawn> GetPlayerMapPawn() const { return MapPlayer; };
+	UFUNCTION(BlueprintPure)
+	APlayerBoardPawn* GetPlayerBoardPawn() const { return BoardPlayer; };
+	UFUNCTION(BlueprintPure)
+	APlayerMapPawn* GetPlayerMapPawn() const { return MapPlayer; };
+	
 	TObjectPtr<AOwnPlayerController> GetPlayerController() const;
 
 	TObjectPtr<ACursor> GetPlayerCursor3D() const;

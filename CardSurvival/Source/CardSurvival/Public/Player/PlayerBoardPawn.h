@@ -19,4 +19,6 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetCardInfoActive(UCardData* CardData, bool bActive);
 };
