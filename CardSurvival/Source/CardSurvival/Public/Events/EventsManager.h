@@ -8,6 +8,7 @@
 #include "EventsManager.generated.h"
 
 class UEventWidget;
+class UEventData;
 
 UCLASS()
 class CARDSURVIVAL_API AEventsManager : public AActor
@@ -20,11 +21,14 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable)
-	void StartEvent(UEventData* EventData);
+	bool TryStartRandomEvent();
 	UFUNCTION(BlueprintCallable)
 	void NextStage();
 	UFUNCTION(BlueprintCallable)
 	void EndEvent();
+
+	UFUNCTION(BlueprintCallable)
+	UEventData* GetRandomEventData() const;
 
 	UFUNCTION(BlueprintCallable)
 	void SetEventActionInitData(const FEventActionInitData& NewEventActionInitData) { EventActionInitData = NewEventActionInitData; }
@@ -33,9 +37,14 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
+	TArray<UEventData*> EventDatas;
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UEventWidget> EventWidgetClass;
 	UPROPERTY(VisibleAnywhere)
 	UEventWidget* EventWidgetInstance;
 	UPROPERTY(VisibleAnywhere)
 	FEventActionInitData EventActionInitData;
+
+	UPROPERTY(EditDefaultsOnly)
+	int32 ChanceToStartEvent = 5;
 };
