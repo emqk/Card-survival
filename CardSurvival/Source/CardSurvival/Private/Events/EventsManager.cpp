@@ -50,13 +50,14 @@ bool AEventsManager::TryStartRandomEvent()
 	return true;
 }
 
-void AEventsManager::NextStage()
+void AEventsManager::NextStage(UEventAction* EventAction)
 {
 	if (!EventWidgetInstance)
 	{
 		return;
 	}
 
+	LastEventAction = EventAction;
 	EventWidgetInstance->NextStage();
 
 	if (EventWidgetInstance->ShouldEnd())

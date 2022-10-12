@@ -21,3 +21,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 Amount = 0;
 };
+
+USTRUCT(BlueprintType)
+struct CARDSURVIVAL_API FTokenDataInstanceRange
+{
+	GENERATED_BODY();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UTokenData> TokenData;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FIntPoint Range = FIntPoint(0, 2);
+};
+

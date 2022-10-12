@@ -103,6 +103,7 @@ void ATokenRow::ApplyAllTokensEffects()
 			{
 				UPlayerInventorySubsystem* Inventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
 				Inventory->ApplyEffect(CurrentEffect, Stack->Tokens.Num());
+				// Need to remove tokens here
 			}
 		}
 	}

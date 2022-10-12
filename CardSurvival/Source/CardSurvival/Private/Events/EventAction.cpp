@@ -7,7 +7,7 @@
 
 void UEventAction::Perform_Implementation()
 {
-	GetEventsManager()->NextStage();
+	GetEventsManager()->NextStage(this);
 }
 
 AEventsManager* UEventAction::GetEventsManager() const

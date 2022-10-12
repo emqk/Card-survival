@@ -5,10 +5,10 @@
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Utils/StatisticID.h"
+#include "Tokens/TokenData.h"
 #include "PlayerInventorySubsystem.generated.h"
 
 class UStatistic;
-struct FTokenEffect;
 
 UCLASS()
 class CARDSURVIVAL_API UPlayerInventorySubsystem : public UGameInstanceSubsystem
@@ -29,7 +29,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	UStatistic* GetSanity() const { return Sanity; };
 
+	UFUNCTION(BlueprintCallable)
 	void ApplyEffects(const TArray<FTokenEffect>& Effects, int32 Amount);
+	UFUNCTION(BlueprintCallable)
 	void ApplyEffect(const FTokenEffect& Effect, int32 Amount);
 
 protected:

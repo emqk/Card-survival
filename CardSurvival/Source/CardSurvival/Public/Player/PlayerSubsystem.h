@@ -47,6 +47,7 @@ public:
 
 	// Tokens
 	void SetTokenRow(ATokenRow* NewTokenRow) { TokenRow = NewTokenRow; };
+	UFUNCTION(BlueprintCallable)
 	ATokenRow* GetTokenRow() const { return TokenRow; };
 	void SetMapManager(AMapManager* NewMapManager) { MapManager = NewMapManager; };
 	AMapManager* GetMapManager() const { return MapManager; };

@@ -23,7 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool TryStartRandomEvent();
 	UFUNCTION(BlueprintCallable)
-	void NextStage();
+	void NextStage(UEventAction* EventAction);
 	UFUNCTION(BlueprintCallable)
 	void EndEvent();
 
@@ -40,10 +40,12 @@ protected:
 	TArray<UEventData*> EventDatas;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UEventWidget> EventWidgetClass;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UEventWidget* EventWidgetInstance;
 	UPROPERTY(VisibleAnywhere)
 	FEventActionInitData EventActionInitData;
+	UPROPERTY(BlueprintReadOnly)
+	UEventAction* LastEventAction;
 
 	UPROPERTY(EditDefaultsOnly)
 	int32 ChanceToStartEvent = 5;

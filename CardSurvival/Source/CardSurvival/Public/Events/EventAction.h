@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Tokens/TokenDataInstance.h"
 #include "EventAction.generated.h"
 
 UCLASS(Blueprintable)
@@ -21,5 +22,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText DisplayText;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FTokenDataInstanceRange> GoodTokens;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FTokenDataInstanceRange> BadTokens;
 };
  
