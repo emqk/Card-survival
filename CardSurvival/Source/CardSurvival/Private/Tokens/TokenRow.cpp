@@ -93,6 +93,7 @@ void ATokenRow::RemoveToken(UTokenData* Data)
 
 void ATokenRow::ApplyAllTokensEffects()
 {
+	// Apply effects
 	for (UTokenStack* Stack : TokenStacks)
 	{
 		UTokenData* Data = Stack->Data;
@@ -103,9 +104,15 @@ void ATokenRow::ApplyAllTokensEffects()
 			{
 				UPlayerInventorySubsystem* Inventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
 				Inventory->ApplyEffect(CurrentEffect, Stack->Tokens.Num());
-				// Need to remove tokens here
 			}
 		}
+	}
+
+	// Remove tokens
+	for (int i = TokenStacks.Num() - 1; i >= 0; i--)
+	{
+		UTokenData* Data = TokenStacks[i]->Data;
+		RemoveToken(Data);
 	}
 }
 
