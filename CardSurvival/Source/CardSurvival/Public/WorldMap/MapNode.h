@@ -23,4 +23,6 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> SceneComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	USoundBase* WalkSound;
 };

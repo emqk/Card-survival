@@ -8,6 +8,7 @@
 #include "WorldMap/MapNodeData.h"
 #include "World/WorldLoaderSubsystem.h"
 #include "Events/EventsManager.h"
+#include "Kismet/GameplayStatics.h"
 
 AMapNode::AMapNode()
 {
@@ -33,6 +34,8 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 		{
 			PlayerPawn->MoveToWorldIndex(NewMapIndex);
 		
+			UGameplayStatics::PlaySound2D(GetWorld(), WalkSound);
+
 			// Go to the board
 			UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();
 			UWorldLoaderSubsystem* WorldLoader = GetGameInstance()->GetSubsystem<UWorldLoaderSubsystem>();

@@ -6,6 +6,7 @@
 #include "Player/OwnPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Events/EventWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 AEventsManager::AEventsManager()
 {
@@ -46,6 +47,8 @@ bool AEventsManager::TryStartRandomEvent()
 	FInputModeUIOnly InputData;
 	InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	PlayerController->SetInputMode(InputData);
+
+	UGameplayStatics::PlaySound2D(GetWorld(), StartEventSound);
 
 	return true;
 }

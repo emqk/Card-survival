@@ -49,4 +49,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	int32 ChanceToStartEvent = 5;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundBase* StartEventSound;
 };

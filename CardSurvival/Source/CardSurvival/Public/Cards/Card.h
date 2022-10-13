@@ -78,6 +78,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float EmissionStrengthDefault = 1.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundBase* OnInteractStartSound;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundBase* OnInteractEndSound;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundBase* OnUseSound;
+
 	UPROPERTY()
 	TObjectPtr<UMaterialInstanceDynamic> BorderDynamicMaterialInstance = nullptr;
 	UPROPERTY()

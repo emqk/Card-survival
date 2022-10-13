@@ -18,6 +18,7 @@
 #include "Interaction/InteractionComponent.h"
 
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ACard::ACard()
@@ -174,6 +175,7 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType
 			{
 				UseObject->Use(Cast<ACardBase>(InteractionComponent->GetAimStart()), this);
 				InteractionComponent->DestroyInteractionAim();
+				UGameplayStatics::PlaySound2D(GetWorld(), OnUseSound);
 			}
 			else
 			{
@@ -193,6 +195,8 @@ bool ACard::StartInteraction_Implementation(AActor* Interactor, EInteractionType
 
 		ACursor* Cursor3D = GetPlayerSubsystem()->GetPlayerCursor3D();
 		FollowComponent->SetFollow(Cursor3D, HoldHeightOffset, FRotator(), false);
+
+		UGameplayStatics::PlaySound2D(GetWorld(), OnInteractStartSound);
 	}
 	else if (InteractionType == EInteractionType::Secondary)
 	{
@@ -265,6 +269,8 @@ void ACard::OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEnd
 				Inventory->ApplyEffects(TokenData->GetEffects(), DataInstance.Amount);
 			}
 		}
+
+		UGameplayStatics::PlaySound2D(GetWorld(), OnInteractEndSound);
 	}
 }
 
