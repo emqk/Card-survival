@@ -270,7 +270,11 @@ void ACard::OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEnd
 			}
 		}
 
-		UGameplayStatics::PlaySound2D(GetWorld(), OnInteractEndSound);
+		if (!CardData->GetStatuses().IsEmpty())
+		{
+			UGameplayStatics::PlaySound2D(GetWorld(), OnInteractEndSound);
+			DestroyMe();
+		}
 	}
 }
 
