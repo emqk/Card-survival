@@ -8,6 +8,7 @@
 #include "PlayerMapPawn.generated.h"
 
 class UFollowComponent;
+class UWorldMapStatsWidget;
 
 UCLASS()
 class CARDSURVIVAL_API APlayerMapPawn : public APlayerPawn
@@ -24,6 +25,13 @@ public:
 
 	FIntPoint GetWorldIndex() const { return WorldLocationIndex; };
 
+	void SetStatsActive(bool bActive);
+	UFUNCTION(BlueprintImplementableEvent)
+	void RefreshStats();
+
+	UFUNCTION(BlueprintPure)
+	int32 GetEnergyDecreaseAfterStep() const { return EnergyDecreaseAfterStep; }
+
 protected:
 	void SpawnNodesInView();
 
@@ -39,4 +47,12 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	FIntPoint WorldLocationIndex;
 
+	UPROPERTY(EditDefaultsOnly)
+	int32 EnergyDecreaseAfterStep = -4;
+
+	// UI
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UWorldMapStatsWidget> WorldMapStatsWidgetClass;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UWorldMapStatsWidget> WorldMapStatsWidgetInstance;
 };

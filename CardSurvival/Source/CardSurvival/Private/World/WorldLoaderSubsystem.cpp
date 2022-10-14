@@ -23,6 +23,7 @@ void UWorldLoaderSubsystem::OpenNewEnvironment(UEnvironmentData* EnvironmentData
 	// Possess the board player and load the environment
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	APlayerBoardPawn* PlayerBoardPawn = PlayerSubsystem->GetPlayerBoardPawn();
+	APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
 	PlayerController->Possess(PlayerBoardPawn);
 
 	GetGameInstance()->GetSubsystem<ULevelStreamingSubsystem>()->LoadLevelInstance(EnvironmentData->GetLevelInstance(), FVector(2350.0f, 0.0f, -80.0f));
@@ -53,6 +54,9 @@ void UWorldLoaderSubsystem::OpenNewEnvironment(UEnvironmentData* EnvironmentData
 	{
 		TokenRow->ApplyAllTokensEffects();
 	}
+
+	// UI
+	PlayerPawn->SetStatsActive(false);
 }
 
 void UWorldLoaderSubsystem::OpenMap()
@@ -73,4 +77,7 @@ void UWorldLoaderSubsystem::OpenMap()
 
 	// Destroy Aim - We don't want it to point from destroyed (null) card
 	PlayerSubsystem->GetInteractionComponentBoard()->DestroyInteractionAim();
+
+	// UI
+	PlayerPawn->SetStatsActive(true);
 }

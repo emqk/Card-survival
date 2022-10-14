@@ -4,11 +4,13 @@
 #include "WorldMap/MapNode.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/PlayerMapPawn.h"
+#include "Player/PlayerInventorySubsystem.h"
 #include "WorldMap/MapManager.h"
 #include "WorldMap/MapNodeData.h"
 #include "World/WorldLoaderSubsystem.h"
 #include "Events/EventsManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Utils/Statistic.h"
 
 AMapNode::AMapNode()
 {
@@ -24,6 +26,7 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 	if (InteractionType == EInteractionType::Primary)
 	{
 		UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+		UPlayerInventorySubsystem* PlayerInventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
 		AMapManager* MapManager = PlayerSubsystem->GetMapManager();
 
 		APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
@@ -35,6 +38,11 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 			PlayerPawn->MoveToWorldIndex(NewMapIndex);
 		
 			UGameplayStatics::PlaySound2D(GetWorld(), WalkSound);
+
+			//Stats
+			int32 EnergyCost = PlayerPawn->GetEnergyDecreaseAfterStep();
+			PlayerInventory->GetEnergy()->ChangeByAmount(EnergyCost);
+			PlayerPawn->RefreshStats();
 
 			// Go to the board
 			UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();

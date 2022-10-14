@@ -5,7 +5,9 @@
 #include "Utils/FollowComponent.h"
 #include "Player/PlayerSubsystem.h"
 #include "WorldMap/MapManager.h"
+#include "WorldMap/WorldMapStatsWidget.h"
 #include "Camera/CameraComponent.h" 
+#include "Blueprint/UserWidget.h"
 
 APlayerMapPawn::APlayerMapPawn()
 {
@@ -18,6 +20,9 @@ void APlayerMapPawn::BeginPlay()
 	Super::BeginPlay();
 
 	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetMapPlayer(this);
+
+	WorldMapStatsWidgetInstance = CreateWidget<UWorldMapStatsWidget>(GetWorld(), WorldMapStatsWidgetClass);
+	SetStatsActive(true);
 }
 
 void APlayerMapPawn::MoveToWorldIndex(const FIntPoint& NewLocation)
@@ -40,6 +45,24 @@ void APlayerMapPawn::MoveToWorldIndex_Instant(const FIntPoint& NewLocation)
 	SetActorLocation(NewLocation3D);
 
 	SpawnNodesInView();
+}
+
+void APlayerMapPawn::SetStatsActive(bool bActive)
+{
+	if (!WorldMapStatsWidgetInstance)
+	{
+		return;
+	}
+
+	if (bActive)
+	{
+		WorldMapStatsWidgetInstance->AddToViewport();	
+		RefreshStats();
+	}
+	else
+	{
+		WorldMapStatsWidgetInstance->RemoveFromViewport();
+	}
 }
 
 void APlayerMapPawn::SpawnNodesInView()
