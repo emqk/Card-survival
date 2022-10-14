@@ -21,6 +21,12 @@ bool UPlayZoneComponent::AddCard(ACardBase* CardToAdd, int32 Index /*= INDEX_NON
 		return false;
 	}
 
+	if (IsRowFull())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Card add the card - The row is full!"));
+		return false;
+	}
+
 	if (UPlayZoneComponent* CurrentZone = CardToAdd->GetPlayZone())
 	{
 		CurrentZone->RemoveCard(CardToAdd);

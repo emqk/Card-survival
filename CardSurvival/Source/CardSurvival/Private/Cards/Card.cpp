@@ -285,6 +285,23 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 		return false;
 	}
 
+	// Disable dummy
+	UPlayZoneComponent* DummyPlayZone = nullptr;
+	int32 DummyCardIndex = INDEX_NONE;
+	if (CardDummy)
+	{
+		DummyPlayZone = CardDummy->GetPlayZone();
+		DummyCardIndex = DummyPlayZone->GetCardIndex(CardDummy);
+		if (UPlayZoneComponent* Zone = CardDummy->GetPlayZone())
+		{
+			Zone->RemoveCard(CardDummy);
+		}
+
+		ACardManager* CardManager = PlayerSubsystem->GetCardManager();
+		CardManager->DisableCardDummy();
+		CardDummy = nullptr;
+	}
+
 	if (CurrentInteractionType == EInteractionType::Primary)
 	{
 		HighlightCard(false);
@@ -296,22 +313,14 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 		const FHitResult& HitResult = GetPlayerSubsystem()->GetHitResultUnderCursor();
 		UPlayZoneComponent* HitPlayZone = GetPlayerSubsystem()->GetPlayZoneFromLocation(FVector2D(HitResult.Location));
 
-		if (HitPlayZone)
+		if (DummyPlayZone)
 		{
-			int32 NewIndex = HitPlayZone->GetCardIndexFromLocation(HitResult.Location);
-			HitPlayZone->AddCard(this, NewIndex);
+			// Add the card in place of the dummy card
+			DummyPlayZone->AddCard(this, DummyCardIndex);
 		}
 		else
 		{
-			if (UPlayZoneComponent* DummyPlayZone = CardDummy->GetPlayZone())
-			{
-				// Add the card in place of the dummy card
-				DummyPlayZone->AddCard(this, DummyPlayZone->GetCardIndex(CardDummy));
-			}
-			else
-			{
-				FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0), FRotator());
-			}
+			FollowComponent->SetFollow(nullptr, FVector(CurrentLocation.X, CurrentLocation.Y, 0), FRotator());
 		}
 
 		// Sometimes EndSelect is not called. Removing additional offset to fix it
@@ -328,19 +337,6 @@ bool ACard::EndInteraction_Implementation(AActor* Interactor)
 			UInteractionComponent* InteractionComponent = PlayerSubsystem->GetInteractionComponentBoard();
 			InteractionComponent->GetInteractionAim(this);
 		}
-	}
-
-	// Disable dummy
-	if (CardDummy)
-	{
-		if (UPlayZoneComponent* Zone = CardDummy->GetPlayZone())
-		{
-			Zone->RemoveCard(CardDummy);
-		}
-
-		ACardManager* CardManager = PlayerSubsystem->GetCardManager();
-		CardManager->DisableCardDummy();
-		CardDummy = nullptr;
 	}
 
 	return true;

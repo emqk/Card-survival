@@ -30,6 +30,7 @@ public:
 	int32 GetCardIndexFromLocation(const FVector& GlobalLocation);
 
 	bool IsLocationInPlayZone(const FVector2D& Location2D);
+	bool IsRowFull() const { return Cards.Num() >= MaxNumberOfCards; }
 
 protected:
 	FVector GetCardLocationAtIndex(int Index);
@@ -48,6 +49,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float DefaultOffsetY = 0;
+
+	UPROPERTY(EditDefaultsOnly)
+	int32 MaxNumberOfCards = 6;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<TObjectPtr<ACardBase>> Cards;
