@@ -100,7 +100,7 @@ void ACard::ApplyCardDataVisuals()
 
 void ACard::SetPlayerSubsystem()
 {
-	PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
 }
 
 void ACard::HighlightCard(bool Active)
@@ -265,7 +265,7 @@ void ACard::OnTickInteractionEnd_Implementation(AActor* Interactor, bool TickEnd
 			}
 			else if (TokenData->GetStatusType() == EStatusType::Instant)
 			{
-				UPlayerInventorySubsystem* Inventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+				UPlayerInventorySubsystem* Inventory = GetWorld()->GetSubsystem<UPlayerInventorySubsystem>();
 				Inventory->ApplyEffects(TokenData->GetEffects(), DataInstance.Amount);
 			}
 		}

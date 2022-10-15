@@ -18,7 +18,7 @@ ACardManager::ACardManager()
 void ACardManager::BeginPlay()
 {
 	Super::BeginPlay();
-	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetCardManager(this);
+	GetWorld()->GetSubsystem<UPlayerSubsystem>()->SetCardManager(this);
 
 	// Spawn dummy card
 	if (CardDummyClass)
@@ -72,7 +72,7 @@ void ACardManager::DisableCardDummy()
 
 UPlayZoneComponent* ACardManager::GetBoardRowFromEnum(EBoardRow BoardRow) const
 {
-	UPlayerSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	UPlayerSubsystem* Subsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
 	ABoard* Board = Subsystem->GetBoard();
 
 	if (Subsystem && Board)

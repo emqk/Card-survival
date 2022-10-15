@@ -12,5 +12,5 @@ void UEventAction::Perform_Implementation()
 
 AEventsManager* UEventAction::GetEventsManager() const
 {
-	return GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetEventsManager();
+	return GetWorld()->GetSubsystem<UPlayerSubsystem>()->GetEventsManager();
 }

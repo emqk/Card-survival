@@ -19,7 +19,7 @@ void ATokenRow::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetTokenRow(this);
+	GetWorld()->GetSubsystem<UPlayerSubsystem>()->SetTokenRow(this);
 }
 
 void ATokenRow::AddTokens(UTokenData* Data, int32 Amount)
@@ -102,7 +102,7 @@ void ATokenRow::ApplyAllTokensEffects()
 			const TArray<FTokenEffect>& Effects = Data->GetEffects();
 			for (const FTokenEffect& CurrentEffect : Effects)
 			{
-				UPlayerInventorySubsystem* Inventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+				UPlayerInventorySubsystem* Inventory = GetWorld()->GetSubsystem<UPlayerInventorySubsystem>();
 				Inventory->ApplyEffect(CurrentEffect, Stack->Tokens.Num());
 			}
 		}

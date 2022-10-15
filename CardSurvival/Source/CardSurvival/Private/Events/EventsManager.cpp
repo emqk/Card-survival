@@ -19,11 +19,13 @@ AEventsManager::AEventsManager()
 
 void AEventsManager::BeginPlay()
 {
-	UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
 	PlayerSubsystem->SetEventsManager(this);
 
-	UPlayerInventorySubsystem* PlayerInventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+	UPlayerInventorySubsystem* PlayerInventory = GetWorld()->GetSubsystem<UPlayerInventorySubsystem>();
 	PlayerInventory->GetHealth()->OnAttributeChange.AddUniqueDynamic(this, &AEventsManager::CheckEndGame);
+
+	SetUIInputActive(false);
 }
 
 bool AEventsManager::TryStartRandomEvent()
@@ -112,14 +114,14 @@ void AEventsManager::SetUIInputActive(bool bActive)
 {
 	if (bActive)
 	{
-		AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
+		AOwnPlayerController* PlayerController = GetWorld()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
 		FInputModeUIOnly InputData;
 		InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 		PlayerController->SetInputMode(InputData);
 	}
 	else
 	{
-		AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
+		AOwnPlayerController* PlayerController = GetWorld()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
 		FInputModeGameAndUI InputData;
 		InputData.SetHideCursorDuringCapture(false);
 		InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);

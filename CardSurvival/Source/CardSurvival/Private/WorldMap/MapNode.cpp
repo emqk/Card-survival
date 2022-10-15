@@ -25,8 +25,8 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 {
 	if (InteractionType == EInteractionType::Primary)
 	{
-		UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
-		UPlayerInventorySubsystem* PlayerInventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+		UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
+		UPlayerInventorySubsystem* PlayerInventory = GetWorld()->GetSubsystem<UPlayerInventorySubsystem>();
 		AMapManager* MapManager = PlayerSubsystem->GetMapManager();
 
 		APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();

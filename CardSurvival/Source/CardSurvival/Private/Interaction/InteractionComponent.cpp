@@ -82,7 +82,7 @@ void UInteractionComponent::EndSelect()
 
 FHitResult UInteractionComponent::GetResult()
 {
-	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
 	AOwnPlayerController* PlayerController = PlayerSubsystem->GetPlayerController();
 
 	if (PlayerController)
@@ -115,7 +115,7 @@ void UInteractionComponent::TickAim()
 	if(!InteractionAimInstance)
 		return;
 
-	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
 	const FHitResult& HitResult = PlayerSubsystem->GetHitResultUnderCursor();
 
 	InteractionAimInstance->UpdateEnd(HitResult.Location);

@@ -23,7 +23,7 @@ class ABoard;
  * Player utils
  */
 UCLASS()
-class CARDSURVIVAL_API UPlayerSubsystem : public UGameInstanceSubsystem
+class CARDSURVIVAL_API UPlayerSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 

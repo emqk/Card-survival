@@ -14,5 +14,5 @@ void APlayerBoardPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetBoardPlayer(this);
+	GetWorld()->GetSubsystem<UPlayerSubsystem>()->SetBoardPlayer(this);
 }

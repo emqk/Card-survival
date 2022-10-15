@@ -18,7 +18,7 @@
 
 void UWorldLoaderSubsystem::OpenNewEnvironment(UEnvironmentData* EnvironmentData)
 {
-	UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
 	
 	// Possess the board player and load the environment
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -62,7 +62,7 @@ void UWorldLoaderSubsystem::OpenNewEnvironment(UEnvironmentData* EnvironmentData
 void UWorldLoaderSubsystem::OpenMap()
 {
 	// Possess the map player
-	UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
+	UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
 

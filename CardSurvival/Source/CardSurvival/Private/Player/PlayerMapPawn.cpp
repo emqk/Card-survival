@@ -21,7 +21,7 @@ void APlayerMapPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetMapPlayer(this);
+	GetWorld()->GetSubsystem<UPlayerSubsystem>()->SetMapPlayer(this);
 
 	WorldMapStatsWidgetInstance = CreateWidget<UWorldMapStatsWidget>(GetWorld(), WorldMapStatsWidgetClass);
 	SetStatsActive(true);
@@ -31,7 +31,7 @@ void APlayerMapPawn::MoveToWorldIndex(const FIntPoint& NewLocation)
 {
 	WorldLocationIndex = NewLocation;
 
-	AMapManager* MapManager = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
+	AMapManager* MapManager = GetWorld()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
 	FVector NewLocation3D = MapManager->GetWorldLocationFromIndex(NewLocation) + WalkOffset;
 	FollowComponent->SetFollow(nullptr, NewLocation3D, GetActorRotation());
 
@@ -42,7 +42,7 @@ void APlayerMapPawn::MoveToWorldIndex_Instant(const FIntPoint& NewLocation)
 {
 	WorldLocationIndex = NewLocation;
 
-	AMapManager* MapManager = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
+	AMapManager* MapManager = GetWorld()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
 	FVector NewLocation3D = MapManager->GetWorldLocationFromIndex(NewLocation) + WalkOffset;
 	SetActorLocation(NewLocation3D);
 
@@ -69,7 +69,7 @@ void APlayerMapPawn::SetStatsActive(bool bActive)
 
 void APlayerMapPawn::Step()
 {
-	UPlayerInventorySubsystem* PlayerInventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+	UPlayerInventorySubsystem* PlayerInventory = GetWorld()->GetSubsystem<UPlayerInventorySubsystem>();
 
 	UStatistic* Energy = PlayerInventory->GetEnergy();
 	int32 EnergyCost = GetEnergyDecreaseAfterStep();
@@ -86,6 +86,6 @@ void APlayerMapPawn::Step()
 
 void APlayerMapPawn::SpawnNodesInView()
 {
-	AMapManager* MapManager = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
+	AMapManager* MapManager = GetWorld()->GetSubsystem<UPlayerSubsystem>()->GetMapManager();
 	MapManager->SpawnNodesInView(WorldLocationIndex, ViewDistance);
 }

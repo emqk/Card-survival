@@ -11,7 +11,7 @@
 class UStatistic;
 
 UCLASS()
-class CARDSURVIVAL_API UPlayerInventorySubsystem : public UGameInstanceSubsystem
+class CARDSURVIVAL_API UPlayerInventorySubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 	

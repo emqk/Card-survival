@@ -18,7 +18,7 @@ void AMapManager::BeginPlay()
 	Super::BeginPlay();
 
 	// Register map manager
-	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetMapManager(this);
+	GetWorld()->GetSubsystem<UPlayerSubsystem>()->SetMapManager(this);
 
 	// Generate world
 	for (int i = 0; i < NumberOfStagesToGenerate; i++)

@@ -34,7 +34,7 @@ ABoard::ABoard()
 void ABoard::BeginPlay()
 {
 	Super::BeginPlay();
-	GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->SetBoard(this);
+	GetWorld()->GetSubsystem<UPlayerSubsystem>()->SetBoard(this);
 }
 
 UPlayZoneComponent* ABoard::GetPlayZoneFromLocation(const FVector2D& Location2D) const
