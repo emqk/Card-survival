@@ -35,6 +35,8 @@ public:
 	bool IsNodeWalkable(const FIntPoint& WorldIndex) const;
 	UMapNodeData* GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
+	bool IsThisLastPOIIndex(const FIntPoint& WorldIndex) const;
+
 protected:
 	AMapNode* SpawnNodeAtIndexFromData(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn);
 	AMapNode* SpawnNodeAtIndex(const FIntPoint& WorldIndex);

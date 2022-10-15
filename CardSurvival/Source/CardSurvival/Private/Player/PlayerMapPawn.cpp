@@ -2,7 +2,9 @@
 
 
 #include "Player/PlayerMapPawn.h"
+#include "Player/PlayerInventorySubsystem.h"
 #include "Utils/FollowComponent.h"
+#include "Utils/Statistic.h"
 #include "Player/PlayerSubsystem.h"
 #include "WorldMap/MapManager.h"
 #include "WorldMap/WorldMapStatsWidget.h"
@@ -63,6 +65,23 @@ void APlayerMapPawn::SetStatsActive(bool bActive)
 	{
 		WorldMapStatsWidgetInstance->RemoveFromViewport();
 	}
+}
+
+void APlayerMapPawn::Step()
+{
+	UPlayerInventorySubsystem* PlayerInventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+
+	UStatistic* Energy = PlayerInventory->GetEnergy();
+	int32 EnergyCost = GetEnergyDecreaseAfterStep();
+
+	if (Energy->GetAmount() <= 0)
+	{
+		PlayerInventory->GetHealth()->ChangeByAmount(EnergyCost);
+	}
+
+	Energy->ChangeByAmount(EnergyCost);
+
+	RefreshStats();
 }
 
 void APlayerMapPawn::SpawnNodesInView()

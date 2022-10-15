@@ -29,6 +29,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void RefreshStats();
 
+	void Step();
+
 	UFUNCTION(BlueprintPure)
 	int32 GetEnergyDecreaseAfterStep() const { return EnergyDecreaseAfterStep; }
 

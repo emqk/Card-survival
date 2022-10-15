@@ -341,3 +341,20 @@ UMapNodeData* AMapManager::GetDataGlobalXY(int GlobalX, int GlobalY) const
 
 	return Data;
 }
+
+bool AMapManager::IsThisLastPOIIndex(const FIntPoint& WorldIndex) const
+{
+	UMapNodeData* Data = GetDataGlobalXY(WorldIndex.X, WorldIndex.Y);
+	if (!Data->GetEnvironmentData())
+	{
+		return false;
+	}
+
+	int32 Index = FindStageIndexByIndex(WorldIndex);
+	if (Index >= MapStages.Num() - 1)
+	{
+		return true;
+	}
+
+	return false;
+}

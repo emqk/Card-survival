@@ -9,6 +9,8 @@
 
 class UEventWidget;
 class UEventData;
+class UStatistic;
+class UEndGameWidget;
 
 UCLASS()
 class CARDSURVIVAL_API AEventsManager : public AActor
@@ -27,6 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EndEvent();
 
+	UFUNCTION()
+	void CheckEndGame(UStatistic* Health);
+	void EndGame(bool bVictory);
+
 	UFUNCTION(BlueprintCallable)
 	UEventData* GetRandomEventData() const;
 
@@ -34,6 +40,9 @@ public:
 	void SetEventActionInitData(const FEventActionInitData& NewEventActionInitData) { EventActionInitData = NewEventActionInitData; }
 	UFUNCTION(BlueprintCallable)
 	FEventActionInitData GetEventActionInitData() const { return EventActionInitData; };
+
+protected:
+	void SetUIInputActive(bool bActive);
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
@@ -52,4 +61,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
 	USoundBase* StartEventSound;
+
+	// EndGame
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UEndGameWidget> EndGameWidgetClass;
 };

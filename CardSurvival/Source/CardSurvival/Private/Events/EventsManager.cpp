@@ -4,9 +4,12 @@
 #include "Events/EventsManager.h"
 #include "Player/PlayerSubsystem.h"
 #include "Player/OwnPlayerController.h"
+#include "Player/PlayerInventorySubsystem.h"
 #include "Blueprint/UserWidget.h"
 #include "Events/EventWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Utils/Statistic.h"
+#include "World/EndGameWidget.h"
 
 AEventsManager::AEventsManager()
 {
@@ -18,6 +21,9 @@ void AEventsManager::BeginPlay()
 {
 	UPlayerSubsystem* PlayerSubsystem = GetGameInstance()->GetSubsystem<UPlayerSubsystem>();
 	PlayerSubsystem->SetEventsManager(this);
+
+	UPlayerInventorySubsystem* PlayerInventory = GetGameInstance()->GetSubsystem<UPlayerInventorySubsystem>();
+	PlayerInventory->GetHealth()->OnAttributeChange.AddUniqueDynamic(this, &AEventsManager::CheckEndGame);
 }
 
 bool AEventsManager::TryStartRandomEvent()
@@ -42,11 +48,7 @@ bool AEventsManager::TryStartRandomEvent()
 	EventWidgetInstance->Display(EventData);
 	EventWidgetInstance->AddToViewport();
 
-	// Enable UI input
-	AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
-	FInputModeUIOnly InputData;
-	InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	PlayerController->SetInputMode(InputData);
+	SetUIInputActive(true);
 
 	UGameplayStatics::PlaySound2D(GetWorld(), StartEventSound);
 
@@ -72,14 +74,24 @@ void AEventsManager::NextStage(UEventAction* EventAction)
 void AEventsManager::EndEvent()
 {
 	EventWidgetInstance->RemoveFromViewport();
+	SetUIInputActive(false);
+}
 
-	// Enable 3D game input
-	AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
-	FInputModeGameAndUI InputData;
-	InputData.SetHideCursorDuringCapture(false);
-	InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	InputData.SetWidgetToFocus(nullptr);
-	PlayerController->SetInputMode(InputData);
+void AEventsManager::CheckEndGame(UStatistic* Health)
+{
+	if (Health->GetAmount() <= 0)
+	{
+		EndGame(false);
+	}
+}
+
+void AEventsManager::EndGame(bool bVictory)
+{
+	UEndGameWidget* EndGameWidgetInstance = CreateWidget<UEndGameWidget>(GetWorld(), EndGameWidgetClass);
+	EndGameWidgetInstance->Refresh(bVictory);
+	EndGameWidgetInstance->AddToViewport();
+
+	SetUIInputActive(true);
 }
 
 UEventData* AEventsManager::GetRandomEventData() const
@@ -94,4 +106,24 @@ UEventData* AEventsManager::GetRandomEventData() const
 
 	int32 Index = FMath::RandRange(0, EventDatas.Num() - 1);
 	return EventDatas[Index];
+}
+
+void AEventsManager::SetUIInputActive(bool bActive)
+{
+	if (bActive)
+	{
+		AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
+		FInputModeUIOnly InputData;
+		InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		PlayerController->SetInputMode(InputData);
+	}
+	else
+	{
+		AOwnPlayerController* PlayerController = GetGameInstance()->GetSubsystem<UPlayerSubsystem>()->GetPlayerController();
+		FInputModeGameAndUI InputData;
+		InputData.SetHideCursorDuringCapture(false);
+		InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputData.SetWidgetToFocus(nullptr);
+		PlayerController->SetInputMode(InputData);
+	}
 }

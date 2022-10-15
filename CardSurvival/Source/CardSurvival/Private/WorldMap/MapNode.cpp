@@ -39,10 +39,16 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 		
 			UGameplayStatics::PlaySound2D(GetWorld(), WalkSound);
 
+			if (MapManager->IsThisLastPOIIndex(NewMapIndex))
+			{
+				AEventsManager* EventsManager = PlayerSubsystem->GetEventsManager();
+				EventsManager->EndGame(true);
+
+				return false;
+			}
+
 			//Stats
-			int32 EnergyCost = PlayerPawn->GetEnergyDecreaseAfterStep();
-			PlayerInventory->GetEnergy()->ChangeByAmount(EnergyCost);
-			PlayerPawn->RefreshStats();
+			PlayerPawn->Step();
 
 			// Go to the board
 			UEnvironmentData* EnvironmentData = NodeData->GetEnvironmentData();
