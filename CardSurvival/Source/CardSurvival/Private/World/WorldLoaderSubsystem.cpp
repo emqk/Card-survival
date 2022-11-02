@@ -44,7 +44,7 @@ void UWorldLoaderSubsystem::OpenNewEnvironment(UEnvironmentData* EnvironmentData
 		int Amount = UKismetMathLibrary::RandomIntegerInRange(SpawnData.AmountRange.X, SpawnData.AmountRange.Y);
 		for (int i = 0; i < Amount; i++)
 		{
-			CardManager->SpawnCardInRow(EBoardRow::Location, SpawnData.CardData);
+			CardManager->SpawnCardInRowEnum(EBoardRow::Location, SpawnData.CardData);
 		}
 	}
 

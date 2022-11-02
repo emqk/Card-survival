@@ -31,9 +31,14 @@ void ACardManager::BeginPlay()
 	}
 }
 
-bool ACardManager::SpawnCardInRow(EBoardRow BoardRow, UCardData* CardData)
+bool ACardManager::SpawnCardInRowEnum(EBoardRow BoardRow, UCardData* CardData)
 {
-	UPlayZoneComponent* PlayZone = GetBoardRowFromEnum(BoardRow);
+	UPlayZoneComponent* PlayZone = GetBoardRowFromEnum(BoardRow);	
+	return SpawnCardInRow(PlayZone, CardData);
+}
+
+bool ACardManager::SpawnCardInRow(UPlayZoneComponent* PlayZone, UCardData* CardData)
+{
 	if (PlayZone)
 	{
 		FActorSpawnParameters Params;

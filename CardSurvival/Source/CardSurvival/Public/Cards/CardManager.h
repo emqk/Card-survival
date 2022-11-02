@@ -34,7 +34,9 @@ public:
 	UCardSettings* GetCardsSettings() const { return CardSettings; };
 
 	UFUNCTION(BlueprintCallable)
-	bool SpawnCardInRow(EBoardRow BoardRow, UCardData* CardData);
+	bool SpawnCardInRowEnum(EBoardRow BoardRow, UCardData* CardData);
+	UFUNCTION(BlueprintCallable)
+	bool SpawnCardInRow(UPlayZoneComponent* PlayZone, UCardData* CardData);
 	UFUNCTION(BlueprintCallable)
 	void DestroyAllCardsInRow(EBoardRow BoardRow);
 
