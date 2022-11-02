@@ -19,8 +19,7 @@ void UCardUseSpawnItems::Use_Implementation(ACardBase* From, ACardBase* To)
 
 	Super::Use_Implementation(From, To);
 
-	UWorld* Wo = From->GetWorld();
-	UPlayerSubsystem* PlayerSubsystem = Wo->GetSubsystem<UPlayerSubsystem>();
+	UPlayerSubsystem* PlayerSubsystem = From->GetWorld()->GetSubsystem<UPlayerSubsystem>();
 	ACardManager* CardManager = PlayerSubsystem->GetCardManager();
 
 	for (const FCardSpawnData& Data : CardsToSpawn)
