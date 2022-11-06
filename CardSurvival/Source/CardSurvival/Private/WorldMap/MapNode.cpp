@@ -69,3 +69,22 @@ bool AMapNode::StartInteraction_Implementation(AActor* Interactor, EInteractionT
 
 	return false;
 }
+
+bool AMapNode::CanInteract_Implementation(EInteractionType InteractionType)
+{
+	if (InteractionType == EInteractionType::Primary)
+	{
+		UPlayerSubsystem* PlayerSubsystem = GetWorld()->GetSubsystem<UPlayerSubsystem>();
+		AMapManager* MapManager = PlayerSubsystem->GetMapManager();
+				
+		FIntPoint MapNodeIndex = MapManager->ConvertWorldLocationToMapIndex(GetActorLocation());
+		APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
+
+		if (PlayerPawn->GetWorldIndex() == MapNodeIndex)
+		{
+			return false;
+		}
+	}
+
+	return IInteractable::CanInteract_Implementation(InteractionType);
+}

@@ -19,7 +19,8 @@ public:
 
 	// Interaction
 	bool StartInteraction_Implementation(AActor* Interactor, EInteractionType InteractionType) override;
- 
+	bool CanInteract_Implementation(EInteractionType InteractionType) override;
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> SceneComponent;
