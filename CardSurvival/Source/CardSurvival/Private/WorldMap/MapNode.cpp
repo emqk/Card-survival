@@ -79,8 +79,9 @@ bool AMapNode::CanInteract_Implementation(EInteractionType InteractionType)
 				
 		FIntPoint MapNodeIndex = MapManager->ConvertWorldLocationToMapIndex(GetActorLocation());
 		APlayerMapPawn* PlayerPawn = PlayerSubsystem->GetPlayerMapPawn();
+		FIntPoint PlayerIndex = PlayerPawn->GetWorldIndex();
 
-		if (PlayerPawn->GetWorldIndex() == MapNodeIndex)
+		if (PlayerIndex == MapNodeIndex || !MapManager->IsNeighbourOf(MapNodeIndex, PlayerIndex))
 		{
 			return false;
 		}

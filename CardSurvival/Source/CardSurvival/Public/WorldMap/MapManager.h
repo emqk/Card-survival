@@ -36,6 +36,7 @@ public:
 	UMapNodeData* GetDataGlobalXY(int GlobalX, int GlobalY) const;
 
 	bool IsThisLastPOIIndex(const FIntPoint& WorldIndex) const;
+	bool IsNeighbourOf(const FIntPoint& SourceWorldIndex, const FIntPoint& TargetWorldIndex) const;
 
 protected:
 	AMapNode* SpawnNodeAtIndexFromData(const FIntPoint& WorldIndex, const TSubclassOf<AMapNode>& ClassToSpawn);

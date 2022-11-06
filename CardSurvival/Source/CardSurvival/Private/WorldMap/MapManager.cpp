@@ -358,3 +358,17 @@ bool AMapManager::IsThisLastPOIIndex(const FIntPoint& WorldIndex) const
 
 	return false;
 }
+
+bool AMapManager::IsNeighbourOf(const FIntPoint& SourceWorldIndex, const FIntPoint& TargetWorldIndex) const
+{
+	TArray<FIntPoint> Neighbours = GetNeighbours(SourceWorldIndex);
+	for (const FIntPoint& CurrentNeighbour : Neighbours)
+	{
+		if (CurrentNeighbour == TargetWorldIndex)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
