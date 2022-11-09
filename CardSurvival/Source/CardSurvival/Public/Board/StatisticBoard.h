@@ -30,8 +30,6 @@ protected:
 	TObjectPtr<UStaticMeshComponent> HealthBarComponent;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> EnergyBarComponent;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> SanityBarComponent;
 
 
 	UPROPERTY(EditDefaultsOnly)

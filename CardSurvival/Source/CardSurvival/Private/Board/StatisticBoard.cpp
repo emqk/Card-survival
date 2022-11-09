@@ -18,6 +18,4 @@ AStatisticBoard::AStatisticBoard()
 	HealthBarComponent->SetupAttachment(BaseMeshComponent);
 	EnergyBarComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EnergyBar"));
 	EnergyBarComponent->SetupAttachment(BaseMeshComponent);
-	SanityBarComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SanityBar"));
-	SanityBarComponent->SetupAttachment(BaseMeshComponent);
 }
