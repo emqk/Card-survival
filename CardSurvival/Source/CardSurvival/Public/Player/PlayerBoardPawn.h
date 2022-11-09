@@ -21,4 +21,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetCardInfoActive(UCardData* CardData, bool bActive);
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetBlackScreenActive(bool bActive);
 };

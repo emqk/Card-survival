@@ -27,7 +27,11 @@ void UWorldLoaderSubsystem::OpenNewEnvironment(UEnvironmentData* EnvironmentData
 	PlayerController->Possess(PlayerBoardPawn);
 
 	GetGameInstance()->GetSubsystem<ULevelStreamingSubsystem>()->LoadLevelInstance(EnvironmentData->GetLevelInstance(), FVector(2350.0f, 0.0f, -80.0f));
+	
+	// Show black (loading) screen
+	PlayerBoardPawn->SetBlackScreenActive(true);
 
+	// Disable lighting
 	if (MapLighting && MapPostProcess)
 	{
 		MapLighting->Deactivate();
