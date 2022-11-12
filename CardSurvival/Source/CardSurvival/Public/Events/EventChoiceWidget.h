@@ -15,7 +15,7 @@ class CARDSURVIVAL_API UEventChoiceWidget : public UUserWidget
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetActionClass(const TSubclassOf<UEventAction>& NewActionClass) { ActionClass = NewActionClass; };
+	void SetActionClass(UEventAction* NewAction) { Action = NewAction; };
 
 	UFUNCTION(BlueprintCallable)
 	int GetChance() const { return Chance; };
@@ -24,7 +24,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TSubclassOf<UEventAction> ActionClass;
+	TObjectPtr<UEventAction> Action;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int Chance;
 };

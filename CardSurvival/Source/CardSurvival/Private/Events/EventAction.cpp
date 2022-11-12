@@ -12,5 +12,9 @@ void UEventAction::Perform_Implementation()
 
 AEventsManager* UEventAction::GetEventsManager() const
 {
-	return GetWorld()->GetSubsystem<UPlayerSubsystem>()->GetEventsManager();
+	FWorldContext* WorldContext = GEngine->GetWorldContextFromGameViewport(GEngine->GameViewport);
+	UWorld* World = WorldContext->World();
+
+	UPlayerSubsystem* PlayerSubsystem = World->GetSubsystem<UPlayerSubsystem>();
+	return PlayerSubsystem->GetEventsManager();
 }

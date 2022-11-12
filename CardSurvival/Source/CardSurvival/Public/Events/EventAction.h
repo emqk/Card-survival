@@ -7,7 +7,7 @@
 #include "Tokens/TokenDataInstance.h"
 #include "EventAction.generated.h"
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, EditInlineNew)
 class CARDSURVIVAL_API UEventAction : public UObject
 {
 	GENERATED_BODY()
@@ -20,11 +20,11 @@ public:
 	AEventsManager* GetEventsManager() const;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText DisplayText;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FTokenDataInstanceRange> GoodTokens;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FTokenDataInstanceRange> BadTokens;
 };
  

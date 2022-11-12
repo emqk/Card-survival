@@ -23,8 +23,8 @@ struct FEventActionData
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UEventAction> Actions;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced)
+	TObjectPtr<UEventAction> Actions;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 99))
 	FIntPoint ChanceRange = FIntPoint(1, 99);
 };
